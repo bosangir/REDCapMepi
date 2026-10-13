@@ -19,7 +19,7 @@ Companion page: [Data Management Plans](https://bosangir.github.io/DMP/)
 - Surveys, e-consent, longitudinal studies and repeating instruments
 - User rights, data quality tools, de-identified export and the API
 - How REDCap fits into your Data Management Plan
-- REDCap at UZA, KU Leuven and UZ Gent
+- REDCap at UAntwerp (redcap.uantwerpen.be)
 - Checklist, random practice quiz, glossary and sources
 
 ## Editing

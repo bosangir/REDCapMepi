@@ -197,7 +197,7 @@ pre code{font-size:inherit}
       <li><a href="#quality">Data quality</a></li>
       <li><a href="#export">Export and analysis</a></li>
       <li><a href="#dmp">REDCap and your DMP</a></li>
-      <li><a href="#belgium">REDCap in Antwerp and Flanders</a></li>
+      <li><a href="#belgium">REDCap at UAntwerp</a></li>
       <li><a href="#prepare">Before class: checklist</a></li>
       <li><a href="#quiz">Check yourself</a></li>
       <li><a href="#glossary">Glossary</a></li>
@@ -218,7 +218,7 @@ pre code{font-size:inherit}
     </div>
     <div class="callout">
       <p class="callout-title">What happens in class</p>
-      <p>In the 45-minute hands-on lab you will work in pairs to build a mini tuberculosis (TB) cohort in REDCap: create a project, build an enrolment form, add validation, branching logic and a BMI calculation, set up three time points, enter fake participants, run a data quality rule and export the data.<sup class="cite"><a href="#r12">[12]</a></sup> This page explains every step, so you can spend the lab building rather than reading menus.</p>
+      <p>In the 45-minute hands-on lab you will work in pairs to build a mini tuberculosis (TB) cohort in REDCap: create a project, build an enrolment form, add validation, branching logic and a BMI calculation, set up three time points, enter fake participants, run a data quality rule and export the data.<sup class="cite"><a href="#r9">[9]</a></sup> This page explains every step, so you can spend the lab building rather than reading menus.</p>
     </div>
   </section>
 
@@ -250,7 +250,7 @@ pre code{font-size:inherit}
   <section id="why">
     <h2><span class="num">03</span>Why not a spreadsheet?</h2>
     <p class="sub">An EDC system builds quality and security into data entry.</p>
-    <p>Many studies still start in Excel. It is easy, but it lets anyone type anything anywhere, keeps no record of who changed what, and is easily emailed or copied to a USB stick. An electronic data capture system such as REDCap prevents most of these problems by design.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p>Many studies still start in Excel. It is easy, but it lets anyone type anything anywhere, keeps no record of who changed what, and is easily emailed or copied to a USB stick. An electronic data capture system such as REDCap prevents most of these problems by design.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     <div class="tablewrap">
       <table>
         <thead><tr><th></th><th>Spreadsheet</th><th>REDCap</th></tr></thead>
@@ -277,7 +277,7 @@ pre code{font-size:inherit}
         </tbody>
       </table>
     </div>
-    <p style="font-size:15px;color:var(--grey)">Comparison from the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p style="font-size:15px;color:var(--grey)">Comparison from the course lecture.<sup class="cite"><a href="#r9">[9]</a></sup></p>
   </section>
 
   <section id="blocks">
@@ -320,7 +320,7 @@ pre code{font-size:inherit}
           <text x="380" y="304" text-anchor="middle" font-size="12.5" fill="var(--muted)">Events are columns in time; instruments are the forms collected at each event; fields are the variables inside each form.</text>
         </g>
       </svg>
-      <figcaption>The building blocks of a REDCap project, using the TB cohort from the lab as an example. Adapted from the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></figcaption>
+      <figcaption>The building blocks of a REDCap project, using the TB cohort from the lab as an example. Adapted from the course lecture.<sup class="cite"><a href="#r9">[9]</a></sup></figcaption>
     </figure>
     <dl class="gloss">
       <dt>Record</dt><dd>One participant (or one unit of observation), identified by the first field, usually <code>record_id</code>.</dd>
@@ -361,13 +361,13 @@ pre code{font-size:inherit}
           <text x="380" y="40" font-size="12.5" fill="var(--muted)">Moving to Production is usually approved by your institution's REDCap administrators</text>
         </g>
       </svg>
-      <figcaption>The status of a REDCap project over time. Adapted from the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></figcaption>
+      <figcaption>The status of a REDCap project over time. Adapted from the course lecture.<sup class="cite"><a href="#r9">[9]</a></sup></figcaption>
     </figure>
     <ul>
-      <li><strong>Development:</strong> everything can be changed. Build the forms and test them thoroughly with fake records. Never enter real participant data in a development project.<sup class="cite"><a href="#r12">[12]</a></sup></li>
-      <li><strong>Production:</strong> real data collection. Changes to forms now go through <strong>Draft Mode</strong>, so that existing data are not damaged by accident; Draft Preview Mode lets you test those changes first.<sup class="cite"><a href="#r2">[2]</a><a href="#r12">[12]</a></sup></li>
-      <li><strong>Analysis / Cleanup:</strong> data collection has ended. Resolve queries, lock records and export.<sup class="cite"><a href="#r12">[12]</a></sup></li>
-      <li><strong>Completed:</strong> the project becomes a read-only archive.<sup class="cite"><a href="#r12">[12]</a></sup></li>
+      <li><strong>Development:</strong> everything can be changed. Build the forms and test them thoroughly with fake records. Never enter real participant data in a development project.<sup class="cite"><a href="#r9">[9]</a></sup></li>
+      <li><strong>Production:</strong> real data collection. Changes to forms now go through <strong>Draft Mode</strong>, so that existing data are not damaged by accident; Draft Preview Mode lets you test those changes first.<sup class="cite"><a href="#r2">[2]</a><a href="#r9">[9]</a></sup></li>
+      <li><strong>Analysis / Cleanup:</strong> data collection has ended. Resolve queries, lock records and export.<sup class="cite"><a href="#r9">[9]</a></sup></li>
+      <li><strong>Completed:</strong> the project becomes a read-only archive.<sup class="cite"><a href="#r9">[9]</a></sup></li>
     </ul>
     <h3>Three ways to start a project</h3>
     <div class="grid g3">
@@ -380,7 +380,7 @@ pre code{font-size:inherit}
   <section id="dictionary">
     <h2><span class="num">06</span>The data dictionary and field types</h2>
     <p class="sub">Design the data dictionary first; it is also your codebook.</p>
-    <p>Every REDCap project is defined by a <strong>data dictionary</strong>: a table with one row per field. You can build it in the Online Designer, or write it in a spreadsheet, save it as CSV and upload it.<sup class="cite"><a href="#r2">[2]</a></sup> Because it lists every variable with its type, label, codes and validation, the data dictionary doubles as the codebook that your DMP asks for.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p>Every REDCap project is defined by a <strong>data dictionary</strong>: a table with one row per field. You can build it in the Online Designer, or write it in a spreadsheet, save it as CSV and upload it.<sup class="cite"><a href="#r2">[2]</a></sup> Because it lists every variable with its type, label, codes and validation, the data dictionary doubles as the codebook that your DMP asks for.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Variable</th><th>Form</th><th>Type</th><th>Label</th><th>Choices / calculation</th><th>Validation</th><th>Identifier?</th></tr></thead>
@@ -396,7 +396,7 @@ pre code{font-size:inherit}
         </tbody>
       </table>
     </div>
-    <p style="font-size:15px;color:var(--grey)">Part of the data dictionary for the TB cohort in the lab.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p style="font-size:15px;color:var(--grey)">Part of the data dictionary for the TB cohort in the lab.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     <h3>Field types: the right type prevents errors</h3>
     <div class="grid g3">
       <div class="card"><h4>Text box</h4><p>Short answers; add validation for date, number, integer, email or phone.</p></div>
@@ -417,7 +417,7 @@ pre code{font-size:inherit}
         <li>The <strong>identifier flag</strong> on every field that contains personal information (name, date of birth, phone, address), so it can be removed on export.</li>
         <li><strong>Missing data codes</strong>, so you can record <em>why</em> a value is missing.</li>
       </ul>
-      <p style="font-size:15px;color:var(--grey);margin-top:8px">From the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+      <p style="font-size:15px;color:var(--grey);margin-top:8px">From the course lecture.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     </div>
     <p>Use short, lower-case variable names without spaces (<code>weight_kg</code>, not <code>Weight of patient</code>), and put the unit in the name or label. Variable names are what you will type in R or Stata for the rest of the project.</p>
   </section>
@@ -425,7 +425,7 @@ pre code{font-size:inherit}
   <section id="logic">
     <h2><span class="num">07</span>Branching logic, calculations and action tags</h2>
     <p class="sub">Show only relevant questions, compute values automatically, and fine-tune field behaviour.</p>
-    <p>Fields are referred to by their variable name in square brackets. The examples below come from the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p>Fields are referred to by their variable name in square brackets. The examples below come from the course lecture.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     <h3>Branching logic</h3>
     <p>A field with branching logic is shown only when its condition is true. This keeps forms short and prevents answers to questions that do not apply.</p>
 <pre><code># show only if a lab evaluation was done
@@ -467,7 +467,7 @@ datediff([last_visit], 'today', 'd')</code></pre>
   <section id="surveys">
     <h2><span class="num">08</span>Surveys and participants</h2>
     <p class="sub">Collect data directly from participants, online or offline.</p>
-    <p>Any instrument can also be used as a survey. First enable surveys for the project in <em>Project Setup</em>, then enable each instrument you want to use as a survey.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p>Any instrument can also be used as a survey. First enable surveys for the project in <em>Project Setup</em>, then enable each instrument you want to use as a survey.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     <div class="grid g2">
       <div class="card"><h4>Public link and QR code</h4><p>One link for everyone: for open or anonymous recruitment.</p></div>
       <div class="card"><h4>Participant list</h4><p>Personal invitations by email, with automated reminders.</p></div>
@@ -476,13 +476,13 @@ datediff([last_visit], 'today', 'd')</code></pre>
       <div class="card"><h4>Multi-Language Management</h4><p>One instrument, available in several languages.<sup class="cite"><a href="#r2">[2]</a></sup></p></div>
       <div class="card"><h4>Mobile App and MyCap</h4><p>Offline data collection by field staff (Mobile App), and a participant app for patient-reported outcomes (MyCap).</p></div>
     </div>
-    <p style="font-size:15px;color:var(--grey)">From the course lecture and the REDCap project website.<sup class="cite"><a href="#r12">[12]</a><a href="#r2">[2]</a></sup></p>
+    <p style="font-size:15px;color:var(--grey)">From the course lecture and the REDCap project website.<sup class="cite"><a href="#r9">[9]</a><a href="#r2">[2]</a></sup></p>
   </section>
 
   <section id="longitudinal">
     <h2><span class="num">09</span>Longitudinal studies</h2>
     <p class="sub">Events × instruments: what is collected when.</p>
-    <p>In a cohort or trial, the same participant is seen several times. In a longitudinal REDCap project you define the <strong>events</strong> (time points), then tick which instruments are collected at each event. Set it up via <em>Project Setup → enable longitudinal data collection → define events → designate instruments</em>.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p>In a cohort or trial, the same participant is seen several times. In a longitudinal REDCap project you define the <strong>events</strong> (time points), then tick which instruments are collected at each event. Set it up via <em>Project Setup → enable longitudinal data collection → define events → designate instruments</em>.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     <div class="tablewrap">
       <table>
         <thead><tr><th>Instrument</th><th>Baseline</th><th>Week 4</th><th>Month 3</th><th>Month 6</th><th>Month 12</th></tr></thead>
@@ -496,7 +496,7 @@ datediff([last_visit], 'today', 'd')</code></pre>
         </tbody>
       </table>
     </div>
-    <p>✓ = collected at that event. ↻ = <strong>repeating instrument</strong>: can be filled in as many times as needed at an event, which suits adverse events or medications.<sup class="cite"><a href="#r12">[12]</a></sup> If participants are randomised to groups with different schedules, each group becomes an <strong>arm</strong> with its own events.</p>
+    <p>✓ = collected at that event. ↻ = <strong>repeating instrument</strong>: can be filled in as many times as needed at an event, which suits adverse events or medications.<sup class="cite"><a href="#r9">[9]</a></sup> If participants are randomised to groups with different schedules, each group becomes an <strong>arm</strong> with its own events.</p>
   </section>
 
   <section id="users">
@@ -513,7 +513,7 @@ datediff([last_visit], 'today', 'd')</code></pre>
         </tbody>
       </table>
     </div>
-    <p style="font-size:15px;color:var(--grey)">Example of user roles in a multi-site study.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p style="font-size:15px;color:var(--grey)">Example of user roles in a multi-site study.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     <div class="grid g3">
       <div class="card"><h4>Data Access Groups</h4><p>Each site sees only its own records, while the coordinating centre sees all.</p></div>
       <div class="card"><h4>Least privilege</h4><p>Give only the rights a role needs. Few people need full export rights.</p></div>
@@ -539,13 +539,13 @@ datediff([last_visit], 'today', 'd')</code></pre>
         <p>The <strong>Data Resolution Workflow</strong> lets monitors open queries, sites answer them, and data managers close them. <strong>Logging</strong> keeps a full audit trail, and records can be <strong>locked</strong> and e-signed once they are final.</p>
       </div></div>
     </div>
-    <p style="font-size:15px;color:var(--grey)">From the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p style="font-size:15px;color:var(--grey)">From the course lecture.<sup class="cite"><a href="#r9">[9]</a></sup></p>
   </section>
 
   <section id="export">
     <h2><span class="num">12</span>Export and analysis</h2>
     <p class="sub">From REDCap to R, Stata, SPSS or Python, safely.</p>
-    <p>REDCap exports to CSV (raw codes or labels), R, Stata, SPSS and SAS, and to CDISC ODM (XML), together with a script that applies the variable and value labels.<sup class="cite"><a href="#r2">[2]</a><a href="#r12">[12]</a></sup></p>
+    <p>REDCap exports to CSV (raw codes or labels), R, Stata, SPSS and SAS, and to CDISC ODM (XML), together with a script that applies the variable and value labels.<sup class="cite"><a href="#r2">[2]</a><a href="#r9">[9]</a></sup></p>
     <h3>De-identify on export</h3>
     <ul>
       <li>Remove all fields tagged as <strong>identifiers</strong>.</li>
@@ -553,24 +553,24 @@ datediff([last_visit], 'today', 'd')</code></pre>
       <li>Shift all dates by a random number of days.</li>
       <li>Replace the record ID with a hashed value.</li>
     </ul>
-    <p style="font-size:15px;color:var(--grey)">Export options listed in the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <p style="font-size:15px;color:var(--grey)">Export options listed in the course lecture.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     <h3>A reproducible pipeline with the API</h3>
-    <p>Instead of exporting by hand each time, you can read the data straight into R with the <strong>REDCapR</strong> package<sup class="cite"><a href="#r9">[9]</a></sup> (or into Python with PyCap<sup class="cite"><a href="#r10">[10]</a></sup>) through the REDCap API. Your analysis then always starts from the current data.</p>
+    <p>Instead of exporting by hand each time, you can read the data straight into R with the <strong>REDCapR</strong> package<sup class="cite"><a href="#r6">[6]</a></sup> (or into Python with PyCap<sup class="cite"><a href="#r7">[7]</a></sup>) through the REDCap API. Your analysis then always starts from the current data.</p>
 <pre><code>library(REDCapR)
 tb &lt;- redcap_read_oneshot(
-  redcap_uri = "https://redcap.&lt;your-institution&gt;/api/",
+  redcap_uri = "https://redcap.uantwerpen.be/api/",
   token      = Sys.getenv("REDCAP_TOKEN")
 )$data</code></pre>
     <div class="callout">
       <p class="callout-title">API tokens are passwords</p>
-      <p>An API token gives full access to the project with your rights. Keep it in your <code>.Renviron</code> file (read with <code>Sys.getenv()</code>), never in a script, on GitHub, in an email or in a chat with an AI tool.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+      <p>An API token gives full access to the project with your rights. Keep it in your <code>.Renviron</code> file (read with <code>Sys.getenv()</code>), never in a script, on GitHub, in an email or in a chat with an AI tool.<sup class="cite"><a href="#r9">[9]</a></sup></p>
     </div>
   </section>
 
   <section id="dmp">
     <h2><span class="num">13</span>REDCap and your Data Management Plan</h2>
     <p class="sub">Choosing REDCap answers several DMP questions at once.</p>
-    <p>If your group project uses REDCap, say so in your DMP and be specific. The table shows where REDCap fits into the six DMP sections from the <a href="https://bosangir.github.io/DMP/">DMP pre-class reading</a>.<sup class="cite"><a href="#r13">[13]</a></sup></p>
+    <p>If your group project uses REDCap, say so in your DMP and be specific. The table shows where REDCap fits into the six DMP sections from the <a href="https://bosangir.github.io/DMP/">DMP pre-class reading</a>.<sup class="cite"><a href="#r10">[10]</a></sup></p>
     <div class="tablewrap">
       <table>
         <thead><tr><th>DMP section</th><th>What to write about REDCap</th></tr></thead>
@@ -584,26 +584,24 @@ tb &lt;- redcap_read_oneshot(
         </tbody>
       </table>
     </div>
-    <p>REDCap also supports UAntwerp's rules on sensitive data: use institutional services rather than external cloud tools, give access on a need-to-know basis, and document all processing of personal data.<sup class="cite"><a href="#r14">[14]</a></sup></p>
+    <p>REDCap also supports UAntwerp's rules on sensitive data: use institutional services rather than external cloud tools, give access on a need-to-know basis, and document all processing of personal data.<sup class="cite"><a href="#r11">[11]</a></sup></p>
   </section>
 
   <section id="belgium">
-    <h2><span class="num">14</span>REDCap in Antwerp and Flanders</h2>
-    <p class="sub">Each institution runs its own REDCap, with its own access procedure.</p>
-    <div class="tablewrap">
-      <table>
-        <thead><tr><th>Institution</th><th>REDCap service</th><th>How to get access</th></tr></thead>
-        <tbody>
-          <tr><td>Antwerp University Hospital (UZA)</td><td>"UZA Study Universe" REDCap at <a href="https://redcap.uza.be/">redcap.uza.be</a>. Studies started before 2021 still use OpenClinica.</td><td>For a first study, contact UZA's Clinical Trial Center (CTC) or data management team about the procedure.<sup class="cite"><a href="#r5">[5]</a></sup></td></tr>
-          <tr><td>KU Leuven (Biomedical Sciences)</td><td>REDCap run by the Biomedical Sciences Group IT, with a separate entry for UZ Leuven users.</td><td>Register your project with the REDCap request form; only users listed on an approved registration get access.<sup class="cite"><a href="#r6">[6]</a></sup></td></tr>
-          <tr><td>Ghent University Hospital / UGent (HIRUZ)</td><td>Separate REDCap instances for surveys, studies and registers, for academic research at UZ Gent and UGent.</td><td>Follow the online training (about 45 minutes), request a project, and use the free walk-in sessions for help; contact redcap@uzgent.be.<sup class="cite"><a href="#r7">[7]</a><a href="#r8">[8]</a></sup></td></tr>
-        </tbody>
-      </table>
+    <h2><span class="num">14</span>REDCap at UAntwerp</h2>
+    <p class="sub">The University of Antwerp runs its own REDCap server.</p>
+    <div class="grid g2">
+      <div class="card"><h4>Web address</h4><p><a href="https://redcap.uantwerpen.be/">redcap.uantwerpen.be</a></p></div>
+      <div class="card"><h4>How to log in</h4><p>Choose <em>Log in using UAntwerpen login</em> and use your university account. A local REDCap login also exists for users without a UAntwerpen account.</p></div>
+      <div class="card"><h4>What may be stored</h4><p>Only data from approved study protocols. Ethics approval comes before real data collection.</p></div>
+      <div class="card"><h4>Questions</h4><p>Contact the REDCap administrator at <a href="mailto:redcap@uantwerpen.be">redcap@uantwerpen.be</a>.</p></div>
     </div>
+    <p style="font-size:15px;color:var(--grey)">Source: UAntwerp REDCap login page (REDCap version 16.0.15, October 2026).<sup class="cite"><a href="#r5">[5]</a></sup></p>
     <div class="callout">
       <p class="callout-title">For this course</p>
-      <p>Your instructors will tell you which REDCap server to use for the lab and how to log in. For your own research later, ask your supervisor or your institution's data management team which REDCap you should use; never set up a study on a server outside your institution's control.</p>
+      <p>The lab uses UAntwerp's REDCap. Before class, check that you can log in at <a href="https://redcap.uantwerpen.be/">redcap.uantwerpen.be</a> with your UAntwerpen account. In the lab you will create a project with the purpose <em>Practice / Just for fun</em> and enter only fake participants.</p>
     </div>
+    <p>When you start your own research later, use the same server and talk to the REDCap administrator early: they can advise on project set-up and approve the move to Production. Never set up a study on a REDCap server outside UAntwerp's control.</p>
   </section>
 
   <section id="prepare">
@@ -611,7 +609,7 @@ tb &lt;- redcap_read_oneshot(
     <p class="sub">About 40 minutes of preparation. Your ticks are saved in this browser only.</p>
     <ul class="checklist" id="checklist">
       <li><input type="checkbox" id="c1"><label for="c1">Read this page, including the two diagrams and the data dictionary example.</label></li>
-      <li><input type="checkbox" id="c2"><label for="c2">Make sure you can log in to the REDCap server your instructors give you, and bring a laptop (a tablet is not enough to build a project).</label></li>
+      <li><input type="checkbox" id="c2"><label for="c2">Log in once at <a href="https://redcap.uantwerpen.be/">redcap.uantwerpen.be</a> with your UAntwerpen account, and bring a laptop (a tablet is not enough to build a project).</label></li>
       <li><input type="checkbox" id="c3"><label for="c3">On paper, list 6–8 variables for the enrolment form of a small TB cohort, with a field type and a validation rule for each.</label></li>
       <li><input type="checkbox" id="c4"><label for="c4">Write one branching logic rule and one calculated field in REDCap syntax.</label></li>
       <li><input type="checkbox" id="c5"><label for="c5">Mark which of your variables are identifiers.</label></li>
@@ -671,20 +669,17 @@ tb &lt;- redcap_read_oneshot(
       <li id="r2">REDCap (Vanderbilt University). <em>Software features</em>. <a href="https://projectredcap.org/software/">projectredcap.org/software/</a></li>
       <li id="r3">Harris, P. A., Taylor, R., Thielke, R., Payne, J., Gonzalez, N. &amp; Conde, J. G. Research electronic data capture (REDCap): a metadata-driven methodology and workflow process for providing translational research informatics support. <em>Journal of Biomedical Informatics</em> 42(2), 377–381 (2009). <a href="https://doi.org/10.1016/j.jbi.2008.08.010">doi.org/10.1016/j.jbi.2008.08.010</a></li>
       <li id="r4">Harris, P. A., Taylor, R., Minor, B. L., Elliott, V., Fernandez, M., O'Neal, L., McLeod, L., Delacqua, G., Delacqua, F., Kirby, J., Duda, S. N. &amp; REDCap Consortium. The REDCap consortium: building an international community of software platform partners. <em>Journal of Biomedical Informatics</em> 95, 103208 (2019). <a href="https://doi.org/10.1016/j.jbi.2019.103208">doi.org/10.1016/j.jbi.2019.103208</a>. Citation guidance: <a href="https://projectredcap.org/resources/citations/">projectredcap.org/resources/citations/</a></li>
-      <li id="r5">Antwerp University Hospital (UZA). <em>UZA Studies: REDCap</em>. <a href="https://redcap.uza.be/">redcap.uza.be</a></li>
-      <li id="r6">KU Leuven, Group of Biomedical Sciences IT. <em>Research data tools: REDCap</em>. <a href="https://gbiomed.kuleuven.be/english/IT/our-services/research-data-tools/more-info">gbiomed.kuleuven.be/english/IT/our-services/research-data-tools/more-info</a></li>
-      <li id="r7">HIRUZ, Ghent University Hospital. <em>REDCap access</em>. <a href="https://hiruz.be/redcap-access/">hiruz.be/redcap-access/</a></li>
-      <li id="r8">HIRUZ, Ghent University Hospital. <em>Your own REDCap project</em>. <a href="https://hiruz.be/redcap-start/">hiruz.be/redcap-start/</a></li>
-      <li id="r9">Beasley, W. et al. <em>REDCapR: Interaction Between R and REDCap</em>. R package, CRAN. <a href="https://cran.r-project.org/package=REDCapR">cran.r-project.org/package=REDCapR</a></li>
-      <li id="r10">redcap-tools. <em>PyCap: a Python interface to REDCap</em>. <a href="https://github.com/redcap-tools/PyCap">github.com/redcap-tools/PyCap</a></li>
-      <li id="r11">REDCap (Vanderbilt University). <em>Training resources and videos</em>. <a href="https://projectredcap.org/resources/">projectredcap.org/resources/</a></li>
-      <li id="r12">Maseko, T. &amp; Osangir, B. I. <em>Research Data Management: from the data lifecycle to your DMP, REDCap and responsible use of AI</em>. Lecture slides, Part 04 (REDCap), Master of Epidemiology, University of Antwerp, 2026–27.</li>
-      <li id="r13">Osangir, B. I., Maseko, T. &amp; Abrams, S. <em>The Data Management Plan, and the lifecycle behind it</em>. Pre-class reading, MEPI, 2026. <a href="https://bosangir.github.io/DMP/">bosangir.github.io/DMP/</a></li>
-      <li id="r14">University of Antwerp. <em>Processing data</em> (sensitive data and data security). <a href="https://www.uantwerpen.be/en/research/policy/open-science-rdm/research-data-management/processing-data/">uantwerpen.be/…/research-data-management/processing-data/</a></li>
+      <li id="r5">University of Antwerp. <em>REDCap</em> (login page and notices). <a href="https://redcap.uantwerpen.be/">redcap.uantwerpen.be</a>. Contact: redcap@uantwerpen.be</li>
+      <li id="r6">Beasley, W. et al. <em>REDCapR: Interaction Between R and REDCap</em>. R package, CRAN. <a href="https://cran.r-project.org/package=REDCapR">cran.r-project.org/package=REDCapR</a></li>
+      <li id="r7">redcap-tools. <em>PyCap: a Python interface to REDCap</em>. <a href="https://github.com/redcap-tools/PyCap">github.com/redcap-tools/PyCap</a></li>
+      <li id="r8">REDCap (Vanderbilt University). <em>Training resources and videos</em>. <a href="https://projectredcap.org/resources/">projectredcap.org/resources/</a></li>
+      <li id="r9">Maseko, T. &amp; Osangir, B. I. <em>Research Data Management: from the data lifecycle to your DMP, REDCap and responsible use of AI</em>. Lecture slides, Part 04 (REDCap), Master of Epidemiology, University of Antwerp, 2026–27.</li>
+      <li id="r10">Osangir, B. I., Maseko, T. &amp; Abrams, S. <em>The Data Management Plan, and the lifecycle behind it</em>. Pre-class reading, MEPI, 2026. <a href="https://bosangir.github.io/DMP/">bosangir.github.io/DMP/</a></li>
+      <li id="r11">University of Antwerp. <em>Processing data</em> (sensitive data and data security). <a href="https://www.uantwerpen.be/en/research/policy/open-science-rdm/research-data-management/processing-data/">uantwerpen.be/…/research-data-management/processing-data/</a></li>
     </ol>
     <h3>Further learning</h3>
     <ul>
-      <li>The REDCap training videos on the project website.<sup class="cite"><a href="#r11">[11]</a></sup></li>
+      <li>The REDCap training videos on the project website.<sup class="cite"><a href="#r8">[8]</a></sup></li>
       <li>Your own institution's REDCap help pages: every installation has its own rules and support team.</li>
     </ul>
   </section>
@@ -811,11 +806,11 @@ tb &lt;- redcap_read_oneshot(
     {q:"Is it acceptable to paste your API token into a chat with an AI tool to get help with code?",o:["No: tokens must never be shared with anyone or any tool","Yes, AI tools are secure","Yes, if you delete the chat afterwards","Only on weekends"],e:"Use a placeholder such as Sys.getenv(\"REDCAP_TOKEN\") instead."},
     {q:"Which DMP section does “the data dictionary serves as codebook” belong to?",o:["Documentation and data quality","Legal and ethical requirements","Responsibilities and resources","Sharing and preservation"],e:"Codebooks and quality checks are documentation."},
     {q:"Which UAntwerp rule does using REDCap help you follow?",o:["Use institutional services instead of external cloud tools for sensitive data","Store data on Dropbox","Email data to collaborators","Keep data only on your laptop"],e:"UAntwerp says never to use services such as Google Drive or Dropbox for research data."},
-    {q:"Where is the REDCap of Antwerp University Hospital (UZA)?",o:["redcap.uza.be","redcap.uantwerpen.com","dmponline.be","redcap.vanderbilt.edu"],e:"For a first study, contact UZA's Clinical Trial Center or data management team."},
-    {q:"Which system do UZA studies started before 2021 still use?",o:["OpenClinica","DHIS2","KoboToolbox","Castor EDC"],e:"Newer UZA studies use REDCap."},
-    {q:"At KU Leuven's Biomedical Sciences Group, who gets REDCap access?",o:["Users listed on an approved project registration","Every student automatically","Anyone with an email address","Only professors"],e:"Register the project with the REDCap request form first."},
-    {q:"What does HIRUZ (Ghent University Hospital) ask you to do before requesting a REDCap project?",o:["Follow the online REDCap training (about 45 minutes)","Pay a licence fee","Publish your protocol","Install REDCap on your laptop"],e:"HIRUZ also offers free walk-in sessions."},
-    {q:"For your own future study, which REDCap should you use?",o:["The one your institution provides, after asking your supervisor or data management team","Any free REDCap server you find online","A REDCap installed on your personal laptop","Your colleague's REDCap at another university, without an agreement"],e:"Never set up a study on a server outside your institution's control."}
+    {q:"What is the web address of UAntwerp's REDCap?",o:["redcap.uantwerpen.be","dmponline.be","redcap.vanderbilt.edu","uantwerpen.be/redcap-public"],e:"UAntwerp runs its own REDCap server; you log in with your UAntwerpen account."},
+    {q:"How do UAntwerp students and staff log in to REDCap?",o:["With \u201cLog in using UAntwerpen login\u201d and their university account","With a Gmail account","With their ORCID iD","They cannot log in; only administrators can"],e:"A separate local REDCap login exists for users without a UAntwerpen account."},
+    {q:"According to the UAntwerp REDCap login page, which data may be stored in REDCap?",o:["Only data from approved study protocols","Any data you like","Only anonymous survey data","Only data from student projects"],e:"Ethics approval comes before real data collection."},
+    {q:"Whom do you contact with questions about UAntwerp's REDCap?",o:["The REDCap administrator at redcap@uantwerpen.be","rdm@uhasselt.be","The FWO","Vanderbilt University"],e:"The administrator can help with project set-up and the move to Production."},
+    {q:"Which REDCap should you use for your own future study at UAntwerp?",o:["UAntwerp's REDCap at redcap.uantwerpen.be","Any free REDCap server you find online","A REDCap installed on your personal laptop","A colleague's REDCap at another university, without an agreement"],e:"Never set up a study on a server outside UAntwerp's control."}
   ];
   var ROUND=20, PASS=14;
   var card=document.getElementById('pqCard'), countEl=document.getElementById('pqCount'), scoreEl=document.getElementById('pqScore'), bar=document.getElementById('pqBar');
