@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REDCap: Pre-class Reading</title>
+<meta name="description" content="Pre-class reading on REDCap (Research Electronic Data Capture) for the Research Data Management course, Master of Epidemiology, University of Antwerp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Colours and type follow uantwerpen.be: navy text, red accent, light-grey panels.
+   UAntwerp uses ITC Officina Sans (licensed); Fira Sans is the closest free match. */
+:root{
+  --navy:#1B365F; --red:#D32737; --grey:#6D6A6A; --panel:#F7F7F7; --line:#E6E6E6; --white:#ffffff; --link:#1B365F;
+  /* aliases used by the inline diagrams */
+  --bg:var(--white); --surface:var(--white); --surface-2:var(--panel); --text:var(--navy); --muted:var(--grey);
+  --accent:var(--navy); --accent-soft:var(--panel); --accent-2:var(--red); --accent-2-soft:var(--panel); --gold:var(--navy); --gold-soft:var(--panel);
+  --footer-bg:#1B365F; --footer-text:#ffffff; --ok:#1E7B4F; --ok-soft:#E5F3EC; --bad-soft:#FBE9EB;
+}
+/* Dark mode: same navy/red identity, light text on deep navy */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#E6ECF4; --red:#FF6B74; --grey:#A9B4C2; --panel:#17263C; --line:#2A3C57; --white:#0E1A2B; --link:#E6ECF4;
+    --footer-bg:#08111D; --footer-text:#E6ECF4; --ok:#5FD39A; --ok-soft:#173A2C; --bad-soft:#3E1D24;
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#E6ECF4; --red:#FF6B74; --grey:#A9B4C2; --panel:#17263C; --line:#2A3C57; --white:#0E1A2B; --link:#E6ECF4;
+  --footer-bg:#08111D; --footer-text:#E6ECF4; --ok:#5FD39A; --ok-soft:#173A2C; --bad-soft:#3E1D24;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--navy);font:18px/28px "Fira Sans",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:underline;text-underline-offset:3px}
+a:hover{color:var(--red)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.topbar{border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;height:64px;font-weight:700;font-size:16px;line-height:1.15}
+.topbar .mark{width:30px;height:30px;background:var(--red);border-radius:4px;flex:none}
+.topbar small{display:block;font-weight:400;color:var(--grey);font-size:13px}
+.theme-toggle{margin-left:auto;font:500 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--panel);color:var(--navy);border:0;padding:8px 14px;cursor:pointer}
+.theme-toggle:hover{color:var(--red)}
+/* Practice quiz */
+.pq{background:var(--panel);padding:24px;margin:8px 0 36px;max-width:76ch}
+.pq-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:15px;color:var(--grey);margin-bottom:10px}
+.pq-top b{color:var(--navy)}
+.pq-bar{height:6px;background:var(--line);margin-bottom:20px}
+.pq-bar span{display:block;height:100%;width:0;background:var(--red);transition:width .4s ease}
+.pq-card{transition:opacity .35s ease, transform .35s ease}
+.pq-card.out{opacity:0;transform:translateY(-12px)}
+.pq-card.in{opacity:0;transform:translateY(12px)}
+.pq-q{font-size:21px;line-height:30px;font-weight:700;margin:0 0 16px}
+.pq-opts{display:grid;gap:10px}
+.pq-opt{text-align:left;font:inherit;font-size:17px;line-height:25px;color:var(--navy);background:var(--white);border:2px solid transparent;padding:12px 16px;cursor:pointer}
+.pq-opt:hover:not(:disabled){border-color:var(--navy)}
+.pq-opt:disabled{cursor:default}
+.pq-opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.pq-opt.wrong{border-color:var(--red);background:var(--bad-soft)}
+.pq-fb{margin-top:16px;padding:14px 16px;background:var(--white);font-size:17px;line-height:26px}
+.pq-fb[hidden]{display:none}
+.pq-fb .yay{display:inline-block;font-size:26px;font-weight:700;color:var(--ok);animation:pop .5s ease}
+.pq-fb .nope{font-weight:700;color:var(--red)}
+.pq-btn{font:700 16px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--red);color:#fff;border:0;padding:11px 20px;cursor:pointer;margin-top:14px}
+.pq-btn:hover{filter:brightness(1.08)}
+.pq-end{text-align:center;padding:12px 0}
+.pq-end .big{font-size:40px;line-height:48px;font-weight:700;margin:6px 0}
+.pq-end .score{font-size:20px;margin:0 0 6px}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.15);opacity:1}100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.pq-card,.pq-bar span{transition:none}.pq-fb .yay{animation:none}}
+header.hero{background:var(--panel)}
+.hero .wrap{padding-top:48px;padding-bottom:44px}
+.eyebrow{font-weight:700;font-size:15px;color:var(--red);margin:0 0 12px}
+h1{font-size:clamp(32px,4.6vw,46px);line-height:1.12;font-weight:700;margin:0 0 16px;max-width:24ch}
+.lede{font-size:20px;line-height:30px;max-width:62ch;margin:0 0 24px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:16px;line-height:24px}
+.meta b{font-weight:700}
+.authors{font-size:18px;margin:0 0 14px}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:56px;padding-top:44px;padding-bottom:80px}
+nav.toc{position:sticky;top:20px;align-self:start;font-size:16px;line-height:22px;max-height:calc(100vh - 40px);overflow:auto}
+nav.toc p{font-weight:700;margin:0 0 10px}
+nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
+nav.toc li{counter-increment:t;margin:0}
+nav.toc a{display:flex;gap:10px;padding:6px 0;color:var(--navy);text-decoration:none}
+nav.toc a::before{content:counter(t,decimal-leading-zero);color:var(--grey);font-variant-numeric:tabular-nums}
+nav.toc a:hover,nav.toc a.active{color:var(--red)}
+nav.toc a.active{font-weight:700}
+nav.toc a.active::before{color:var(--red)}
+main{min-width:0}
+section{margin-bottom:60px;scroll-margin-top:16px}
+h2{font-size:32px;line-height:40px;font-weight:700;margin:0 0 6px}
+h2 .num{color:var(--red);margin-right:12px;font-variant-numeric:tabular-nums}
+.sub{color:var(--grey);font-size:19px;margin:0 0 22px}
+h3{font-size:22px;line-height:30px;font-weight:700;margin:32px 0 8px}
+p{margin:0 0 16px;max-width:72ch}
+ul,ol{max-width:70ch;padding-left:22px}
+li{margin-bottom:6px}
+strong,b{font-weight:700}
+code{font-family:Consolas,"Courier New",monospace;font-size:.9em}
+sup{line-height:0;vertical-align:super}
+sup.cite a{font-weight:700;font-size:12px;text-decoration:none;padding:0 2px;color:var(--red)}
+.callout{background:var(--panel);padding:20px 24px;margin:22px 0;max-width:76ch}
+.callout-title{font-weight:700;font-size:18px;margin:0 0 6px}
+.callout p:last-child,.callout ul:last-child{margin-bottom:0}
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--panel);padding:18px 20px}
+.card h4{margin:0 0 6px;font-size:19px;font-weight:700}
+.card p{font-size:16px;line-height:24px;margin:0}
+figure{margin:28px 0;background:var(--panel);padding:24px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:15px;line-height:22px;color:var(--grey);margin-top:12px}
+.tablewrap{overflow-x:auto;margin:20px 0}
+table{border-collapse:collapse;width:100%;font-size:16px;line-height:24px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font-weight:700;white-space:nowrap;border-bottom:2px solid var(--navy)}
+td:first-child{font-weight:700;white-space:nowrap}
+.tag{display:inline-block;font-size:13px;font-weight:400;color:var(--grey)}
+.sections{display:grid;gap:16px;margin:20px 0}
+.sec{display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;background:var(--panel);padding:20px}
+.sec .n{font-weight:700;font-size:30px;line-height:1;color:var(--red)}
+.sec h4{font-size:20px;font-weight:700;margin:0 0 6px}
+.sec p{font-size:17px;line-height:26px;margin:0 0 8px}
+.sec .ex{font-size:16px;line-height:24px;background:var(--white);padding:12px 14px;margin-top:8px}
+.sec .ex b{font-size:14px;color:var(--red)}
+.checklist{list-style:none;padding:0;max-width:72ch}
+.checklist li{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--panel);margin-bottom:8px}
+.checklist input{margin-top:6px;width:18px;height:18px;accent-color:var(--red);flex:none}
+.checklist label{cursor:pointer}
+.checklist input:checked + label{color:var(--grey);text-decoration:line-through}
+details{background:var(--panel);margin-bottom:8px;max-width:76ch}
+summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;display:flex;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";color:var(--red);font-weight:700;width:12px;flex:none}
+details[open] summary::before{content:"\2013"}
+details .ans{padding:0 18px 16px 40px;font-size:17px;line-height:26px}
+details .ans p{margin-bottom:8px}
+dl.gloss{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:10px 22px;max-width:80ch}
+dl.gloss dt{font-weight:700}
+dl.gloss dd{margin:0;font-size:17px;line-height:26px}
+ol.refs{font-size:16px;line-height:24px;max-width:none;padding-left:28px}
+ol.refs li{margin-bottom:10px;scroll-margin-top:16px;overflow-wrap:anywhere}
+ol.refs li:target{background:var(--panel)}
+footer{background:var(--footer-bg);color:var(--footer-text);font-size:16px;line-height:24px;padding:32px 0 44px}
+footer a{color:var(--footer-text)}
+pre{background:var(--panel);padding:14px 16px;overflow-x:auto;font-size:15px;line-height:22px;margin:0 0 18px;max-width:76ch}
+pre code{font-size:inherit}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:20px}
+  nav.toc{position:static;max-height:none;background:var(--panel);padding:16px}
+  .g3,.g2{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  body{font-size:17px;line-height:26px}
+  .lede{font-size:18px;line-height:27px}
+  h2{font-size:27px;line-height:34px}
+  .sec{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl.gloss{grid-template-columns:minmax(0,1fr);gap:2px}
+  dl.gloss dd{margin-bottom:10px}
+}
+@media print{nav.toc,.topbar{display:none}.layout{display:block}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap"><span>University of Antwerp<small>Master of Epidemiology · Research Data Management</small></span><button class="theme-toggle" type="button" id="themeToggle" aria-label="Switch between light and dark mode">Dark mode</button></div></div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Pre-class reading · Research Data Management</p>
+    <h1>REDCap: building a secure, validated data-collection system</h1>
+    <p class="lede">What REDCap is, how a project is built from records, instruments, fields and events, and how its built-in tools protect data quality and participants' privacy. Read this before the REDCap session and the hands-on lab.</p>
+    <p class="authors"><b>Authors:</b> Bernard Isekah Osangir, Tafadzwa Maseko and Prof. Dr. Steven Abrams</p>
+    <div class="meta">
+      <span><b>Course</b> Master of Epidemiology (MEPI), University of Antwerp, 2026–27</span>
+      <span><b>Reading time</b> about 40 minutes</span>
+      <span><b>Last checked</b> 13 October 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#goals">Before you start</a></li>
+      <li><a href="#what">What is REDCap?</a></li>
+      <li><a href="#why">Why not a spreadsheet?</a></li>
+      <li><a href="#blocks">Building blocks</a></li>
+      <li><a href="#lifecycle">The project lifecycle</a></li>
+      <li><a href="#dictionary">Data dictionary and fields</a></li>
+      <li><a href="#logic">Branching, calculations, action tags</a></li>
+      <li><a href="#surveys">Surveys and participants</a></li>
+      <li><a href="#longitudinal">Longitudinal studies</a></li>
+      <li><a href="#users">Users, roles and DAGs</a></li>
+      <li><a href="#quality">Data quality</a></li>
+      <li><a href="#export">Export and analysis</a></li>
+      <li><a href="#dmp">REDCap and your DMP</a></li>
+      <li><a href="#belgium">REDCap in Antwerp and Flanders</a></li>
+      <li><a href="#prepare">Before class: checklist</a></li>
+      <li><a href="#quiz">Check yourself</a></li>
+      <li><a href="#glossary">Glossary</a></li>
+      <li><a href="#refs">Sources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+  <section id="goals">
+    <h2><span class="num">01</span>Before you start</h2>
+    <p class="sub">What you should be able to do after reading this page.</p>
+    <div class="grid g2">
+      <div class="card"><h4>Explain</h4><p>What REDCap is, who makes it, and why an electronic data capture (EDC) system is safer than a spreadsheet.</p></div>
+      <div class="card"><h4>Describe</h4><p>The building blocks of a project: records, instruments, fields, events, arms and Data Access Groups.</p></div>
+      <div class="card"><h4>Design</h4><p>A small data dictionary with the right field types, validation, branching logic and a calculated field.</p></div>
+      <div class="card"><h4>Protect</h4><p>Participants and data quality, using user rights, data quality rules, de-identified exports and safe API use.</p></div>
+    </div>
+    <div class="callout">
+      <p class="callout-title">What happens in class</p>
+      <p>In the 45-minute hands-on lab you will work in pairs to build a mini tuberculosis (TB) cohort in REDCap: create a project, build an enrolment form, add validation, branching logic and a BMI calculation, set up three time points, enter fake participants, run a data quality rule and export the data.<sup class="cite"><a href="#r12">[12]</a></sup> This page explains every step, so you can spend the lab building rather than reading menus.</p>
+    </div>
+  </section>
+
+  <section id="what">
+    <h2><span class="num">02</span>What is REDCap?</h2>
+    <p class="sub">A secure web application for building and managing online surveys and databases.</p>
+    <p><strong>REDCap</strong> (Research Electronic Data Capture) is a secure, web-based platform for building and managing online forms, surveys and databases. Researchers can design their own projects without programming.<sup class="cite"><a href="#r1">[1]</a></sup> It was created in 2004 at Vanderbilt University to give clinical researchers secure data collection, and the REDCap Consortium was launched in 2006 so that institutions could share and develop the software together.<sup class="cite"><a href="#r1">[1]</a></sup> The method behind it was first described by Harris and colleagues in 2009.<sup class="cite"><a href="#r3">[3]</a></sup></p>
+    <div class="grid g3">
+      <div class="card"><h4>8,400+</h4><p>institutions in the REDCap Consortium</p></div>
+      <div class="card"><h4>167</h4><p>countries</p></div>
+      <div class="card"><h4>4.6 million</h4><p>users, working on 2.8 million projects</p></div>
+    </div>
+    <p style="font-size:15px;color:var(--grey)">Figures from the REDCap project website, October 2026.<sup class="cite"><a href="#r1">[1]</a></sup></p>
+    <h3>How you get it</h3>
+    <p>REDCap is free for non-profit institutions that join the consortium, but it is <em>not</em> open source and not a public website. Each partner institution installs and runs its own REDCap server, with its own login page, rules and support team.<sup class="cite"><a href="#r1">[1]</a><a href="#r4">[4]</a></sup> You therefore always work in your institution's REDCap. This matters for the GDPR: the data stay on a server managed by your institution.</p>
+    <h3>Main features</h3>
+    <ul>
+      <li><strong>Forms and surveys:</strong> data entry forms for staff, and surveys that participants fill in themselves.<sup class="cite"><a href="#r2">[2]</a></sup></li>
+      <li><strong>Online Designer or data dictionary:</strong> build forms in the browser, or design them in a spreadsheet and upload it.<sup class="cite"><a href="#r2">[2]</a></sup></li>
+      <li><strong>Audit trail:</strong> every change to the data, and who made it, is logged.<sup class="cite"><a href="#r2">[2]</a></sup></li>
+      <li><strong>Multi-site and user management:</strong> researchers at several sites work in one project; the project team manages its own users.<sup class="cite"><a href="#r2">[2]</a></sup></li>
+      <li><strong>Branching logic, calculated fields and file uploads.</strong><sup class="cite"><a href="#r2">[2]</a></sup></li>
+      <li><strong>Exports</strong> to Excel/CSV, PDF, SPSS, SAS, Stata and R.<sup class="cite"><a href="#r2">[2]</a></sup></li>
+      <li><strong>Mobile app</strong> for iOS and Android for offline data collection, and <strong>Multi-Language Management</strong> for translated forms.<sup class="cite"><a href="#r2">[2]</a></sup></li>
+      <li><strong>Draft Preview Mode:</strong> test changes to a live project, including logic and calculations, before submitting them; data entered in preview are not saved.<sup class="cite"><a href="#r2">[2]</a></sup></li>
+    </ul>
+  </section>
+
+  <section id="why">
+    <h2><span class="num">03</span>Why not a spreadsheet?</h2>
+    <p class="sub">An EDC system builds quality and security into data entry.</p>
+    <p>Many studies still start in Excel. It is easy, but it lets anyone type anything anywhere, keeps no record of who changed what, and is easily emailed or copied to a USB stick. An electronic data capture system such as REDCap prevents most of these problems by design.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>Spreadsheet</th><th>REDCap</th></tr></thead>
+        <tbody>
+          <tr><td>Wrong values</td><td>Any value can be typed in any cell</td><td>Field types, ranges and required fields stop errors at entry</td></tr>
+          <tr><td>Irrelevant questions</td><td>All columns always visible</td><td>Branching logic shows only questions that apply</td></tr>
+          <tr><td>Who changed what?</td><td>Unknown</td><td>Full audit trail (logging) of every change</td></tr>
+          <tr><td>Access</td><td>Whoever has the file sees everything</td><td>User rights per person; each site sees only its own records</td></tr>
+          <tr><td>Storage</td><td>Copies on laptops, email, USB sticks</td><td>One secure, backed-up server run by the institution</td></tr>
+          <tr><td>Codebook</td><td>Often missing</td><td>The data dictionary <em>is</em> the codebook</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>REDCap and its alternatives</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Tool</th><th>Best for</th><th>Cost model</th></tr></thead>
+        <tbody>
+          <tr><td>REDCap</td><td>Academic cohort studies, trials and surveys</td><td>Free for non-profits (consortium)</td></tr>
+          <tr><td>KoboToolbox / ODK</td><td>Field surveys in low-connectivity settings</td><td>Free, open source</td></tr>
+          <tr><td>Castor EDC</td><td>Investigator-initiated clinical trials</td><td>Commercial licence</td></tr>
+          <tr><td>OpenClinica</td><td>Regulated multi-site trials</td><td>Community and enterprise editions</td></tr>
+          <tr><td>DHIS2</td><td>Routine health information systems</td><td>Free, open source</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:15px;color:var(--grey)">Comparison from the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+  </section>
+
+  <section id="blocks">
+    <h2><span class="num">04</span>The building blocks of a project</h2>
+    <p class="sub">Six words you need to know before you open REDCap.</p>
+    <figure>
+      <svg viewBox="0 0 760 330" role="img" aria-labelledby="bbT bbD">
+        <title id="bbT">REDCap building blocks</title>
+        <desc id="bbD">A TB cohort project with three events (Baseline, Month 2, Month 6). Each event contains instruments (Enrolment, Clinical exam, Lab results), and each instrument contains fields such as record_id, weight_kg and smear_result.</desc>
+        <g font-family="Fira Sans,Helvetica,Arial,sans-serif">
+          <rect x="20" y="16" width="720" height="44" fill="var(--white)" stroke="var(--red)" stroke-width="2"/>
+          <text x="380" y="44" text-anchor="middle" font-size="16" font-weight="700" fill="var(--text)">PROJECT: TB cohort  ·  one record per participant (record_id)</text>
+          <g font-size="13" fill="var(--muted)" text-anchor="middle">
+            <text x="150" y="86">EVENT: Baseline</text><text x="380" y="86">EVENT: Month 2</text><text x="610" y="86">EVENT: Month 6</text>
+          </g>
+          <g stroke="var(--line)" stroke-width="2"><line x1="150" y1="60" x2="150" y2="72"/><line x1="380" y1="60" x2="380" y2="72"/><line x1="610" y1="60" x2="610" y2="72"/></g>
+          <g>
+            <rect x="40" y="98" width="220" height="176" fill="var(--white)" stroke="var(--accent)" stroke-width="1.5"/>
+            <rect x="270" y="98" width="220" height="176" fill="var(--white)" stroke="var(--accent)" stroke-width="1.5"/>
+            <rect x="500" y="98" width="220" height="176" fill="var(--white)" stroke="var(--accent)" stroke-width="1.5"/>
+          </g>
+          <g font-size="13.5">
+            <text x="56" y="124" font-weight="700" fill="var(--text)">Enrolment</text>
+            <text x="56" y="144" fill="var(--muted)">record_id · dob · sex</text>
+            <text x="56" y="180" font-weight="700" fill="var(--text)">Clinical exam</text>
+            <text x="56" y="200" fill="var(--muted)">weight · height · bmi (calc)</text>
+            <text x="56" y="236" font-weight="700" fill="var(--text)">Lab results</text>
+            <text x="56" y="256" fill="var(--muted)">lab_eval · test_type</text>
+            <text x="286" y="124" font-weight="700" fill="var(--text)">Clinical exam</text>
+            <text x="286" y="144" fill="var(--muted)">weight · height · bmi (calc)</text>
+            <text x="286" y="180" font-weight="700" fill="var(--text)">Lab results</text>
+            <text x="286" y="200" fill="var(--muted)">lab_eval · test_type</text>
+            <text x="516" y="124" font-weight="700" fill="var(--text)">Clinical exam</text>
+            <text x="516" y="144" fill="var(--muted)">weight · height · bmi (calc)</text>
+            <text x="516" y="180" font-weight="700" fill="var(--text)">Lab results</text>
+            <text x="516" y="200" fill="var(--muted)">lab_eval · test_type</text>
+            <text x="516" y="236" font-weight="700" fill="var(--text)">Quality of life (survey)</text>
+            <text x="516" y="256" fill="var(--muted)">filled in by the participant</text>
+          </g>
+          <text x="380" y="304" text-anchor="middle" font-size="12.5" fill="var(--muted)">Events are columns in time; instruments are the forms collected at each event; fields are the variables inside each form.</text>
+        </g>
+      </svg>
+      <figcaption>The building blocks of a REDCap project, using the TB cohort from the lab as an example. Adapted from the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></figcaption>
+    </figure>
+    <dl class="gloss">
+      <dt>Record</dt><dd>One participant (or one unit of observation), identified by the first field, usually <code>record_id</code>.</dd>
+      <dt>Instrument</dt><dd>A form or a survey: a group of related questions, such as "Enrolment" or "Lab results".</dd>
+      <dt>Field</dt><dd>One variable or question, such as <code>weight_kg</code>.</dd>
+      <dt>Event</dt><dd>A time point in a longitudinal study, such as Baseline or Month 2.</dd>
+      <dt>Arm</dt><dd>A study group with its own schedule of events, for example the two arms of a trial.</dd>
+      <dt>DAG</dt><dd>Data Access Group: a group of users, usually a study site, who see only their own records.</dd>
+    </dl>
+  </section>
+
+  <section id="lifecycle">
+    <h2><span class="num">05</span>The project lifecycle</h2>
+    <p class="sub">Test first with fake data, then go live.</p>
+    <figure>
+      <svg viewBox="0 0 760 210" role="img" aria-labelledby="plT plD">
+        <title id="plT">REDCap project status</title>
+        <desc id="plD">Four project statuses: Development (build and test with fake data), Production (real data, changes via Draft Mode), Analysis/Cleanup (collection finished, clean and lock), Completed (read-only archive).</desc>
+        <line x1="40" y1="78" x2="720" y2="78" stroke="var(--line)" stroke-width="3"/>
+        <path d="M712,70 L726,78 L712,86 z" fill="var(--line)"/>
+        <g font-family="Fira Sans,Helvetica,Arial,sans-serif" text-anchor="middle">
+          <circle cx="110" cy="78" r="15" fill="var(--red)"/><text x="110" y="83" font-size="13" font-weight="700" fill="var(--white)">1</text>
+          <text x="110" y="122" font-size="15" font-weight="700" fill="var(--text)">Development</text>
+          <text x="110" y="142" font-size="12" fill="var(--muted)">build and test</text>
+          <text x="110" y="159" font-size="12" fill="var(--muted)">with fake data only</text>
+          <circle cx="290" cy="78" r="15" fill="var(--accent)"/><text x="290" y="83" font-size="13" font-weight="700" fill="var(--white)">2</text>
+          <text x="290" y="122" font-size="15" font-weight="700" fill="var(--text)">Production</text>
+          <text x="290" y="142" font-size="12" fill="var(--muted)">real data; changes</text>
+          <text x="290" y="159" font-size="12" fill="var(--muted)">only via Draft Mode</text>
+          <circle cx="470" cy="78" r="15" fill="var(--accent)"/><text x="470" y="83" font-size="13" font-weight="700" fill="var(--white)">3</text>
+          <text x="470" y="122" font-size="15" font-weight="700" fill="var(--text)">Analysis / Cleanup</text>
+          <text x="470" y="142" font-size="12" fill="var(--muted)">collection finished:</text>
+          <text x="470" y="159" font-size="12" fill="var(--muted)">clean, lock, export</text>
+          <circle cx="650" cy="78" r="15" fill="var(--accent)"/><text x="650" y="83" font-size="13" font-weight="700" fill="var(--white)">4</text>
+          <text x="650" y="122" font-size="15" font-weight="700" fill="var(--text)">Completed</text>
+          <text x="650" y="142" font-size="12" fill="var(--muted)">read-only</text>
+          <text x="650" y="159" font-size="12" fill="var(--muted)">archive</text>
+          <text x="380" y="40" font-size="12.5" fill="var(--muted)">Moving to Production is usually approved by your institution's REDCap administrators</text>
+        </g>
+      </svg>
+      <figcaption>The status of a REDCap project over time. Adapted from the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></figcaption>
+    </figure>
+    <ul>
+      <li><strong>Development:</strong> everything can be changed. Build the forms and test them thoroughly with fake records. Never enter real participant data in a development project.<sup class="cite"><a href="#r12">[12]</a></sup></li>
+      <li><strong>Production:</strong> real data collection. Changes to forms now go through <strong>Draft Mode</strong>, so that existing data are not damaged by accident; Draft Preview Mode lets you test those changes first.<sup class="cite"><a href="#r2">[2]</a><a href="#r12">[12]</a></sup></li>
+      <li><strong>Analysis / Cleanup:</strong> data collection has ended. Resolve queries, lock records and export.<sup class="cite"><a href="#r12">[12]</a></sup></li>
+      <li><strong>Completed:</strong> the project becomes a read-only archive.<sup class="cite"><a href="#r12">[12]</a></sup></li>
+    </ul>
+    <h3>Three ways to start a project</h3>
+    <div class="grid g3">
+      <div class="card"><h4>From scratch</h4><p>An empty project, built in the Online Designer.</p></div>
+      <div class="card"><h4>From a template</h4><p>Example projects provided by your institution.</p></div>
+      <div class="card"><h4>Upload REDCap XML</h4><p>Copy the complete design of an existing project.</p></div>
+    </div>
+  </section>
+
+  <section id="dictionary">
+    <h2><span class="num">06</span>The data dictionary and field types</h2>
+    <p class="sub">Design the data dictionary first; it is also your codebook.</p>
+    <p>Every REDCap project is defined by a <strong>data dictionary</strong>: a table with one row per field. You can build it in the Online Designer, or write it in a spreadsheet, save it as CSV and upload it.<sup class="cite"><a href="#r2">[2]</a></sup> Because it lists every variable with its type, label, codes and validation, the data dictionary doubles as the codebook that your DMP asks for.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Variable</th><th>Form</th><th>Type</th><th>Label</th><th>Choices / calculation</th><th>Validation</th><th>Identifier?</th></tr></thead>
+        <tbody>
+          <tr><td>record_id</td><td>enrolment</td><td>text</td><td>Study ID</td><td></td><td></td><td></td></tr>
+          <tr><td>dob</td><td>enrolment</td><td>text</td><td>Date of birth</td><td></td><td>date_dmy</td><td>yes</td></tr>
+          <tr><td>sex</td><td>enrolment</td><td>radio</td><td>Sex at birth</td><td>1, Male | 2, Female</td><td></td><td></td></tr>
+          <tr><td>weight_kg</td><td>clinical</td><td>text</td><td>Weight (kg)</td><td></td><td>number 30–200</td><td></td></tr>
+          <tr><td>height_cm</td><td>clinical</td><td>text</td><td>Height (cm)</td><td></td><td>number 100–220</td><td></td></tr>
+          <tr><td>bmi</td><td>clinical</td><td>calc</td><td>BMI</td><td><code>round([weight_kg]/([height_cm]/100)^2,1)</code></td><td></td><td></td></tr>
+          <tr><td>lab_eval</td><td>lab</td><td>yesno</td><td>Lab evaluation?</td><td></td><td></td><td></td></tr>
+          <tr><td>test_type</td><td>lab</td><td>checkbox</td><td>Test type</td><td>1, Smear | 2, GeneXpert | 3, Culture</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:15px;color:var(--grey)">Part of the data dictionary for the TB cohort in the lab.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <h3>Field types: the right type prevents errors</h3>
+    <div class="grid g3">
+      <div class="card"><h4>Text box</h4><p>Short answers; add validation for date, number, integer, email or phone.</p></div>
+      <div class="card"><h4>Notes box</h4><p>Long free text. Use sparingly: free text is hard to analyse and may contain names.</p></div>
+      <div class="card"><h4>Radio buttons</h4><p>Choose exactly one option from a short list.</p></div>
+      <div class="card"><h4>Drop-down</h4><p>Choose one option from a long list.</p></div>
+      <div class="card"><h4>Checkboxes</h4><p>Choose all that apply. Each option becomes its own 0/1 variable.</p></div>
+      <div class="card"><h4>Yes / No</h4><p>Stored as 1 (yes) and 0 (no).</p></div>
+      <div class="card"><h4>Calculated</h4><p>Computed automatically from other fields, such as BMI or age.</p></div>
+      <div class="card"><h4>Slider</h4><p>A visual analogue scale from 0 to 100.</p></div>
+      <div class="card"><h4>File upload / signature</h4><p>Documents, images and e-signatures.</p></div>
+    </div>
+    <div class="callout">
+      <p class="callout-title">Always set</p>
+      <ul>
+        <li><strong>Minimum and maximum values</strong> for numbers and dates.</li>
+        <li><strong>Required fields</strong> for key variables.</li>
+        <li>The <strong>identifier flag</strong> on every field that contains personal information (name, date of birth, phone, address), so it can be removed on export.</li>
+        <li><strong>Missing data codes</strong>, so you can record <em>why</em> a value is missing.</li>
+      </ul>
+      <p style="font-size:15px;color:var(--grey);margin-top:8px">From the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    </div>
+    <p>Use short, lower-case variable names without spaces (<code>weight_kg</code>, not <code>Weight of patient</code>), and put the unit in the name or label. Variable names are what you will type in R or Stata for the rest of the project.</p>
+  </section>
+
+  <section id="logic">
+    <h2><span class="num">07</span>Branching logic, calculations and action tags</h2>
+    <p class="sub">Show only relevant questions, compute values automatically, and fine-tune field behaviour.</p>
+    <p>Fields are referred to by their variable name in square brackets. The examples below come from the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <h3>Branching logic</h3>
+    <p>A field with branching logic is shown only when its condition is true. This keeps forms short and prevents answers to questions that do not apply.</p>
+<pre><code># show only if a lab evaluation was done
+[lab_eval] = '1'
+
+# women of reproductive age
+[sex] = '2' and [age] &gt;= 15 and [age] &lt;= 49
+
+# checkbox option 3 is ticked
+[symptoms(3)] = '1'
+
+# a value from another event (longitudinal projects)
+[baseline_arm_1][hiv_status] = '1'</code></pre>
+    <h3>Calculated fields</h3>
+<pre><code># BMI, 1 decimal
+round([weight_kg] / (([height_cm]/100)^2), 1)
+
+# age in years at enrolment
+rounddown(datediff([dob], [enrol_date], 'y'), 0)
+
+# days since the last visit
+datediff([last_visit], 'today', 'd')</code></pre>
+    <h3>Action tags</h3>
+    <p>Action tags are added to a field to change how it behaves. Common ones:</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Action tag</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>@TODAY</td><td>Fills in today's date when the form is opened</td></tr>
+          <tr><td>@NOW</td><td>Fills in the current date and time</td></tr>
+          <tr><td>@HIDDEN</td><td>Hides the field on the form</td></tr>
+          <tr><td>@READONLY</td><td>Shows the field but prevents editing</td></tr>
+          <tr><td>@DEFAULT</td><td>Pre-fills a default value</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="surveys">
+    <h2><span class="num">08</span>Surveys and participants</h2>
+    <p class="sub">Collect data directly from participants, online or offline.</p>
+    <p>Any instrument can also be used as a survey. First enable surveys for the project in <em>Project Setup</em>, then enable each instrument you want to use as a survey.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <div class="grid g2">
+      <div class="card"><h4>Public link and QR code</h4><p>One link for everyone: for open or anonymous recruitment.</p></div>
+      <div class="card"><h4>Participant list</h4><p>Personal invitations by email, with automated reminders.</p></div>
+      <div class="card"><h4>e-Consent</h4><p>Participants consent online; REDCap keeps a signed PDF copy with the consent version and date.</p></div>
+      <div class="card"><h4>Alerts and notifications</h4><p>Automatic messages, for example an email to the PI when a serious adverse event (SAE) is reported.</p></div>
+      <div class="card"><h4>Multi-Language Management</h4><p>One instrument, available in several languages.<sup class="cite"><a href="#r2">[2]</a></sup></p></div>
+      <div class="card"><h4>Mobile App and MyCap</h4><p>Offline data collection by field staff (Mobile App), and a participant app for patient-reported outcomes (MyCap).</p></div>
+    </div>
+    <p style="font-size:15px;color:var(--grey)">From the course lecture and the REDCap project website.<sup class="cite"><a href="#r12">[12]</a><a href="#r2">[2]</a></sup></p>
+  </section>
+
+  <section id="longitudinal">
+    <h2><span class="num">09</span>Longitudinal studies</h2>
+    <p class="sub">Events × instruments: what is collected when.</p>
+    <p>In a cohort or trial, the same participant is seen several times. In a longitudinal REDCap project you define the <strong>events</strong> (time points), then tick which instruments are collected at each event. Set it up via <em>Project Setup → enable longitudinal data collection → define events → designate instruments</em>.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Instrument</th><th>Baseline</th><th>Week 4</th><th>Month 3</th><th>Month 6</th><th>Month 12</th></tr></thead>
+        <tbody>
+          <tr><td>Consent &amp; enrolment</td><td>✓</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Demographics</td><td>✓</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Clinical exam</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Lab results</td><td>✓</td><td></td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Quality of life (survey)</td><td>✓</td><td></td><td></td><td>✓</td><td>✓</td></tr>
+          <tr><td>Adverse events</td><td></td><td>↻</td><td>↻</td><td>↻</td><td>↻</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>✓ = collected at that event. ↻ = <strong>repeating instrument</strong>: can be filled in as many times as needed at an event, which suits adverse events or medications.<sup class="cite"><a href="#r12">[12]</a></sup> If participants are randomised to groups with different schedules, each group becomes an <strong>arm</strong> with its own events.</p>
+  </section>
+
+  <section id="users">
+    <h2><span class="num">10</span>Users, roles and Data Access Groups</h2>
+    <p class="sub">Give each person only the rights their role needs.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Role</th><th>Enter / edit data</th><th>Export data</th><th>Data quality &amp; queries</th><th>Design project</th><th>Manage users</th></tr></thead>
+        <tbody>
+          <tr><td>Data entry (site)</td><td>✓</td><td>–</td><td>Respond</td><td>–</td><td>–</td></tr>
+          <tr><td>Monitor</td><td>View</td><td>De-identified</td><td>Open queries</td><td>–</td><td>–</td></tr>
+          <tr><td>Data manager</td><td>✓</td><td>Full</td><td>✓</td><td>✓</td><td>–</td></tr>
+          <tr><td>Principal investigator</td><td>View</td><td>Full</td><td>✓</td><td>–</td><td>✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:15px;color:var(--grey)">Example of user roles in a multi-site study.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <div class="grid g3">
+      <div class="card"><h4>Data Access Groups</h4><p>Each site sees only its own records, while the coordinating centre sees all.</p></div>
+      <div class="card"><h4>Least privilege</h4><p>Give only the rights a role needs. Few people need full export rights.</p></div>
+      <div class="card"><h4>Expiry and exit</h4><p>Set expiry dates on accounts, and remove people who leave the project on the same day.</p></div>
+    </div>
+  </section>
+
+  <section id="quality">
+    <h2><span class="num">11</span>Data quality</h2>
+    <p class="sub">Prevent errors, detect them, then correct them with a trace.</p>
+    <div class="sections">
+      <div class="sec"><div class="n">1</div><div>
+        <h4>Prevent</h4>
+        <p><strong>Field validation</strong> (types, ranges, required fields) and <strong>branching logic</strong> stop many errors at the moment of entry.</p>
+      </div></div>
+      <div class="sec"><div class="n">2</div><div>
+        <h4>Detect</h4>
+        <p><strong>Data Quality rules</strong>: REDCap has built-in checks (for example missing values or values outside the range) and you can write your own. <strong>Missing data codes</strong> record why a value is missing.</p>
+        <div class="ex"><b>Custom rule</b><br>Flag impossible combinations: <code>[sex] = '1' and [pregnant] = '1'</code></div>
+      </div></div>
+      <div class="sec"><div class="n">3</div><div>
+        <h4>Correct and trace</h4>
+        <p>The <strong>Data Resolution Workflow</strong> lets monitors open queries, sites answer them, and data managers close them. <strong>Logging</strong> keeps a full audit trail, and records can be <strong>locked</strong> and e-signed once they are final.</p>
+      </div></div>
+    </div>
+    <p style="font-size:15px;color:var(--grey)">From the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+  </section>
+
+  <section id="export">
+    <h2><span class="num">12</span>Export and analysis</h2>
+    <p class="sub">From REDCap to R, Stata, SPSS or Python, safely.</p>
+    <p>REDCap exports to CSV (raw codes or labels), R, Stata, SPSS and SAS, and to CDISC ODM (XML), together with a script that applies the variable and value labels.<sup class="cite"><a href="#r2">[2]</a><a href="#r12">[12]</a></sup></p>
+    <h3>De-identify on export</h3>
+    <ul>
+      <li>Remove all fields tagged as <strong>identifiers</strong>.</li>
+      <li>Remove unvalidated free-text fields, which may contain names.</li>
+      <li>Shift all dates by a random number of days.</li>
+      <li>Replace the record ID with a hashed value.</li>
+    </ul>
+    <p style="font-size:15px;color:var(--grey)">Export options listed in the course lecture.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    <h3>A reproducible pipeline with the API</h3>
+    <p>Instead of exporting by hand each time, you can read the data straight into R with the <strong>REDCapR</strong> package<sup class="cite"><a href="#r9">[9]</a></sup> (or into Python with PyCap<sup class="cite"><a href="#r10">[10]</a></sup>) through the REDCap API. Your analysis then always starts from the current data.</p>
+<pre><code>library(REDCapR)
+tb &lt;- redcap_read_oneshot(
+  redcap_uri = "https://redcap.&lt;your-institution&gt;/api/",
+  token      = Sys.getenv("REDCAP_TOKEN")
+)$data</code></pre>
+    <div class="callout">
+      <p class="callout-title">API tokens are passwords</p>
+      <p>An API token gives full access to the project with your rights. Keep it in your <code>.Renviron</code> file (read with <code>Sys.getenv()</code>), never in a script, on GitHub, in an email or in a chat with an AI tool.<sup class="cite"><a href="#r12">[12]</a></sup></p>
+    </div>
+  </section>
+
+  <section id="dmp">
+    <h2><span class="num">13</span>REDCap and your Data Management Plan</h2>
+    <p class="sub">Choosing REDCap answers several DMP questions at once.</p>
+    <p>If your group project uses REDCap, say so in your DMP and be specific. The table shows where REDCap fits into the six DMP sections from the <a href="https://bosangir.github.io/DMP/">DMP pre-class reading</a>.<sup class="cite"><a href="#r13">[13]</a></sup></p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>DMP section</th><th>What to write about REDCap</th></tr></thead>
+        <tbody>
+          <tr><td>Data collection</td><td>Data collected in a REDCap project with forms and surveys; longitudinal events; Mobile App for offline collection</td></tr>
+          <tr><td>Documentation &amp; quality</td><td>Data dictionary as codebook; validation, required fields, branching logic; Data Quality rules and query workflow</td></tr>
+          <tr><td>Storage &amp; backup</td><td>Data on the institution's REDCap server, not on laptops; user rights; DAGs per site</td></tr>
+          <tr><td>Legal &amp; ethical</td><td>Identifier flags; e-consent with versioned PDF; audit trail; access limited to named people</td></tr>
+          <tr><td>Sharing &amp; preservation</td><td>De-identified export to open formats (CSV + data dictionary) for deposit in a repository</td></tr>
+          <tr><td>Responsibilities</td><td>Who builds the project, who manages users, who runs quality checks, who exports</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>REDCap also supports UAntwerp's rules on sensitive data: use institutional services rather than external cloud tools, give access on a need-to-know basis, and document all processing of personal data.<sup class="cite"><a href="#r14">[14]</a></sup></p>
+  </section>
+
+  <section id="belgium">
+    <h2><span class="num">14</span>REDCap in Antwerp and Flanders</h2>
+    <p class="sub">Each institution runs its own REDCap, with its own access procedure.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Institution</th><th>REDCap service</th><th>How to get access</th></tr></thead>
+        <tbody>
+          <tr><td>Antwerp University Hospital (UZA)</td><td>"UZA Study Universe" REDCap at <a href="https://redcap.uza.be/">redcap.uza.be</a>. Studies started before 2021 still use OpenClinica.</td><td>For a first study, contact UZA's Clinical Trial Center (CTC) or data management team about the procedure.<sup class="cite"><a href="#r5">[5]</a></sup></td></tr>
+          <tr><td>KU Leuven (Biomedical Sciences)</td><td>REDCap run by the Biomedical Sciences Group IT, with a separate entry for UZ Leuven users.</td><td>Register your project with the REDCap request form; only users listed on an approved registration get access.<sup class="cite"><a href="#r6">[6]</a></sup></td></tr>
+          <tr><td>Ghent University Hospital / UGent (HIRUZ)</td><td>Separate REDCap instances for surveys, studies and registers, for academic research at UZ Gent and UGent.</td><td>Follow the online training (about 45 minutes), request a project, and use the free walk-in sessions for help; contact redcap@uzgent.be.<sup class="cite"><a href="#r7">[7]</a><a href="#r8">[8]</a></sup></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <p class="callout-title">For this course</p>
+      <p>Your instructors will tell you which REDCap server to use for the lab and how to log in. For your own research later, ask your supervisor or your institution's data management team which REDCap you should use; never set up a study on a server outside your institution's control.</p>
+    </div>
+  </section>
+
+  <section id="prepare">
+    <h2><span class="num">15</span>Before class: checklist</h2>
+    <p class="sub">About 40 minutes of preparation. Your ticks are saved in this browser only.</p>
+    <ul class="checklist" id="checklist">
+      <li><input type="checkbox" id="c1"><label for="c1">Read this page, including the two diagrams and the data dictionary example.</label></li>
+      <li><input type="checkbox" id="c2"><label for="c2">Make sure you can log in to the REDCap server your instructors give you, and bring a laptop (a tablet is not enough to build a project).</label></li>
+      <li><input type="checkbox" id="c3"><label for="c3">On paper, list 6–8 variables for the enrolment form of a small TB cohort, with a field type and a validation rule for each.</label></li>
+      <li><input type="checkbox" id="c4"><label for="c4">Write one branching logic rule and one calculated field in REDCap syntax.</label></li>
+      <li><input type="checkbox" id="c5"><label for="c5">Mark which of your variables are identifiers.</label></li>
+      <li><input type="checkbox" id="c6"><label for="c6">Do at least one round of the practice quiz below.</label></li>
+    </ul>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">16</span>Check yourself</h2>
+    <p class="sub">A random practice quiz first, then a few open questions.</p>
+    <h3>Practice quiz</h3>
+    <p>Each round gives you 20 questions drawn at random, so every round is different. If you get one wrong, you see the right answer and why straight away. Score 14 or more (70%) to pass.</p>
+    <div class="pq" id="pq" aria-live="polite">
+      <div class="pq-top"><span id="pqCount">Question 1 of 20</span><span>Score: <b id="pqScore">0</b></span></div>
+      <div class="pq-bar"><span id="pqBar"></span></div>
+      <div class="pq-card" id="pqCard"></div>
+      <noscript><p>The practice quiz needs JavaScript.</p></noscript>
+    </div>
+    <h3>Open questions</h3>
+    <p>Try to answer first, then open the answer.</p>
+    <details><summary>1. Why should you never enter real participant data in a project in Development status?</summary>
+      <div class="ans"><p>Development is for building and testing; everything can still be changed, which can damage or delete data. Real data belong in Production, where changes go through Draft Mode.</p></div></details>
+    <details><summary>2. Write branching logic that shows <code>test_type</code> only when a lab evaluation was done.</summary>
+      <div class="ans"><p><code>[lab_eval] = '1'</code>. Because <code>lab_eval</code> is a Yes/No field, "yes" is stored as 1.</p></div></details>
+    <details><summary>3. A multi-site study has three hospitals. How do you make sure each hospital sees only its own participants?</summary>
+      <div class="ans"><p>Create a Data Access Group (DAG) for each hospital and assign each user to their site's DAG. Users in a DAG see only the records of that DAG.</p></div></details>
+    <details><summary>4. Name three ways to de-identify data on export.</summary>
+      <div class="ans"><p>Remove fields tagged as identifiers; remove unvalidated free text; shift dates; hash the record ID.</p></div></details>
+    <details><summary>5. Where should your API token be kept, and why?</summary>
+      <div class="ans"><p>In your <code>.Renviron</code> file, read with <code>Sys.getenv()</code>. A token works like a password: anyone who has it can access the project with your rights.</p></div></details>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">17</span>Glossary</h2>
+    <p class="sub">Terms you will meet in REDCap.</p>
+    <dl class="gloss">
+      <dt>EDC</dt><dd>Electronic data capture: software for collecting research data electronically, with validation, user rights and an audit trail.</dd>
+      <dt>Data dictionary</dt><dd>The table (CSV) that defines every field of a project: name, form, type, label, choices, validation and flags.</dd>
+      <dt>Online Designer</dt><dd>The REDCap screen for building instruments in the browser.</dd>
+      <dt>Branching logic</dt><dd>A condition that decides whether a field is shown.</dd>
+      <dt>Action tag</dt><dd>A code such as @TODAY or @HIDDEN that changes how a field behaves.</dd>
+      <dt>Repeating instrument</dt><dd>A form that can be filled in several times per record or event, such as adverse events.</dd>
+      <dt>Draft Mode</dt><dd>The way to change forms in a project that is in Production.</dd>
+      <dt>Data Resolution Workflow</dt><dd>REDCap's query system: open, respond to and close questions about data values.</dd>
+      <dt>Audit trail (logging)</dt><dd>A record of every change, with who made it and when.</dd>
+      <dt>API</dt><dd>Application programming interface: a way for software such as R or Python to read and write REDCap data directly.</dd>
+      <dt>MyCap</dt><dd>A participant app, connected to REDCap, for collecting patient-reported outcomes.</dd>
+      <dt>SAE</dt><dd>Serious adverse event: an event in a clinical study that must be reported quickly.</dd>
+    </dl>
+  </section>
+
+  <section id="refs">
+    <h2><span class="num">18</span>Sources</h2>
+    <p class="sub">All web pages were accessed on 13 October 2026.</p>
+    <ol class="refs">
+      <li id="r1">REDCap (Vanderbilt University). <em>About REDCap</em>. <a href="https://projectredcap.org/about/">projectredcap.org/about/</a></li>
+      <li id="r2">REDCap (Vanderbilt University). <em>Software features</em>. <a href="https://projectredcap.org/software/">projectredcap.org/software/</a></li>
+      <li id="r3">Harris, P. A., Taylor, R., Thielke, R., Payne, J., Gonzalez, N. &amp; Conde, J. G. Research electronic data capture (REDCap): a metadata-driven methodology and workflow process for providing translational research informatics support. <em>Journal of Biomedical Informatics</em> 42(2), 377–381 (2009). <a href="https://doi.org/10.1016/j.jbi.2008.08.010">doi.org/10.1016/j.jbi.2008.08.010</a></li>
+      <li id="r4">Harris, P. A., Taylor, R., Minor, B. L., Elliott, V., Fernandez, M., O'Neal, L., McLeod, L., Delacqua, G., Delacqua, F., Kirby, J., Duda, S. N. &amp; REDCap Consortium. The REDCap consortium: building an international community of software platform partners. <em>Journal of Biomedical Informatics</em> 95, 103208 (2019). <a href="https://doi.org/10.1016/j.jbi.2019.103208">doi.org/10.1016/j.jbi.2019.103208</a>. Citation guidance: <a href="https://projectredcap.org/resources/citations/">projectredcap.org/resources/citations/</a></li>
+      <li id="r5">Antwerp University Hospital (UZA). <em>UZA Studies: REDCap</em>. <a href="https://redcap.uza.be/">redcap.uza.be</a></li>
+      <li id="r6">KU Leuven, Group of Biomedical Sciences IT. <em>Research data tools: REDCap</em>. <a href="https://gbiomed.kuleuven.be/english/IT/our-services/research-data-tools/more-info">gbiomed.kuleuven.be/english/IT/our-services/research-data-tools/more-info</a></li>
+      <li id="r7">HIRUZ, Ghent University Hospital. <em>REDCap access</em>. <a href="https://hiruz.be/redcap-access/">hiruz.be/redcap-access/</a></li>
+      <li id="r8">HIRUZ, Ghent University Hospital. <em>Your own REDCap project</em>. <a href="https://hiruz.be/redcap-start/">hiruz.be/redcap-start/</a></li>
+      <li id="r9">Beasley, W. et al. <em>REDCapR: Interaction Between R and REDCap</em>. R package, CRAN. <a href="https://cran.r-project.org/package=REDCapR">cran.r-project.org/package=REDCapR</a></li>
+      <li id="r10">redcap-tools. <em>PyCap: a Python interface to REDCap</em>. <a href="https://github.com/redcap-tools/PyCap">github.com/redcap-tools/PyCap</a></li>
+      <li id="r11">REDCap (Vanderbilt University). <em>Training resources and videos</em>. <a href="https://projectredcap.org/resources/">projectredcap.org/resources/</a></li>
+      <li id="r12">Maseko, T. &amp; Osangir, B. I. <em>Research Data Management: from the data lifecycle to your DMP, REDCap and responsible use of AI</em>. Lecture slides, Part 04 (REDCap), Master of Epidemiology, University of Antwerp, 2026–27.</li>
+      <li id="r13">Osangir, B. I., Maseko, T. &amp; Abrams, S. <em>The Data Management Plan, and the lifecycle behind it</em>. Pre-class reading, MEPI, 2026. <a href="https://bosangir.github.io/DMP/">bosangir.github.io/DMP/</a></li>
+      <li id="r14">University of Antwerp. <em>Processing data</em> (sensitive data and data security). <a href="https://www.uantwerpen.be/en/research/policy/open-science-rdm/research-data-management/processing-data/">uantwerpen.be/…/research-data-management/processing-data/</a></li>
+    </ol>
+    <h3>Further learning</h3>
+    <ul>
+      <li>The REDCap training videos on the project website.<sup class="cite"><a href="#r11">[11]</a></sup></li>
+      <li>Your own institution's REDCap help pages: every installation has its own rules and support team.</li>
+    </ul>
+  </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    Pre-class reading for the Research Data Management course, Master of Epidemiology (MEPI), University of Antwerp, 2026–27. Authors: Bernard Isekah Osangir, Tafadzwa Maseko and Prof. Dr. Steven Abrams. This page summarises and links to the sources listed above; it does not replace the official documentation of REDCap or of your institution. Companion page: <a href="https://bosangir.github.io/DMP/">Data Management Plans</a>.
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Light / dark mode (follows the system setting until the reader chooses)
+  var root=document.documentElement, tbtn=document.getElementById('themeToggle');
+  function isDark(){var t=root.getAttribute('data-theme'); return t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;}
+  function label(){tbtn.textContent=isDark()?'Light mode':'Dark mode';}
+  try{var saved=localStorage.getItem('redcap-theme'); if(saved) root.setAttribute('data-theme',saved);}catch(e){}
+  label();
+  tbtn.addEventListener('click',function(){
+    var next=isDark()?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('redcap-theme',next);}catch(e){}
+    label();
+  });
+  if(window.matchMedia){var mq=window.matchMedia('(prefers-color-scheme: dark)'); if(mq.addEventListener) mq.addEventListener('change',label);}
+
+  // Practice quiz. The first option of each question is the correct one; options are shuffled when shown.
+  var BANK=[
+    {q:"What does REDCap stand for?",o:["Research Electronic Data Capture","Remote Electronic Database for Clinical Patients","Research Evidence and Data Collection Application Platform","Registered Electronic Data Capture"],e:"REDCap is a secure web platform for building and managing online forms, surveys and databases."},
+    {q:"Where was REDCap created?",o:["Vanderbilt University","The University of Antwerp","The World Health Organization","Microsoft"],e:"REDCap was created at Vanderbilt University in 2004."},
+    {q:"In which year was REDCap created?",o:["2004","1994","2014","2020"],e:"It was created in 2004; the consortium followed in 2006."},
+    {q:"When was the REDCap Consortium launched?",o:["2006","2004","2012","2019"],e:"The consortium lets partner institutions share and develop the software together."},
+    {q:"How many institutions belong to the REDCap Consortium (October 2026)?",o:["More than 8,400","About 80","About 800","More than 84,000"],e:"Over 8,400 institutions in 167 countries."},
+    {q:"How much does REDCap cost for a non-profit institution in the consortium?",o:["Nothing: it is free for consortium partners","A fee per user per year","A fee per project","A fee per participant"],e:"REDCap is free for non-profit partners, although each institution pays to run its own server."},
+    {q:"Is REDCap open-source software?",o:["No: it is free for partners but not open source","Yes, anyone can download and modify it","Yes, but only in the United States","Only the mobile app is open source"],e:"Institutions receive the code under a licence by joining the consortium."},
+    {q:"Who runs the REDCap server you work on?",o:["Your own institution","Vanderbilt University, for everyone","Microsoft","Each researcher on their own laptop"],e:"Each partner installs and runs its own REDCap, with its own login page and rules."},
+    {q:"Why does it matter for the GDPR that REDCap is hosted by your institution?",o:["The data stay on a server managed by your institution","It means the GDPR does not apply","The data are automatically anonymised","The data are stored in the United States"],e:"Institutional hosting keeps control over where personal data are stored and who can access them."},
+    {q:"Which paper first described REDCap?",o:["Harris et al., Journal of Biomedical Informatics, 2009","Wilkinson et al., Scientific Data, 2016","Harris et al., The Lancet, 2020","Science Europe, 2021"],e:"Harris and colleagues (2009) is the main citation for REDCap; a 2019 paper describes the consortium."},
+    {q:"What does EDC stand for?",o:["Electronic data capture","Encrypted data container","European Data Commission","Electronic document control"],e:"An EDC system collects research data electronically, with validation, user rights and an audit trail."},
+    {q:"Which is NOT an advantage of REDCap over a spreadsheet?",o:["It automatically writes your statistical analysis","Validation stops many wrong values at entry","It keeps a full audit trail","Users can be given different access rights"],e:"REDCap collects and manages data; you still do the analysis in R, Stata or similar."},
+    {q:"In a spreadsheet, who changed a value last week?",o:["You usually cannot tell","The spreadsheet records every change by default","Only the owner can change values","Excel emails the PI about each change"],e:"REDCap's logging keeps an audit trail of who changed what, and when."},
+    {q:"Which tool is best suited to field surveys in places with poor internet?",o:["KoboToolbox / ODK","DHIS2","Castor EDC","Microsoft Excel"],e:"KoboToolbox and ODK are free, open-source tools with robust offline mobile collection. REDCap also has a Mobile App."},
+    {q:"Which tool is commercial and often used for investigator-initiated clinical trials?",o:["Castor EDC","REDCap","KoboToolbox","DHIS2"],e:"Castor EDC requires a commercial licence."},
+    {q:"Which tool is used for routine national health information systems in many countries?",o:["DHIS2","Castor EDC","REDCap","OpenClinica"],e:"DHIS2 is free and open source and widely used for routine health data."},
+    {q:"In REDCap, what is a record?",o:["One participant (or unit of observation)","One question","One form","One time point"],e:"Each record is identified by the first field, usually record_id."},
+    {q:"In REDCap, what is an instrument?",o:["A form or a survey","A laboratory machine","A single variable","A user role"],e:"Instruments group related fields, such as Enrolment or Lab results."},
+    {q:"In REDCap, what is a field?",o:["One variable or question","A study site","A time point","A group of users"],e:"For example weight_kg or smear_result."},
+    {q:"In REDCap, what is an event?",o:["A time point in a longitudinal study","A conference","An error message","A data export"],e:"For example Baseline, Month 2 and Month 6."},
+    {q:"In REDCap, what is an arm?",o:["A study group with its own schedule of events","A type of field","A user with full rights","A backup copy"],e:"Trials with groups on different schedules use one arm per group."},
+    {q:"What is a Data Access Group (DAG)?",o:["A group of users, usually a site, who see only their own records","A group of variables","A group of projects","A group of export files"],e:"DAGs keep sites in a multi-site study separated."},
+    {q:"Which field usually identifies a record?",o:["record_id, the first field","The participant's name","The date of birth","The last field of the last form"],e:"Use a study ID, never a name or national ID number, as the record identifier."},
+    {q:"What is the first status of a new REDCap project?",o:["Development","Production","Completed","Archived"],e:"In Development you build and test with fake data."},
+    {q:"Which data may you enter in a project in Development status?",o:["Fake test data only","Real participant data","Data from the pilot participants","Any data, as long as it is encrypted"],e:"Everything can still change in Development; real data belong in Production."},
+    {q:"In which status do you collect real participant data?",o:["Production","Development","Completed","Draft Preview"],e:"Moving to Production is usually approved by the REDCap administrators."},
+    {q:"How do you change forms once a project is in Production?",o:["Through Draft Mode","You cannot change them at all","By editing the database directly","By moving the project back to Development"],e:"Draft Mode protects existing data from accidental damage."},
+    {q:"What does Draft Preview Mode let you do?",o:["Test drafted form changes, including logic and calculations, without saving data","Publish your data online","Delete all test records","Export data without identifiers"],e:"Data entered in preview are temporary and not saved."},
+    {q:"In which status do you clean data, resolve queries and lock records after collection ends?",o:["Analysis / Cleanup","Development","Production","Draft Mode"],e:"Then the project can be marked Completed."},
+    {q:"What happens when a project is marked Completed?",o:["It becomes a read-only archive","All data are deleted","It goes back to Development","It is published on the internet"],e:"Completed projects keep the data but no longer allow changes."},
+    {q:"Which is NOT one of the three ways to start a REDCap project?",o:["Importing a Word document of the protocol","From scratch in the Online Designer","From an institutional template","By uploading a REDCap XML file"],e:"An XML file copies the full design of an existing project."},
+    {q:"What does a REDCap XML upload give you?",o:["A copy of the complete design of an existing project","A data export","A user list","A PDF of the protocol"],e:"Useful to reuse or share a tested project design."},
+    {q:"What is the data dictionary?",o:["A table with one row per field that defines the whole project","A dictionary of medical terms","A list of participants","The audit trail"],e:"It lists each variable's name, form, type, label, choices and validation."},
+    {q:"In which file format do you upload a data dictionary?",o:["CSV","PDF","DOCX","MP3"],e:"Design it in a spreadsheet, save as CSV and upload."},
+    {q:"Why is the data dictionary also useful for your DMP?",o:["It is your codebook","It replaces ethics approval","It stores the data","It is the consent form"],e:"Documentation such as a codebook is a core DMP requirement."},
+    {q:"Which is the best variable name?",o:["weight_kg","Weight of patient (kg)","Weight!","1weight"],e:"Short, lower case, no spaces, unit in the name."},
+    {q:"Which field type do you use to choose exactly one option from a short list?",o:["Radio buttons","Checkboxes","Notes box","Slider"],e:"Use a drop-down for a long list."},
+    {q:"Which field type do you use for “tick all that apply”?",o:["Checkboxes","Radio buttons","Drop-down","Yes / No"],e:"Each checkbox option becomes its own 0/1 variable."},
+    {q:"How does REDCap store a checkbox question with three options?",o:["As three variables, each 0 or 1","As one text variable","As one variable coded 1 to 3","As a PDF"],e:"For example symptoms___1, symptoms___2, symptoms___3."},
+    {q:"How is a Yes / No field coded?",o:["1 = yes, 0 = no","1 = yes, 2 = no","Y and N","True and False as text"],e:"Remember this when writing branching logic: [lab_eval] = '1' means yes."},
+    {q:"Which field type gives a visual analogue scale from 0 to 100?",o:["Slider","Notes box","Checkboxes","Descriptive text"],e:"Sliders are often used for pain or quality-of-life scores."},
+    {q:"Which field type is computed automatically from other fields?",o:["Calculated","Text box","Notes box","File upload"],e:"For example BMI from weight and height."},
+    {q:"Why should you limit the use of notes (free-text) boxes?",o:["Free text is hard to analyse and may contain names","They cannot be exported","They are not allowed under the GDPR","They slow down the server"],e:"Prefer coded answers; remove unvalidated free text on export."},
+    {q:"The lab data dictionary limits weight_kg to…",o:["30–200 kg","0–1000 kg","10–50 kg","No limits"],e:"Plausible ranges stop typing errors such as 700 instead of 70."},
+    {q:"What should you set on every field that contains personal information?",o:["The identifier flag","A slider","A calculation","Branching logic"],e:"Identifier fields can then be removed automatically on export."},
+    {q:"What are missing data codes for?",o:["Recording why a value is missing","Deleting missing records","Filling in missing values automatically","Hiding missing fields"],e:"“Not asked”, “refused” and “unknown” mean different things in analysis."},
+    {q:"Which is NOT on the course's “always set” list?",o:["A slider on every question","Minimum and maximum values","Required fields","The identifier flag on personal fields"],e:"Also always set missing data codes."},
+    {q:"How do you refer to a field in branching logic or calculations?",o:["By its variable name in square brackets, e.g. [weight_kg]","By its label in quotes","By its row number","By its form name"],e:"REDCap logic always uses [variable_name]."},
+    {q:"What does branching logic do?",o:["Shows a field only when its condition is true","Calculates a value","Sends an email","Exports the data"],e:"It keeps forms short and stops answers to irrelevant questions."},
+    {q:"Which logic shows test_type only if a lab evaluation was done?",o:["[lab_eval] = '1'","[lab_eval] = 'yes'","lab_eval == TRUE","[test_type] = '1'"],e:"Yes/No fields store yes as 1."},
+    {q:"Which logic selects women aged 15 to 49 (sex coded 2 = female)?",o:["[sex] = '2' and [age] >= 15 and [age] <= 49","[sex] = 'female' or [age] = 15-49","[sex] = '2' or [age] >= 15","[age] between 15 and 49"],e:"Combine conditions with and/or; compare numbers with >= and <=."},
+    {q:"How do you check in logic that checkbox option 3 of [symptoms] is ticked?",o:["[symptoms(3)] = '1'","[symptoms] = '3'","[symptoms_3] = 'yes'","[symptoms] contains 3"],e:"Checkbox options are referred to with the code in round brackets."},
+    {q:"In a longitudinal project, how do you use a value from the baseline event?",o:["[baseline_arm_1][hiv_status] = '1'","[hiv_status@baseline] = '1'","baseline.hiv_status = 1","[hiv_status] = 'baseline'"],e:"Put the unique event name in brackets before the variable."},
+    {q:"Which calculation gives BMI with 1 decimal?",o:["round([weight_kg] / (([height_cm]/100)^2), 1)","[weight_kg] / [height_cm]","round([height_cm] / [weight_kg], 1)","[weight_kg] * [height_cm]^2"],e:"Convert height from cm to metres, square it, divide weight by it, round to 1 decimal."},
+    {q:"Which function calculates the difference between two dates?",o:["datediff()","round()","sum()","today()"],e:"For example datediff([dob], [enrol_date], 'y') gives age in years."},
+    {q:"What does datediff([last_visit], 'today', 'd') return?",o:["The number of days since the last visit","Today's date","The date of the last visit","The number of visits"],e:"'d' means days; 'y' means years."},
+    {q:"What does the action tag @TODAY do?",o:["Fills in today's date when the form is opened","Hides the field","Makes the field read-only","Deletes old values"],e:"@NOW fills in the current date and time."},
+    {q:"What does the action tag @HIDDEN do?",o:["Hides the field on the form","Deletes the field","Encrypts the field","Exports the field"],e:"Useful for fields filled in automatically."},
+    {q:"What does the action tag @READONLY do?",o:["Shows the field but prevents editing","Hides the field","Makes the field required","Sets a default value"],e:"Often used for calculated or pre-filled values."},
+    {q:"What must you do before an instrument can be used as a survey?",o:["Enable surveys for the project, then enable that instrument as a survey","Export it to PDF","Move the project to Completed","Nothing: all instruments are surveys"],e:"Project Setup → “Use surveys in this project?” → Enable."},
+    {q:"Which survey option suits open or anonymous recruitment?",o:["A public survey link or QR code","A participant list with personal invitations","A Data Access Group","An API token"],e:"One link for everyone."},
+    {q:"Which survey option sends personal invitations with automatic reminders?",o:["The participant list","The public link","Draft Mode","The data dictionary"],e:"Invitations are linked to each participant's record."},
+    {q:"What does REDCap keep when a participant gives e-consent?",o:["A signed PDF with the consent version and date","Only a tick box","A photo of the participant","Nothing"],e:"The PDF documents exactly which consent version was signed, and when."},
+    {q:"What can Alerts & Notifications do?",o:["Send automatic messages, e.g. email the PI when an SAE is reported","Translate forms","Lock records","Create new users"],e:"Alerts react to data that are entered."},
+    {q:"What is Multi-Language Management for?",o:["Offering one instrument in several languages","Writing logic in several programming languages","Exporting to several statistics packages","Managing users in several countries"],e:"Translations still need checking, ideally by back-translation."},
+    {q:"What is the REDCap Mobile App used for?",o:["Offline data collection by study staff","Participants' social media","Statistical analysis","Video calls with participants"],e:"Data are synchronised to the server when there is a connection."},
+    {q:"What is MyCap?",o:["A participant app for collecting patient-reported outcomes","A user role","A backup tool","A REDCap conference"],e:"MyCap connects participants' phones to a REDCap project."},
+    {q:"What is a longitudinal project?",o:["A project with several events (time points) per record","A project with very long forms","A project lasting more than a year","A project with many sites"],e:"Cohorts and trials usually need longitudinal projects."},
+    {q:"How do you set up a longitudinal project?",o:["Enable longitudinal collection, define events, then designate instruments to events","Copy each form once per visit","Create a separate project per visit","Add a date field to each form"],e:"The event × instrument grid shows what is collected when."},
+    {q:"What is a repeating instrument?",o:["A form that can be filled in as many times as needed","A form that appears at every event","A survey sent twice","A copy of the data dictionary"],e:"Ideal for adverse events or medications, whose number is not known in advance."},
+    {q:"Which data are best collected with a repeating instrument?",o:["Adverse events","Date of birth","Sex at birth","Study ID"],e:"A participant may have none, one or many adverse events."},
+    {q:"What does “least privilege” mean for REDCap users?",o:["Give each user only the rights their role needs","Give everyone full rights","Give the PI the fewest rights","Remove all export rights"],e:"Few people need full export or user-management rights."},
+    {q:"In the course example, which role may export only de-identified data?",o:["Monitor","Data manager","Principal investigator","Nobody can export"],e:"Monitors view data and open queries; they rarely need identifiers."},
+    {q:"In the course example, who manages users?",o:["The principal investigator","Site data entry staff","The monitor","Every user"],e:"Keep user management with one accountable person."},
+    {q:"A research assistant leaves the project today. When should their REDCap access be removed?",o:["The same day","At the end of the project","After one year","Never"],e:"Also set expiry dates on accounts in advance."},
+    {q:"Each hospital in a multi-site study should see only its own patients. What do you use?",o:["Data Access Groups","Branching logic","Repeating instruments","Action tags"],e:"Assign each user to their site's DAG."},
+    {q:"Which REDCap tools PREVENT errors at the moment of entry?",o:["Field validation and branching logic","The audit trail","Data export","Record locking"],e:"Prevention is cheaper than correction."},
+    {q:"Which REDCap tool DETECTS errors after entry?",o:["Data Quality rules","Action tags","Surveys","The Online Designer"],e:"Use the built-in rules and write your own."},
+    {q:"Which custom Data Quality rule flags an impossible combination?",o:["[sex] = '1' and [pregnant] = '1'","[sex] = '2'","[weight_kg] > 0","[record_id] <> ''"],e:"A male participant (coded 1) recorded as pregnant must be checked."},
+    {q:"What is the Data Resolution Workflow?",o:["REDCap's query system to open, answer and close questions about data","A way to translate forms","A backup schedule","An export format"],e:"Monitors open queries, sites respond, data managers close them."},
+    {q:"What does REDCap's logging provide?",o:["A full audit trail of every change","A list of participants' passwords","Automatic statistical tests","A translation log"],e:"Who changed what, when, and from which value."},
+    {q:"What does locking a record do?",o:["Prevents further changes once the data are final","Deletes the record","Hides the record from the PI","Encrypts the record for email"],e:"Records can also be e-signed."},
+    {q:"Which is NOT a REDCap export format mentioned in the course?",o:["PowerPoint","CSV","Stata","SPSS"],e:"REDCap exports to CSV, R, Stata, SPSS, SAS and CDISC ODM."},
+    {q:"What is CDISC ODM?",o:["An XML standard format for clinical data","A statistics package","A REDCap user role","A data quality rule"],e:"CDISC standards are used for clinical trial data."},
+    {q:"Which is a way to de-identify data on export?",o:["Remove all fields tagged as identifiers","Export only the first 100 records","Change the file name","Export to PDF"],e:"This is why the identifier flag matters."},
+    {q:"Why remove unvalidated free-text fields on export?",o:["They may contain names or other identifying details","They are too long","They cannot be read by R","They are always empty"],e:"People type all sorts of things into free text."},
+    {q:"Which de-identification option changes all dates?",o:["Shifting all dates by a random number of days","Rounding dates to the year 2000","Deleting the dates","Converting dates to text"],e:"Intervals between dates stay correct for analysis."},
+    {q:"Why hash the record ID on export?",o:["So exported records cannot be linked back to the study ID","To make the file smaller","Because R cannot read numbers","To sort the records"],e:"Hashing replaces the ID with an unrecognisable value."},
+    {q:"Which R package reads REDCap data through the API?",o:["REDCapR","ggplot2","dplyr","shiny"],e:"For example redcap_read_oneshot()."},
+    {q:"Which Python package connects to REDCap?",o:["PyCap","pandas","NumPy","Django"],e:"PyCap is a Python interface to the REDCap API."},
+    {q:"What is the main advantage of reading data through the API?",o:["A reproducible pipeline that always starts from the current data","It removes the need for ethics approval","It makes REDCap faster","It anonymises the data"],e:"No more manual exports and forgotten versions."},
+    {q:"Where should your REDCap API token be stored?",o:["In your .Renviron file, read with Sys.getenv()","In your R script","On GitHub","In an email to your team"],e:"A token is a password; never put it in code you share."},
+    {q:"Is it acceptable to paste your API token into a chat with an AI tool to get help with code?",o:["No: tokens must never be shared with anyone or any tool","Yes, AI tools are secure","Yes, if you delete the chat afterwards","Only on weekends"],e:"Use a placeholder such as Sys.getenv(\"REDCAP_TOKEN\") instead."},
+    {q:"Which DMP section does “the data dictionary serves as codebook” belong to?",o:["Documentation and data quality","Legal and ethical requirements","Responsibilities and resources","Sharing and preservation"],e:"Codebooks and quality checks are documentation."},
+    {q:"Which UAntwerp rule does using REDCap help you follow?",o:["Use institutional services instead of external cloud tools for sensitive data","Store data on Dropbox","Email data to collaborators","Keep data only on your laptop"],e:"UAntwerp says never to use services such as Google Drive or Dropbox for research data."},
+    {q:"Where is the REDCap of Antwerp University Hospital (UZA)?",o:["redcap.uza.be","redcap.uantwerpen.com","dmponline.be","redcap.vanderbilt.edu"],e:"For a first study, contact UZA's Clinical Trial Center or data management team."},
+    {q:"Which system do UZA studies started before 2021 still use?",o:["OpenClinica","DHIS2","KoboToolbox","Castor EDC"],e:"Newer UZA studies use REDCap."},
+    {q:"At KU Leuven's Biomedical Sciences Group, who gets REDCap access?",o:["Users listed on an approved project registration","Every student automatically","Anyone with an email address","Only professors"],e:"Register the project with the REDCap request form first."},
+    {q:"What does HIRUZ (Ghent University Hospital) ask you to do before requesting a REDCap project?",o:["Follow the online REDCap training (about 45 minutes)","Pay a licence fee","Publish your protocol","Install REDCap on your laptop"],e:"HIRUZ also offers free walk-in sessions."},
+    {q:"For your own future study, which REDCap should you use?",o:["The one your institution provides, after asking your supervisor or data management team","Any free REDCap server you find online","A REDCap installed on your personal laptop","Your colleague's REDCap at another university, without an agreement"],e:"Never set up a study on a server outside your institution's control."}
+  ];
+  var ROUND=20, PASS=14;
+  var card=document.getElementById('pqCard'), countEl=document.getElementById('pqCount'), scoreEl=document.getElementById('pqScore'), bar=document.getElementById('pqBar');
+  var deck=[], idx=0, score=0;
+  function shuffle(a){a=a.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t;} return a;}
+  function esc(s){var d=document.createElement('div'); d.textContent=s; return d.innerHTML;}
+  function swap(render){
+    card.classList.add('out');
+    setTimeout(function(){render(); card.classList.remove('out'); card.classList.add('in'); void card.offsetWidth; card.classList.remove('in');},350);
+  }
+  function start(){deck=shuffle(BANK).slice(0,ROUND); idx=0; score=0; scoreEl.textContent='0'; swap(show);}
+  function show(){
+    var item=deck[idx], correct=item.o[0], opts=shuffle(item.o);
+    countEl.textContent='Question '+(idx+1)+' of '+ROUND;
+    bar.style.width=(idx/ROUND*100)+'%';
+    var h='<p class="pq-q">'+esc(item.q)+'</p><div class="pq-opts">';
+    opts.forEach(function(o){h+='<button type="button" class="pq-opt">'+esc(o)+'</button>';});
+    h+='</div><div class="pq-fb" hidden></div>';
+    card.innerHTML=h;
+    var fb=card.querySelector('.pq-fb'), btns=[].slice.call(card.querySelectorAll('.pq-opt'));
+    btns.forEach(function(b,i){
+      b.addEventListener('click',function(){
+        btns.forEach(function(x){x.disabled=true;});
+        var ok=opts[i]===correct;
+        btns.forEach(function(x,k){if(opts[k]===correct) x.classList.add('correct');});
+        if(ok){
+          score++; scoreEl.textContent=score; b.classList.add('correct');
+          fb.innerHTML='<span class="yay">Hooray! 🎉</span><br>'+esc(item.e);
+          fb.hidden=false;
+          setTimeout(next,2200);
+        }else{
+          b.classList.add('wrong');
+          fb.innerHTML='<span class="nope">Not quite.</span> The correct answer is: <b>'+esc(correct)+'</b><br>'+esc(item.e)+'<br><button type="button" class="pq-btn">Next question</button>';
+          fb.hidden=false;
+          fb.querySelector('.pq-btn').addEventListener('click',next);
+        }
+      });
+    });
+  }
+  function next(){idx++; if(idx<ROUND) swap(show); else swap(end);}
+  function end(){
+    bar.style.width='100%'; countEl.textContent='Round complete';
+    var passed=score>=PASS;
+    card.innerHTML='<div class="pq-end">'+
+      (passed?'<p class="big" style="color:var(--ok)">Hooray! 🎉 You passed</p>':'<p class="big" style="color:var(--red)">Keep practising</p>')+
+      '<p class="score">You scored <b>'+score+' out of '+ROUND+'</b>'+(passed?'.':'. You need '+PASS+' to pass.')+'</p>'+
+      '<p>'+(passed?'Try another round: you will get a new mix of questions.':'Reread the sections you found difficult, then try a new round.')+'</p>'+
+      '<button type="button" class="pq-btn" id="pqAgain">Start a new round</button></div>';
+    document.getElementById('pqAgain').addEventListener('click',start);
+  }
+  if(card){deck=shuffle(BANK).slice(0,ROUND); show();}
+
+  // Checklist persistence
+  document.querySelectorAll('#checklist input').forEach(function(cb){
+    try{cb.checked=localStorage.getItem('redcap-'+cb.id)==='1';}catch(e){}
+    cb.addEventListener('change',function(){try{localStorage.setItem('redcap-'+cb.id,cb.checked?'1':'0');}catch(e){}});
+  });
+  // Highlight current section in the contents
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  var map={}; links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){links.forEach(function(a){a.classList.remove('active');}); var a=map[e.target.id]; if(a) a.classList.add('active');}
+      });
+    },{rootMargin:'-20% 0px -70% 0px'});
+    document.querySelectorAll('main section').forEach(function(s){obs.observe(s);});
+  }
+})();
+</script>
+</body>
+</html>
