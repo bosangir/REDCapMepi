@@ -19,7 +19,8 @@ Companion page: [Data Management Plans](https://bosangir.github.io/DMP/)
 - Surveys, e-consent, longitudinal studies and repeating instruments
 - User rights, data quality tools, de-identified export and the API
 - How REDCap fits into your Data Management Plan
-- REDCap at UAntwerp (redcap.uantwerpen.be)
+- REDCap at UAntwerp (redcap.uantwerpen.be): log in with your student number (s02xxxxx) and UAntwerp password
+- Recommended REDCap training videos (projectredcap.org/resources/videos)
 - Checklist, random practice quiz, glossary and sources
 
 ## Editing
