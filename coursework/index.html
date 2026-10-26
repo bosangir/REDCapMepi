@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REDCap: Course Work</title>
+<meta name="description" content="REDCap course work for the Research Data Management course, Master of Epidemiology, University of Antwerp: slides, TBCARE case report forms, data dictionary, simulated data, record linkage and R you can run in the browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Colours and type follow uantwerpen.be: navy text, red accent, light-grey panels.
+   UAntwerp uses ITC Officina Sans (licensed); Fira Sans is the closest free match. */
+:root{
+  --navy:#1B365F; --red:#D32737; --grey:#6D6A6A; --panel:#F7F7F7; --line:#E6E6E6; --white:#ffffff; --link:#1B365F;
+  /* aliases used by the inline diagrams */
+  --bg:var(--white); --surface:var(--white); --surface-2:var(--panel); --text:var(--navy); --muted:var(--grey);
+  --accent:var(--navy); --accent-soft:var(--panel); --accent-2:var(--red); --accent-2-soft:var(--panel); --gold:var(--navy); --gold-soft:var(--panel);
+  --footer-bg:#1B365F; --footer-text:#ffffff; --ok:#1E7B4F; --ok-soft:#E5F3EC; --bad-soft:#FBE9EB;
+}
+/* Dark mode: same navy/red identity, light text on deep navy */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#E6ECF4; --red:#FF6B74; --grey:#A9B4C2; --panel:#17263C; --line:#2A3C57; --white:#0E1A2B; --link:#E6ECF4;
+    --footer-bg:#08111D; --footer-text:#E6ECF4; --ok:#5FD39A; --ok-soft:#173A2C; --bad-soft:#3E1D24;
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#E6ECF4; --red:#FF6B74; --grey:#A9B4C2; --panel:#17263C; --line:#2A3C57; --white:#0E1A2B; --link:#E6ECF4;
+  --footer-bg:#08111D; --footer-text:#E6ECF4; --ok:#5FD39A; --ok-soft:#173A2C; --bad-soft:#3E1D24;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--navy);font:18px/28px "Fira Sans",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:underline;text-underline-offset:3px}
+a:hover{color:var(--red)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.topbar{border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;height:64px;font-weight:700;font-size:16px;line-height:1.15}
+.topbar .mark{width:30px;height:30px;background:var(--red);border-radius:4px;flex:none}
+.topbar small{display:block;font-weight:400;color:var(--grey);font-size:13px}
+.theme-toggle{margin-left:auto;font:500 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--panel);color:var(--navy);border:0;padding:8px 14px;cursor:pointer}
+.theme-toggle:hover{color:var(--red)}
+/* Practice quiz */
+.pq{background:var(--panel);padding:24px;margin:8px 0 36px;max-width:76ch}
+.pq-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:15px;color:var(--grey);margin-bottom:10px}
+.pq-top b{color:var(--navy)}
+.pq-bar{height:6px;background:var(--line);margin-bottom:20px}
+.pq-bar span{display:block;height:100%;width:0;background:var(--red);transition:width .4s ease}
+.pq-card{transition:opacity .35s ease, transform .35s ease}
+.pq-card.out{opacity:0;transform:translateY(-12px)}
+.pq-card.in{opacity:0;transform:translateY(12px)}
+.pq-q{font-size:21px;line-height:30px;font-weight:700;margin:0 0 16px}
+.pq-opts{display:grid;gap:10px}
+.pq-opt{text-align:left;font:inherit;font-size:17px;line-height:25px;color:var(--navy);background:var(--white);border:2px solid transparent;padding:12px 16px;cursor:pointer}
+.pq-opt:hover:not(:disabled){border-color:var(--navy)}
+.pq-opt:disabled{cursor:default}
+.pq-opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.pq-opt.wrong{border-color:var(--red);background:var(--bad-soft)}
+.pq-fb{margin-top:16px;padding:14px 16px;background:var(--white);font-size:17px;line-height:26px}
+.pq-fb[hidden]{display:none}
+.pq-fb .yay{display:inline-block;font-size:26px;font-weight:700;color:var(--ok);animation:pop .5s ease}
+.pq-fb .nope{font-weight:700;color:var(--red)}
+.pq-btn{font:700 16px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--red);color:#fff;border:0;padding:11px 20px;cursor:pointer;margin-top:14px}
+.pq-btn:hover{filter:brightness(1.08)}
+.pq-end{text-align:center;padding:12px 0}
+.pq-end .big{font-size:40px;line-height:48px;font-weight:700;margin:6px 0}
+.pq-end .score{font-size:20px;margin:0 0 6px}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.15);opacity:1}100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.pq-card,.pq-bar span{transition:none}.pq-fb .yay{animation:none}}
+header.hero{background:var(--panel)}
+.hero .wrap{padding-top:48px;padding-bottom:44px}
+.eyebrow{font-weight:700;font-size:15px;color:var(--red);margin:0 0 12px}
+h1{font-size:clamp(32px,4.6vw,46px);line-height:1.12;font-weight:700;margin:0 0 16px;max-width:24ch}
+.lede{font-size:20px;line-height:30px;max-width:62ch;margin:0 0 24px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:16px;line-height:24px}
+.meta b{font-weight:700}
+.authors{font-size:18px;margin:0 0 14px}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:56px;padding-top:44px;padding-bottom:80px}
+nav.toc{position:sticky;top:20px;align-self:start;font-size:16px;line-height:22px;max-height:calc(100vh - 40px);overflow:auto}
+nav.toc p{font-weight:700;margin:0 0 10px}
+nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
+nav.toc li{counter-increment:t;margin:0}
+nav.toc a{display:flex;gap:10px;padding:6px 0;color:var(--navy);text-decoration:none}
+nav.toc a::before{content:counter(t,decimal-leading-zero);color:var(--grey);font-variant-numeric:tabular-nums}
+nav.toc a:hover,nav.toc a.active{color:var(--red)}
+nav.toc a.active{font-weight:700}
+nav.toc a.active::before{color:var(--red)}
+main{min-width:0}
+section{margin-bottom:60px;scroll-margin-top:16px}
+h2{font-size:32px;line-height:40px;font-weight:700;margin:0 0 6px}
+h2 .num{color:var(--red);margin-right:12px;font-variant-numeric:tabular-nums}
+.sub{color:var(--grey);font-size:19px;margin:0 0 22px}
+h3{font-size:22px;line-height:30px;font-weight:700;margin:32px 0 8px}
+p{margin:0 0 16px;max-width:72ch}
+ul,ol{max-width:70ch;padding-left:22px}
+li{margin-bottom:6px}
+strong,b{font-weight:700}
+code{font-family:Consolas,"Courier New",monospace;font-size:.9em}
+sup{line-height:0;vertical-align:super}
+sup.cite a{font-weight:700;font-size:12px;text-decoration:none;padding:0 2px;color:var(--red)}
+.callout{background:var(--panel);padding:20px 24px;margin:22px 0;max-width:76ch}
+.callout-title{font-weight:700;font-size:18px;margin:0 0 6px}
+.callout p:last-child,.callout ul:last-child{margin-bottom:0}
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--panel);padding:18px 20px}
+.card h4{margin:0 0 6px;font-size:19px;font-weight:700}
+.card p{font-size:16px;line-height:24px;margin:0}
+figure{margin:28px 0;background:var(--panel);padding:24px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:15px;line-height:22px;color:var(--grey);margin-top:12px}
+.tablewrap{overflow-x:auto;margin:20px 0}
+table{border-collapse:collapse;width:100%;font-size:16px;line-height:24px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font-weight:700;white-space:nowrap;border-bottom:2px solid var(--navy)}
+td:first-child{font-weight:700;white-space:nowrap}
+.tag{display:inline-block;font-size:13px;font-weight:400;color:var(--grey)}
+.sections{display:grid;gap:16px;margin:20px 0}
+.sec{display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;background:var(--panel);padding:20px}
+.sec .n{font-weight:700;font-size:30px;line-height:1;color:var(--red)}
+.sec h4{font-size:20px;font-weight:700;margin:0 0 6px}
+.sec p{font-size:17px;line-height:26px;margin:0 0 8px}
+.sec .ex{font-size:16px;line-height:24px;background:var(--white);padding:12px 14px;margin-top:8px}
+.sec .ex b{font-size:14px;color:var(--red)}
+.checklist{list-style:none;padding:0;max-width:72ch}
+.checklist li{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--panel);margin-bottom:8px}
+.checklist input{margin-top:6px;width:18px;height:18px;accent-color:var(--red);flex:none}
+.checklist label{cursor:pointer}
+.checklist input:checked + label{color:var(--grey);text-decoration:line-through}
+details{background:var(--panel);margin-bottom:8px;max-width:76ch}
+summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;display:flex;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";color:var(--red);font-weight:700;width:12px;flex:none}
+details[open] summary::before{content:"\2013"}
+details .ans{padding:0 18px 16px 40px;font-size:17px;line-height:26px}
+details .ans p{margin-bottom:8px}
+dl.gloss{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:10px 22px;max-width:80ch}
+dl.gloss dt{font-weight:700}
+dl.gloss dd{margin:0;font-size:17px;line-height:26px}
+ol.refs{font-size:16px;line-height:24px;max-width:none;padding-left:28px}
+ol.refs li{margin-bottom:10px;scroll-margin-top:16px;overflow-wrap:anywhere}
+ol.refs li:target{background:var(--panel)}
+footer{background:var(--footer-bg);color:var(--footer-text);font-size:16px;line-height:24px;padding:32px 0 44px}
+footer a{color:var(--footer-text)}
+pre{background:var(--panel);padding:14px 16px;overflow-x:auto;font-size:15px;line-height:22px;margin:0 0 18px;max-width:76ch}
+pre code{font-size:inherit}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:20px}
+  nav.toc{position:static;max-height:none;background:var(--panel);padding:16px}
+  .g3,.g2{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  body{font-size:17px;line-height:26px}
+  .lede{font-size:18px;line-height:27px}
+  h2{font-size:27px;line-height:34px}
+  .sec{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl.gloss{grid-template-columns:minmax(0,1fr);gap:2px}
+  dl.gloss dd{margin-bottom:10px}
+}
+@media print{nav.toc,.topbar{display:none}.layout{display:block}}
+
+/* ---- course-work page additions ---- */
+.sitenav{display:flex;gap:4px;margin-left:auto}
+.sitenav a{font-size:15px;font-weight:500;text-decoration:none;color:var(--navy);padding:8px 12px}
+.sitenav a[aria-current="page"]{color:var(--red);box-shadow:inset 0 -3px 0 var(--red)}
+.sitenav + .theme-toggle{margin-left:8px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:8px 0 20px}
+.step{display:flex;gap:14px;background:var(--panel);padding:16px 18px}
+.step .n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;font-weight:700;display:grid;place-items:center}
+.step h4{margin:2px 0 4px;font-size:18px}.step p{margin:0;font-size:15px;line-height:22px}
+.callout.warn{background:var(--bad-soft)}
+.btn{display:inline-block;font:700 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--red);color:#fff;border:0;padding:10px 16px;text-decoration:none;cursor:pointer;margin:0 6px 6px 0}
+.btn:hover{color:#fff;filter:brightness(1.08)}
+.btn.ghost{background:var(--panel);color:var(--navy)}
+.btn.ghost:hover{color:var(--red)}
+.btn:disabled{opacity:.6;cursor:wait}
+.dl{margin-top:14px}
+/* slide viewer */
+.viewer{background:var(--panel);padding:14px;outline:none}
+.viewer:focus-visible{box-shadow:0 0 0 3px var(--red)}
+.viewer:fullscreen{background:#111;display:flex;flex-direction:column;justify-content:center;padding:20px}
+.viewer:fullscreen .vtitle,.viewer:fullscreen .vcount{color:#eee}
+.vbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.vbar select{font:inherit;font-size:15px;padding:6px 8px;background:var(--white);color:var(--navy);border:1px solid var(--line);max-width:100%}
+.vcount{font-size:15px;color:var(--grey);margin-left:auto;font-variant-numeric:tabular-nums}
+.vbtn{font:500 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--white);color:var(--navy);border:1px solid var(--line);padding:6px 12px;cursor:pointer}
+.vstage{position:relative}
+.vstage img{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.viewer:fullscreen .vstage img{max-height:80vh;width:auto;margin:0 auto}
+.vnav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:64px;border:0;background:rgba(27,54,95,.75);color:#fff;font-size:34px;line-height:1;cursor:pointer}
+.vnav:hover{background:var(--red)}
+.vnav.prev{left:0}.vnav.next{right:0}
+.vtitle{font-weight:700;margin:10px 0 8px;font-size:17px}
+.thumbs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.thumb{flex:none;width:120px;border:2px solid transparent;padding:0;background:none;cursor:pointer;position:relative}
+.thumb img{display:block;width:100%;height:auto}
+.thumb span{position:absolute;left:3px;bottom:3px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:0 4px}
+.thumb.on{border-color:var(--red)}
+/* roadmap */
+ol.road{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;counter-reset:r;max-width:none}
+ol.road li{counter-increment:r;background:var(--panel);padding:16px 16px 14px;position:relative;border-top:4px solid var(--navy)}
+ol.road li::before{content:counter(r);display:block;font-size:28px;font-weight:700;color:var(--navy);margin-bottom:4px}
+ol.road li.hot{border-top-color:var(--red)}ol.road li.hot::before{color:var(--red)}
+ol.road li.ok{border-top-color:var(--ok)}ol.road li.ok::before{color:var(--ok)}
+ol.road b{display:block;font-size:17px}ol.road span{font-size:14px;color:var(--grey)}
+/* tables */
+.tablewrap.tall{max-height:520px;overflow:auto;border:1px solid var(--line)}
+.tablewrap.tall thead th{position:sticky;top:0;background:var(--white);z-index:1}
+table.dd{font-size:13.5px;line-height:19px}
+table.dd td,table.dd th{padding:7px 9px}
+table.dd td:first-child{white-space:nowrap}
+td.mono,table.dd code{font-family:Consolas,"Courier New",monospace;font-size:12.5px}
+.ft{display:inline-block;background:var(--panel);padding:0 6px;font-size:12px}
+tr.t-calc .ft{background:var(--accent-2-soft);color:var(--red);font-weight:700}
+.idf{color:var(--red);font-weight:700}.req{color:var(--red);font-weight:700}
+.filters{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:4px 0 10px;font-size:15px}
+.filters select,.filters input{font:inherit;font-size:15px;padding:6px 8px;border:1px solid var(--line);background:var(--white);color:var(--navy)}
+.filters .count{color:var(--grey)}
+table.matrix{font-size:14px;width:auto}
+table.matrix th,table.matrix td{padding:6px 9px;text-align:center;white-space:nowrap}
+table.matrix td:first-child{text-align:left}
+table.matrix th.arm{border-bottom:1px solid var(--line)}
+table.matrix .sep{border-left:2px solid var(--navy)}
+.c{color:var(--ok);font-weight:700}.s{color:#1E88C8;font-weight:700}.r{color:var(--red);font-weight:700}
+.note{font-size:14px;color:var(--grey)}
+.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:0 0 16px}
+.stats div{background:var(--panel);padding:12px}
+.stats b{display:block;font-size:24px;color:var(--red)}.stats span{font-size:13px;color:var(--grey)}
+/* tabs + pdf */
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{font:700 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--panel);color:var(--navy);border:0;padding:10px 16px;cursor:pointer}
+.tab.active{background:var(--navy);color:var(--white)}
+.pdfwrap{background:var(--panel);padding:8px}
+.pdfwrap iframe{width:100%;height:720px;border:0;background:#fff;display:block}
+.forms{margin-top:18px}
+/* linkage */
+.link-diagram{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center}
+.lbox{padding:16px;color:#fff;min-height:110px}.lbox b{display:block;font-size:17px;margin-bottom:4px}.lbox span{font-size:14px;line-height:20px}
+.lbox.blue{background:#1E88C8}.lbox.dark{background:#41464C}.lbox.amber{background:#FDF3E1;color:#5a3a00}
+.larrow{font-size:28px;color:var(--grey)}
+/* build list */
+ol.buildlist{max-width:76ch}ol.buildlist li{margin-bottom:10px}
+/* R */
+.status{font-weight:700;margin:6px 0 0}.status.busy{color:#B26A00}.status.ok{color:var(--ok)}.status.err{color:var(--red)}
+.rex{background:var(--panel);padding:18px 20px;margin:0 0 22px}
+.rex h3{margin:0 0 6px}
+.rex textarea{width:100%;font:13.5px/1.5 Consolas,"Courier New",monospace;background:#1E2433;color:#E6EAF2;border:0;padding:12px 14px;resize:vertical;tab-size:2}
+.rbar{display:flex;align-items:center;gap:6px;margin-top:8px}
+.rtime{font-size:13px;color:var(--grey)}
+.rout{background:var(--white);margin:10px 0 0;max-width:none;white-space:pre;font-size:13px;line-height:18px;max-height:420px;overflow:auto}
+.rplot canvas{max-width:100%;height:auto;background:#fff;margin-top:10px}
+details.eq{background:var(--white);margin:6px 0 10px;max-width:none}
+details.eq summary{font-size:15px;padding:8px 12px}
+details.eq pre{margin:0 12px 12px;max-width:none}
+/* packages */
+.pkgs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.pkg{background:var(--panel);padding:18px 20px}
+.pkg h4{margin:0 0 6px;font-size:20px}.pkg p{font-size:15px;line-height:23px}
+.pkg pre{background:var(--white);font-size:13px;line-height:19px;max-width:none}
+.pkg .links{font-size:14px;margin:0}
+.warnline{color:var(--red);font-weight:700}
+@media (max-width:900px){.steps,.pkgs{grid-template-columns:minmax(0,1fr)}ol.road{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}.link-diagram{grid-template-columns:1fr}.larrow{transform:rotate(90deg);text-align:center}
+  .sitenav a{padding:8px 6px;font-size:14px}.topbar .wrap{height:auto;min-height:64px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}}
+@media (max-width:560px){.pdfwrap iframe{height:480px}.thumb{width:90px}.vnav{width:34px;height:48px;font-size:26px}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap"><span>University of Antwerp<small>Master of Epidemiology · Research Data Management</small></span>
+  <nav class="sitenav" aria-label="Site"><a href="../">Pre-course reading</a><a href="./" aria-current="page">Course work</a></nav>
+  <button class="theme-toggle" type="button" id="themeToggle" aria-label="Switch between light and dark mode">Dark mode</button></div></div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Course work · REDCap session and lab</p>
+    <h1>REDCap course work: building TBCARE, from paper CRF to analysis in R</h1>
+    <p class="lede">The slides, the case report forms, a ready-made data dictionary, simulated data to upload, a record-linkage exercise and R code you can run in your browser. Everything here uses TBCARE, a fictional tuberculosis cohort with two arms and repeating events.</p>
+    <p class="authors"><b>Authors:</b> Bernard Isekah Osangir, Tafadzwa Maseko and Prof. Dr. Steven Abrams</p>
+    <div class="meta">
+      <span><b>Course</b> Master of Epidemiology (MEPI), University of Antwerp, 2026–27</span>
+      <span><b>Data</b> simulated only, no real participants</span>
+      <span><b>Last updated</b> 26 October 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#start">Start here</a></li>
+      <li><a href="#slides">Slides</a></li>
+      <li><a href="#roadmap">Database roadmap</a></li>
+      <li><a href="#tbcare">The TBCARE study</a></li>
+      <li><a href="#crfs">Case report forms</a></li>
+      <li><a href="#dictionary">Data dictionary</a></li>
+      <li><a href="#build">Build the project</a></li>
+      <li><a href="#data">Simulated data</a></li>
+      <li><a href="#linkage">Record linkage</a></li>
+      <li><a href="#webr">R in your browser</a></li>
+      <li><a href="#packages">R packages</a></li>
+      <li><a href="#downloads">All downloads</a></li>
+      <li><a href="#refs">Sources</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+  <!-- 01 -->
+  <section id="start">
+    <h2><span class="num">01</span>Start here</h2>
+    <p class="sub">What you will do in the session, and in which order.</p>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div><h4>Look at the paper CRFs</h4><p>What clinicians fill in at a visit. Every question becomes a REDCap field.</p></div></div>
+      <div class="step"><span class="n">2</span><div><h4>Read the data dictionary</h4><p>The same forms as a spreadsheet: variable names, codes, validation and branching.</p></div></div>
+      <div class="step"><span class="n">3</span><div><h4>Build TBCARE in REDCap</h4><p>Upload the dictionary, arms, events and form mapping; set repeating forms and site groups.</p></div></div>
+      <div class="step"><span class="n">4</span><div><h4>Upload simulated data</h4><p>60 fake participants across both arms and both sites, with unscheduled visits and logs.</p></div></div>
+      <div class="step"><span class="n">5</span><div><h4>Check and link</h4><p>Find the planted errors, then link participants to the national TB register.</p></div></div>
+      <div class="step"><span class="n">6</span><div><h4>Analyse in R</h4><p>Run the examples below in your browser, then use REDCapR on your own practice project.</p></div></div>
+    </div>
+    <div class="callout">
+      <p class="callout-title">Before you start</p>
+      <p>Log in at <a href="https://redcap.uantwerpen.be">redcap.uantwerpen.be</a> with your student number and UAntwerp password, and create a project with the purpose <b>Practice / Just for fun</b>. Use only the simulated data on this page. Never enter real participant data in a practice project.</p>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section id="slides">
+    <h2><span class="num">02</span>Slides</h2>
+    <p class="sub">The full REDCap training deck, 64 slides. Use the arrow keys or swipe; pick a section to jump.</p>
+    <div class="viewer" id="viewer" tabindex="0" aria-label="Slide viewer">
+      <div class="vbar">
+        <select id="vjump" aria-label="Jump to section"></select>
+        <span class="vcount" id="vcount">1 / 64</span>
+        <button type="button" id="vfull" class="vbtn" aria-label="Full screen">Full screen</button>
+      </div>
+      <div class="vstage">
+        <button type="button" class="vnav prev" id="vprev" aria-label="Previous slide">‹</button>
+        <img id="vimg" src="slides/s01.jpg" alt="Slide 1">
+        <button type="button" class="vnav next" id="vnext" aria-label="Next slide">›</button>
+      </div>
+      <p class="vtitle" id="vtitle"></p>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+    <p class="dl"><a class="btn" href="docs/20261026_MEPI_REDCap_Training_2026-27.pdf">Download slides (PDF)</a> <a class="btn ghost" href="docs/20261026_MEPI_REDCap_Training_2026-27.pptx">Download slides (PowerPoint)</a></p>
+  </section>
+
+  <!-- 03 -->
+  <section id="roadmap">
+    <h2><span class="num">03</span>The roadmap of a REDCap database</h2>
+    <p class="sub">Eight steps, in this order. Most problems come from skipping step 5. (Slide 47.)</p>
+    <ol class="road">
+      <li><b>Protocol and DMP</b><span>What is collected, and why</span></li>
+      <li><b>CRFs</b><span>Paper and annotated forms</span></li>
+      <li><b>Data dictionary</b><span>The CRFs as a spreadsheet</span></li>
+      <li><b>Build</b><span>In Development status</span></li>
+      <li class="hot"><b>Test</b><span>Fake data, by a second person</span></li>
+      <li class="ok"><b>Production</b><span>After sign-off</span></li>
+      <li class="ok"><b>Collect and clean</b><span>Queries, rules, monitoring</span></li>
+      <li class="ok"><b>Lock and analyse</b><span>De-identified export, R</span></li>
+    </ol>
+    <div class="callout warn"><p>A change after Production goes back through CRF, dictionary and test (Draft Mode). Changing a field that already holds data can damage it.</p></div>
+  </section>
+
+  <!-- 04 -->
+  <section id="tbcare">
+    <h2><span class="num">04</span>The TBCARE study</h2>
+    <p class="sub">A fictional cohort, designed so that every REDCap feature from the session appears at least once.</p>
+    <p>TBCARE follows adults starting tuberculosis (TB) treatment for 12 months at two hospitals, <b>Antwerp</b> (Belgium) and <b>Mbarara</b> (Uganda). People with drug-susceptible TB and drug-resistant TB are treated for different lengths of time and seen on different schedules, so the project has <b>two arms</b>. Each arm also has an <b>Unscheduled</b> event that can repeat, and a <b>Logs</b> event with two repeating forms: adverse events and medicines.</p>
+    <div class="tablewrap"><table class="grid-ev">
+      <thead><tr><th></th><th>Arm 1 · drug-susceptible TB</th><th>Arm 2 · drug-resistant TB</th></tr></thead>
+      <tbody>
+        <tr><td>Participants (simulated)</td><td>48</td><td>12</td></tr>
+        <tr><td>Treatment</td><td>6 months</td><td>9 months</td></tr>
+        <tr><td>Scheduled visits</td><td>Baseline, months 2, 6, 12</td><td>Baseline, months 1, 2, 4, 6, 9, 12</td></tr>
+        <tr><td>Extra form</td><td>–</td><td>ECG monitoring at each treatment visit</td></tr>
+        <tr><td>Repeating event</td><td>Unscheduled visit</td><td>Unscheduled visit</td></tr>
+        <tr><td>Repeating forms</td><td>Adverse events, medicines (Logs event)</td><td>Adverse events, medicines (Logs event)</td></tr>
+      </tbody></table></div>
+    <h3>Which form at which visit</h3>
+    <div class="tablewrap"><table class="matrix" id="evmatrix"></table></div>
+    <p class="note">✓ collected · <span class="s">S</span> participant survey · <span class="r">R</span> repeating form. B = baseline, M = month, Uns = Unscheduled.</p>
+  </section>
+
+  <!-- 05 -->
+  <section id="crfs">
+    <h2><span class="num">05</span>Case report forms</h2>
+    <p class="sub">The paper forms clinicians print, and the annotated version that maps every question to its REDCap variable.</p>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" class="tab active" data-pdf="docs/20261015_MEPI_REDCap_TBCARE_Paper_CRFs.pdf" aria-selected="true">Paper CRFs (to print)</button>
+      <button type="button" role="tab" class="tab" data-pdf="docs/20261015_MEPI_REDCap_TBCARE_Annotated_CRFs.pdf" aria-selected="false">Annotated CRFs (for the build)</button>
+    </div>
+    <div class="pdfwrap"><iframe id="pdfframe" src="docs/20261015_MEPI_REDCap_TBCARE_Paper_CRFs.pdf#view=FitH" title="TBCARE case report forms"></iframe></div>
+    <p class="dl"><a class="btn" id="pdfopen" href="docs/20261015_MEPI_REDCap_TBCARE_Paper_CRFs.pdf">Open in a new tab</a></p>
+    <div class="grid g3 forms">
+      <div class="card"><h4>F1–F3 · Baseline</h4><p>Screening, e-Consent, enrolment and demographics (identifiers flagged).</p></div>
+      <div class="card"><h4>F4–F6 · Visits</h4><p>Clinical assessment, laboratory, ECG (arm 2 only).</p></div>
+      <div class="card"><h4>F7 · Participant</h4><p>Quality of life survey, in two languages.</p></div>
+      <div class="card"><h4>F8–F9 · Logs</h4><p>Adverse events and medicines: one row = one repeat in REDCap.</p></div>
+      <div class="card"><h4>F10 · Outcome</h4><p>WHO treatment outcome at end of treatment; form locked after checking.</p></div>
+      <div class="card"><h4>F11 · Completion</h4><p>Study completion at month 12.</p></div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section id="dictionary">
+    <h2><span class="num">06</span>The data dictionary</h2>
+    <p class="sub">75 fields on 11 forms, built from the annotated CRFs. Upload it on the Dictionary page of your project. (Slide 49.)</p>
+    <div class="filters">
+      <label>Form <select id="ddform"><option value="">All forms</option></select></label>
+      <label>Search <input id="ddsearch" type="search" placeholder="variable, label, logic…"></label>
+      <span class="count" id="ddcount"></span>
+    </div>
+    <div class="tablewrap tall"><table class="dd" id="ddtable"><thead><tr><th>Variable</th><th>Form</th><th>Type</th><th>Label</th><th>Choices / calculation</th><th>Validation</th><th>Branching</th><th>Id.</th><th>Annotation</th></tr></thead><tbody></tbody></table></div>
+    <div class="grid g2">
+      <div class="card"><h4>Design choices worth noticing</h4><p>Identifiers flagged (so exports can be de-identified) · calculated fields not on paper · BMI uses <code>[first-event-name]</code> so one formula works in both arms · the four quality-of-life items are a matrix group.</p></div>
+      <div class="card"><h4>Phone numbers</h4><p>REDCap's built-in <code>phone</code> validation expects North American numbers, so the phone field has no validation and a field note with the international format.</p></div>
+    </div>
+    <p class="dl"><a class="btn" href="files/TBCARE_DataDictionary.csv" download>Download data dictionary (CSV)</a></p>
+  </section>
+
+  <!-- 07 -->
+  <section id="build">
+    <h2><span class="num">07</span>Build the project, in this order</h2>
+    <p class="sub">Events must exist before forms can be assigned to them, and repeating settings need the events. (Slide 50.)</p>
+    <ol class="buildlist">
+      <li><b>Create the project.</b> Purpose: Practice / Just for fun. Start from an empty project.</li>
+      <li><b>Upload the data dictionary.</b> Dictionary &gt; Upload <code>TBCARE_DataDictionary.csv</code>. REDCap lists any problems before changing anything.</li>
+      <li><b>Project Setup:</b> enable <i>longitudinal data collection</i> and <i>surveys</i>.</li>
+      <li><b>Arms and events.</b> Define My Events &gt; upload <code>TBCARE_arms.csv</code> and <code>TBCARE_events.csv</code> (or type them in: 2 arms, 15 events).</li>
+      <li><b>Designate instruments.</b> Upload <code>TBCARE_instrument_event_mapping.csv</code>, or tick the grid shown in section 04.</li>
+      <li><b>Repeating.</b> Project Setup &gt; Repeating instruments and events: make <i>Unscheduled</i> a repeating event (both arms) and <i>adverse_events</i> and <i>concomitant_medications</i> repeating instruments in <i>Logs</i>.</li>
+      <li><b>Data Access Groups.</b> Create <i>Antwerp</i> and <i>Mbarara</i>; their unique names must be <code>antwerp</code> and <code>mbarara</code> to match the data.</li>
+      <li><b>Surveys.</b> Enable <i>econsent</i> (with the e-Consent framework) and <i>quality_of_life</i> as surveys.</li>
+      <li><b>Test</b> with three fake records before importing anything; ask a colleague to try to break it.</li>
+    </ol>
+    <p class="note">The upload buttons for arms, events and mappings are on the Define My Events and Designate Instruments pages; their exact place can differ between REDCap versions. Typing them in works just as well.</p>
+  </section>
+
+  <!-- 08 -->
+  <section id="data">
+    <h2><span class="num">08</span>Simulated data to upload</h2>
+    <p class="sub">60 fake participants, 439 rows. Import with Applications &gt; Data Import Tool. (Slide 51.)</p>
+    <div class="stats" id="stats"></div>
+    <div class="filters">
+      <label>Event <select id="dsevent"><option value="">All events</option></select></label>
+      <label>Columns <select id="dscols">
+        <option value="key">Key columns</option><option value="clinical">Clinical</option><option value="lab">Laboratory</option>
+        <option value="logs">Logs (repeating)</option><option value="ident">Identifiers</option></select></label>
+      <span class="count" id="dscount"></span>
+    </div>
+    <div class="tablewrap tall"><table class="dd" id="dstable"></table></div>
+    <div class="grid g2">
+      <div class="card"><h4>What makes it work</h4><p><code>redcap_event_name</code> says which visit; <code>redcap_repeat_instrument</code> and <code>redcap_repeat_instance</code> say which repeat; <code>redcap_data_access_group</code> says which site. Dates are YYYY-MM-DD; checkboxes are one column per option (<code>symptoms___1</code> …).</p></div>
+      <div class="card"><h4>Not in the file</h4><p>Calculated, file and descriptive fields: REDCap calculates age, BMI, adherence, eligibility and outcome itself. If you did not create the site groups, delete the <code>redcap_data_access_group</code> column first.</p></div>
+    </div>
+    <div class="callout">
+      <p class="callout-title">Data quality exercise</p>
+      <p>Import <code>TBCARE_simulated_with_errors.csv</code> into a <b>second</b> practice project. It contains seven planted problems. Find them with REDCap's Data Quality rules, with REDCapDM, or with example 3 in the R section below. The answer key is a separate file, so you can try first.</p>
+    </div>
+    <p class="dl"><a class="btn" href="files/TBCARE_simulated_import.csv" download>Clean data (CSV)</a> <a class="btn ghost" href="files/TBCARE_simulated_with_errors.csv" download>Data with errors (CSV)</a> <a class="btn ghost" href="files/TBCARE_errors_answer_key.csv" download>Answer key</a></p>
+  </section>
+
+  <!-- 09 -->
+  <section id="linkage">
+    <h2><span class="num">09</span>Record linkage: TBCARE and the national TB register</h2>
+    <p class="sub">The register does not know the study ID, so records are linked on a pseudonymised key. (Slide 52.)</p>
+    <figure>
+      <div class="link-diagram">
+        <div class="lbox blue"><b>REDCap TBCARE</b><span>record_id, date of birth, sex, district, surname</span></div>
+        <div class="larrow">→</div>
+        <div class="lbox amber"><b>Linkage key</b><span>SHA-256 hash of date of birth | sex | district | first 2 letters of surname</span></div>
+        <div class="larrow">←</div>
+        <div class="lbox dark"><b>National TB register</b><span>notification_id, date of birth, sex, district, 2 letters</span></div>
+      </div>
+      <figcaption>Deterministic linkage: records with exactly the same key are linked. In the simulated data 56 of 60 participants link; 4 do not (typos in the date of birth, or never notified) and are checked by hand.</figcaption>
+    </figure>
+    <div class="grid g3">
+      <div class="card"><h4>Who does it</h4><p>The data manager, in a secure environment, because linkage needs identifiers.</p></div>
+      <div class="card"><h4>What leaves</h4><p>Only the link table (record_id ↔ notification_id) and agreed variables. No identifiers, no key.</p></div>
+      <div class="card"><h4>In your DMP</h4><p>Legal basis, data use agreement with the programme, and how unlinked records are handled.</p></div>
+    </div>
+    <p>Run it yourself with example 5 below, or download <code>03_record_linkage.R</code>.</p>
+    <p class="dl"><a class="btn ghost" href="files/TBCARE_national_TB_register.csv" download>National TB register extract (CSV)</a></p>
+  </section>
+
+  <!-- 10 -->
+  <section id="webr">
+    <h2><span class="num">10</span>R in your browser</h2>
+    <p class="sub">See the output of each step before you run it against REDCap. The code runs in your browser with <a href="https://docs.r-wasm.org/webr/latest/">webR</a>; nothing is sent anywhere.</p>
+    <div class="callout">
+      <p class="callout-title">How it works</p>
+      <p>The first time you press <b>Run</b>, the browser downloads R (about 15 MB, once). The examples read the simulated files instead of the API, so they show exactly what <code>redcap_read_oneshot()</code> would return for the TBCARE project. You can edit the code and run it again.</p>
+      <p id="webrstatus" class="status">R is not loaded yet.</p>
+    </div>
+    <div id="examples"></div>
+  </section>
+
+  <!-- 11 -->
+  <section id="packages">
+    <h2><span class="num">11</span>R packages for REDCap</h2>
+    <p class="sub">Four packages, from reading data to a full pipeline. (Slides 53–57.)</p>
+    <div class="pkgs">
+      <div class="pkg">
+        <h4>REDCapR <span class="tag">CRAN</span></h4>
+        <p>Reads and writes REDCap data and metadata through the API, in batches or one request. Maintained by the OUHSC BBMC.</p>
+        <pre><code>install.packages("REDCapR")
+library(REDCapR)
+ds <- redcap_read_oneshot(uri, token)$data
+meta <- redcap_metadata_read(uri, token)$data</code></pre>
+        <p class="links"><a href="https://ouhscbbmc.github.io/REDCapR/">Documentation</a> · <a href="https://cran.r-project.org/web/packages/REDCapR/index.html">CRAN</a> · <a href="files/R/01_redcapr_read.R" download>01_redcapr_read.R</a> · <a href="files/R/02_redcapr_write.R" download>02_redcapr_write.R</a></p>
+      </div>
+      <div class="pkg">
+        <h4>REDCapDM <span class="tag">CRAN 1.0.1</span></h4>
+        <p>Data management for REDCap projects: transforms the export, finds queries (impossible or missing values), lists missing events and exports query reports for the sites.</p>
+        <pre><code>install.packages("REDCapDM")
+library(REDCapDM)
+tb <- rd_transform(redcap_data(uri = uri, token = token))
+q  <- rd_query(tb, variables = "weight_kg",
+               expression = "x > 200", event = "baseline_arm_1")</code></pre>
+        <p class="links"><a href="https://bruigtp.github.io/REDCapDM/">Documentation</a> · <a href="https://cran.r-project.org/web/packages/REDCapDM/index.html">CRAN</a> · <a href="files/R/04_redcapdm_queries.R" download>04_redcapdm_queries.R</a></p>
+      </div>
+      <div class="pkg">
+        <h4>REDCapSync <span class="tag">CRAN</span></h4>
+        <p>Keeps a local, standardised copy of a project. Each sync reads the REDCap log and re-downloads only the records that changed.</p>
+        <pre><code>install.packages("REDCapSync")
+project <- REDCapSync::setup_project(project_name = "TBCARE",
+  redcap_uri = uri, dir_path = getwd())
+project$sync()</code></pre>
+        <p class="links"><a href="https://thecodingdocs.github.io/REDCapSync/">Documentation</a> · <a href="https://r-consortium.org/posts/redcapsync-and-rosyredcap-for-standardized-data-pipelines-and-exploratory-data-analysis/">R Consortium article</a> · <a href="files/R/05_redcapsync_rosyredcap.R" download>05_redcapsync_rosyredcap.R</a></p>
+      </div>
+      <div class="pkg">
+        <h4>RosyREDCap <span class="tag">GitHub</span></h4>
+        <p>A Shiny app on top of REDCapSync projects for exploratory analysis: switch projects, de-identify, make quick plots.</p>
+        <pre><code>remotes::install_github("thecodingdocs/RosyREDCap")
+RosyREDCap::run_RosyREDCap()</code></pre>
+        <p class="warnline">Its documentation says it is not yet suited to multi-arm or very large projects. TBCARE has two arms: use it for a first look only.</p>
+        <p class="links"><a href="https://thecodingdocs.github.io/RosyREDCap/">Documentation</a></p>
+      </div>
+    </div>
+    <div class="callout warn">
+      <p class="callout-title">API tokens are passwords</p>
+      <p>Put your token in <code>~/.Renviron</code> (for example <code>REDCAP_TBCARE_TOKEN=…</code>) and read it with <code>Sys.getenv()</code>. Never in a script, on GitHub, in an e-mail or in an AI chat.</p>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section id="downloads">
+    <h2><span class="num">12</span>All downloads</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>File</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td><a href="docs/20261026_MEPI_REDCap_Training_2026-27.pdf">Slides (PDF)</a> · <a href="docs/20261026_MEPI_REDCap_Training_2026-27.pptx">PowerPoint</a></td><td>REDCap training, 64 slides</td></tr>
+        <tr><td><a href="docs/20261015_MEPI_REDCap_TBCARE_Paper_CRFs.pdf">Paper CRFs</a></td><td>Blank forms clinicians print and fill in</td></tr>
+        <tr><td><a href="docs/20261015_MEPI_REDCap_TBCARE_Annotated_CRFs.pdf">Annotated CRFs</a></td><td>Every question with its variable, type, codes, validation, branching</td></tr>
+        <tr><td><a href="files/TBCARE_DataDictionary.csv" download>TBCARE_DataDictionary.csv</a></td><td>REDCap data dictionary, 75 fields, 11 forms</td></tr>
+        <tr><td><a href="files/TBCARE_arms.csv" download>TBCARE_arms.csv</a> · <a href="files/TBCARE_events.csv" download>TBCARE_events.csv</a> · <a href="files/TBCARE_instrument_event_mapping.csv" download>…mapping.csv</a></td><td>Arms, events and which form at which event</td></tr>
+        <tr><td><a href="files/TBCARE_simulated_import.csv" download>TBCARE_simulated_import.csv</a></td><td>Clean simulated data, ready for the Data Import Tool</td></tr>
+        <tr><td><a href="files/TBCARE_simulated_with_errors.csv" download>TBCARE_simulated_with_errors.csv</a> · <a href="files/TBCARE_errors_answer_key.csv" download>answer key</a></td><td>Same data with seven planted errors</td></tr>
+        <tr><td><a href="files/TBCARE_national_TB_register.csv" download>TBCARE_national_TB_register.csv</a></td><td>Register extract for the record-linkage exercise</td></tr>
+        <tr><td><a href="files/R/01_redcapr_read.R" download>01</a> · <a href="files/R/02_redcapr_write.R" download>02</a> · <a href="files/R/03_record_linkage.R" download>03</a> · <a href="files/R/04_redcapdm_queries.R" download>04</a> · <a href="files/R/05_redcapsync_rosyredcap.R" download>05</a></td><td>R scripts: read, write, link, queries, sync</td></tr>
+      </tbody></table></div>
+  </section>
+
+  <!-- 13 -->
+  <section id="refs">
+    <h2><span class="num">13</span>Sources</h2>
+    <ol class="refs">
+      <li>REDCap training videos. projectredcap.org/resources/videos</li>
+      <li>Beasley WH, et al. REDCapR: interaction between R and REDCap. <a href="https://ouhscbbmc.github.io/REDCapR/">ouhscbbmc.github.io/REDCapR</a>; <a href="https://cran.r-project.org/web/packages/REDCapR/index.html">CRAN</a></li>
+      <li>Carmezim J, Satorra P, Peñafiel J, García E, Pallarès N, Tebé C. REDCapDM: REDCap data management, version 1.0.1 (2026). <a href="https://bruigtp.github.io/REDCapDM/">bruigtp.github.io/REDCapDM</a></li>
+      <li>Rose B. REDCapSync and RosyREDCap. <a href="https://thecodingdocs.github.io/REDCapSync/">thecodingdocs.github.io/REDCapSync</a>; R Consortium, <a href="https://r-consortium.org/posts/redcapsync-and-rosyredcap-for-standardized-data-pipelines-and-exploratory-data-analysis/">REDCapSync and RosyREDCap for standardized data pipelines and exploratory data analysis</a></li>
+      <li>webR: R in the browser. <a href="https://docs.r-wasm.org/webr/latest/">docs.r-wasm.org/webr</a></li>
+      <li>TBCARE is fictional. All data on this page are simulated by the authors for teaching.</li>
+    </ol>
+  </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    Course work for the Research Data Management course, Master of Epidemiology (MEPI), University of Antwerp, 2026–27. Authors: Bernard Isekah Osangir, Tafadzwa Maseko and Prof. Dr. Steven Abrams. TBCARE is a fictional study; all data are simulated. <a href="../">Pre-course reading</a> · <a href="https://bosangir.github.io/DMP/">Data Management Plans</a>.
+  </div>
+</footer>
+<script>
+window.SLIDE_TITLES = ["REDCap training", "Learning objectives", "Six topics, then a hands-on lab", "The official REDCap videos, and where they fit today", "Topic 1: Getting started", "What is REDCap?", "REDCap puts your DMP into practice", "The project lifecycle: test first, then go live", "Creating a project", "The Project Setup page is your checklist", "Topic 2: Building instruments", "Records, instruments and fields", "The Online Designer: add a field", "The data dictionary: your project as a spreadsheet", "Field types: the right type prevents errors", "Validation: stop errors at the moment of entry", "Branching logic: show a question only when it applies", "Calculated fields, action tags and field embedding", "Design rules that save you weeks later", "Topic 3: Choosing a project type", "Five project types", "Which project type fits your study?", "Traditional and single-survey projects", "Longitudinal, scheduling and operations projects", "Topic 4: Longitudinal and repeating data", "Arms and events", "Designate instruments: what is collected when", "Repeating instruments and repeating events", "Scheduling and the Calendar", "Topic 5: Data entry, quality and multi-site work", "Basic data entry: the Record Status Dashboard", "Surveys: let participants enter their own data", "Data Access Groups for multi-site projects", "Queries: the Data Resolution Workflow", "Data Quality rules: find errors that slipped through", "Locking records and e-signatures", "Collecting offline: the REDCap Mobile App and MyCap", "Topic 6: Users, exports and going live", "The Applications menu", "User rights: give each role only what it needs", "Logging: every change is recorded", "Reports and de-identified exports", "The API: reproducible data pipelines", "Before you move to Production: checklist", "AI tools inside REDCap (version 15)", "TBCARE: from paper CRF to analysis in R", "The roadmap of a REDCap database", "TBCARE design: two arms, repeating events", "Designing the TBCARE data dictionary", "Build TBCARE in this order", "Uploading the simulated data", "Record linking: TBCARE and the national TB register", "From REDCap to R with REDCapR", "What a longitudinal export looks like in R", "REDCapDM: queries and missing events", "REDCapSync and RosyREDCap: standardised pipelines", "A reproducible TBCARE pipeline", "Try it now: R in your browser", "Hands-on lab: build TBCARE in 60 minutes", "Lab check: did it work?", "Common mistakes, and how to avoid them", "Take-home messages", "Resources", "Questions?"];
+window.R_EXAMPLES = [{"title": "What redcap_read_oneshot() returns", "intro": "The TBCARE export in R: one row per participant per event, plus one row per repeat. These are the columns you will work with.", "redcap": "library(REDCapR)\nuri   <- \"https://redcap.uantwerpen.be/api/\"\ntoken <- Sys.getenv(\"REDCAP_TBCARE_TOKEN\")\nds <- redcap_read_oneshot(uri, token)$data", "code": "ds <- read.csv(\"tbcare.csv\", na.strings = \"\")   # same shape as redcap_read_oneshot()\ndim(ds)                                         # rows x columns\ntable(ds$redcap_event_name)\nhead(ds[, c(\"record_id\", \"redcap_event_name\", \"redcap_repeat_instrument\",\n            \"redcap_repeat_instance\", \"redcap_data_access_group\", \"weight_kg\")], 10)"}, {"title": "Split by event and by repeating form", "intro": "Baseline gives one row per participant. Adverse events and unscheduled visits are repeats, so a participant can have several rows.", "redcap": "base <- redcap_read(redcap_uri = uri, token = token,\n                    events = c(\"baseline_arm_1\", \"baseline_arm_2\"))$data\n# REDCapDM: rd_split(rd_transform(dataset), by = \"event\")", "code": "ds <- read.csv(\"tbcare.csv\", na.strings = \"\")\nbase <- subset(ds, grepl(\"^baseline\", redcap_event_name))\nbase$arm <- sub(\".*_arm_\", \"\", base$redcap_event_name)\ntable(arm = base$arm, site = base$redcap_data_access_group)\n\nae <- subset(ds, redcap_repeat_instrument == \"adverse_events\")\ntable(grade = factor(ae$ae_grade, 1:5, c(\"Mild\", \"Moderate\", \"Severe\", \"Life-threatening\", \"Death\")))\ntable(serious = ae$ae_serious)\n\nuns <- subset(ds, grepl(\"^unscheduled\", redcap_event_name))\ntable(instance = uns$redcap_repeat_instance)"}, {"title": "Find the planted errors (like rd_query)", "intro": "Seven problems are hidden in tbcare_errors.csv. These checks find them; in REDCap you would write the same rules in the Data Quality module, or use REDCapDM.", "redcapLabel": "The same idea with REDCapDM", "redcap": "tb <- rd_transform(redcap_data(uri = uri, token = token))\nq <- rd_query(tb, variables = c(\"weight_kg\", \"temp_c\"),\n              expression = c(\"x > 200 | x < 25\", \"x > 42 | x < 34\"),\n              event = \"baseline_arm_1\")\nq$queries", "code": "dq <- read.csv(\"tbcare_errors.csv\", na.strings = \"\")\nflag <- function(rule, rows) if (nrow(rows)) data.frame(rule = rule, rows[, c(\"record_id\", \"redcap_event_name\")])\nbase  <- subset(dq, grepl(\"^baseline\", redcap_event_name))\nenrol <- setNames(base$enrol_date, base$record_id)\nv <- subset(dq, !is.na(visit_date))\nv$enrol <- enrol[v$record_id]\nkey <- c(\"record_id\", \"redcap_event_name\", \"redcap_repeat_instrument\", \"redcap_repeat_instance\")\n\nissues <- rbind(\n  flag(\"weight outside 25-200 kg\",      subset(dq, weight_kg < 25 | weight_kg > 200)),\n  flag(\"temperature outside 34-42 C\",   subset(dq, temp_c < 34 | temp_c > 42)),\n  flag(\"pregnant, but male\",            subset(dq, sex == 1 & pregnant == 1)),\n  flag(\"visit before enrolment\",        subset(v, as.Date(visit_date) < as.Date(enrol))),\n  flag(\"died, no date of death\",        subset(dq, tx_outcome == 4 & is.na(death_date))),\n  flag(\"medicine stopped before start\", subset(dq, as.Date(med_stop) < as.Date(med_start))),\n  flag(\"duplicate row\",                 dq[duplicated(dq[, key]), ])\n)\nissues"}, {"title": "Missing visits (like rd_event)", "intro": "Who is missing a scheduled visit, and why? Compare each participant's visits with the schedule of their arm, then look at the treatment outcome.", "redcapLabel": "The same idea with REDCapDM", "redcap": "me <- rd_event(tb, event = \"month_6_arm_1\")\nme$results", "code": "ds <- read.csv(\"tbcare.csv\", na.strings = \"\")\nbase <- subset(ds, grepl(\"^baseline\", redcap_event_name))\narm  <- setNames(sub(\".*_arm_\", \"\", base$redcap_event_name), base$record_id)\nsched <- list(\"1\" = c(\"month_2\", \"month_6\", \"month_12\"),\n              \"2\" = c(\"month_1\", \"month_2\", \"month_4\", \"month_6\", \"month_9\", \"month_12\"))\nseen <- subset(ds, !is.na(visit_date) & !grepl(\"unscheduled\", redcap_event_name))\nseen$visit <- sub(\"_arm_.*\", \"\", seen$redcap_event_name)\n\nmiss <- do.call(rbind, lapply(names(arm), function(id) {\n  m <- setdiff(sched[[arm[[id]]]], seen$visit[seen$record_id == id])\n  if (length(m)) data.frame(record_id = id, arm = arm[[id]], missing = paste(m, collapse = \", \"))\n}))\noc <- subset(ds, !is.na(tx_outcome))\nlab <- c(\"Cured\", \"Completed\", \"Failed\", \"Died\", \"Lost to follow-up\", \"Not evaluated\")\nmiss$outcome <- lab[oc$tx_outcome[match(miss$record_id, oc$record_id)]]\nmiss"}, {"title": "Record linkage with the national TB register", "intro": "Deterministic linkage on date of birth, sex, district and the first two letters of the surname. The downloadable script hashes the key with SHA-256; here the key is shown in plain text so you can see why some records do not link.", "redcapLabel": "In the downloadable script (03_record_linkage.R)", "redcap": "library(digest)\nmake_key <- function(dob, sex, district, ln2)\n  vapply(paste(dob, sex, district, ln2, sep = \"|\"), digest, \"\",\n         algo = \"sha256\", serialize = FALSE)", "code": "ds  <- read.csv(\"tbcare.csv\", na.strings = \"\", colClasses = \"character\")\nreg <- read.csv(\"register.csv\", colClasses = \"character\")\nbase <- subset(ds, grepl(\"^baseline\", redcap_event_name))\nbase$key <- with(base, paste(dob, sex, district, toupper(substr(last_name, 1, 2)), sep = \"|\"))\nreg$key  <- with(reg,  paste(dob, sex, district, last_name_2, sep = \"|\"))\n\nlink <- merge(base[, c(\"record_id\", \"key\")], reg[, c(\"notification_id\", \"key\")], by = \"key\", all.x = TRUE)\ncat(\"Participants:\", nrow(base), \"  linked:\", sum(!is.na(link$notification_id)),\n    \"  not linked:\", sum(is.na(link$notification_id)), \"\\n\\n\")\n\n# Not linked: is there a near match (same sex, district and letters, different date of birth)?\nnl <- subset(base, record_id %in% link$record_id[is.na(link$notification_id)])\nfor (i in seq_len(nrow(nl))) {\n  near <- subset(reg, sex == nl$sex[i] & district == nl$district[i] &\n                      last_name_2 == toupper(substr(nl$last_name[i], 1, 2)))\n  cat(nl$record_id[i], \" dob in REDCap:\", nl$dob[i], \"  near matches in register:\",\n      if (nrow(near)) paste(near$dob, collapse = \", \") else \"none\", \"\\n\")\n}"}, {"title": "Plot: weight during follow-up, by arm", "intro": "Mean weight at each scheduled visit. Weight gain is a sign of treatment response.", "redcap": null, "code": "ds <- read.csv(\"tbcare.csv\", na.strings = \"\")\nv <- subset(ds, !is.na(weight_kg) & !grepl(\"unscheduled\", redcap_event_name))\nv$arm   <- sub(\".*_arm_\", \"\", v$redcap_event_name)\nmonth   <- c(baseline = 0, month_1 = 1, month_2 = 2, month_4 = 4, month_6 = 6, month_9 = 9, month_12 = 12)\nv$month <- month[sub(\"_arm_.*\", \"\", v$redcap_event_name)]\nm <- aggregate(weight_kg ~ arm + month, data = v, FUN = mean)\n\ncol <- c(\"1\" = \"#1E88C8\", \"2\" = \"#C8102E\")\nplot(NA, xlim = c(0, 12), ylim = range(m$weight_kg) + c(-1, 1), xaxt = \"n\",\n     xlab = \"Month\", ylab = \"Mean weight (kg)\", main = \"TBCARE: weight during follow-up\")\naxis(1, at = month)\nfor (a in c(\"1\", \"2\")) with(subset(m, arm == a), lines(month, weight_kg, type = \"b\", pch = 19, lwd = 2, col = col[a]))\nlegend(\"topleft\", c(\"Arm 1 · drug-susceptible\", \"Arm 2 · drug-resistant\"), col = col, lwd = 2, pch = 19, bty = \"n\")"}, {"title": "Treatment outcome by arm", "intro": "WHO treatment outcomes, and treatment success (cured or completed) by arm.", "redcap": "oc <- redcap_read(redcap_uri = uri, token = token, forms = \"treatment_outcome\",\n                  raw_or_label = \"label\")$data", "code": "ds <- read.csv(\"tbcare.csv\", na.strings = \"\")\noc <- subset(ds, !is.na(tx_outcome))\noc$arm <- factor(sub(\".*_arm_\", \"\", oc$redcap_event_name), 1:2, c(\"DS-TB\", \"DR-TB\"))\nlab <- c(\"Cured\", \"Completed\", \"Failed\", \"Died\", \"Lost to follow-up\", \"Not evaluated\")\ntable(arm = oc$arm, outcome = factor(oc$tx_outcome, 1:6, lab))\n\nsuccess <- oc$tx_outcome %in% c(1, 2)\nround(100 * tapply(success, oc$arm, mean), 1)    # % treatment success"}];
+</script>
+<script src="app.js"></script>
+</body>
+</html>

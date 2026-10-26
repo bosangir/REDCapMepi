@@ -1,0 +1,16 @@
+event_name,arm_num,day_offset,offset_min,offset_max,unique_event_name,custom_event_label
+Baseline,1,0,0,0,baseline_arm_1,
+Month 2,1,60,7,7,month_2_arm_1,
+Month 6,1,180,14,14,month_6_arm_1,End of treatment
+Month 12,1,365,14,14,month_12_arm_1,
+Unscheduled,1,0,0,0,unscheduled_arm_1,Repeating event
+Logs,1,0,0,0,logs_arm_1,Adverse events and medicines
+Baseline,2,0,0,0,baseline_arm_2,
+Month 1,2,30,7,7,month_1_arm_2,
+Month 2,2,60,7,7,month_2_arm_2,
+Month 4,2,120,14,14,month_4_arm_2,
+Month 6,2,180,14,14,month_6_arm_2,
+Month 9,2,270,14,14,month_9_arm_2,End of treatment
+Month 12,2,365,14,14,month_12_arm_2,
+Unscheduled,2,0,0,0,unscheduled_arm_2,Repeating event
+Logs,2,0,0,0,logs_arm_2,Adverse events and medicines

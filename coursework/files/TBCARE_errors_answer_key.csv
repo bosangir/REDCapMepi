@@ -1,0 +1,8 @@
+record_id,event,variable,problem
+2-002,baseline,weight_kg,615 kg: decimal point missing (61.5)
+2-006,baseline,pregnant,pregnant = Yes for a male participant
+2-004,month_2,visit_date,visit before enrolment
+1-014,end of treatment,death_date,"died, but no date of death"
+1-001,logs,med_stop,stop date before start date
+2-007,baseline,temp_c,3.8 °C: decimal error (38.0)
+1-001,baseline,(row),duplicate baseline row

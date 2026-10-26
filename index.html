@@ -41,6 +41,12 @@ a:hover{color:var(--red)}
 .topbar small{display:block;font-weight:400;color:var(--grey);font-size:13px}
 .theme-toggle{margin-left:auto;font:500 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--panel);color:var(--navy);border:0;padding:8px 14px;cursor:pointer}
 .theme-toggle:hover{color:var(--red)}
+.sitenav{display:flex;gap:4px;margin-left:auto}
+.sitenav a{font-size:15px;font-weight:500;text-decoration:none;color:var(--navy);padding:8px 12px}
+.sitenav a[aria-current="page"]{color:var(--red);box-shadow:inset 0 -3px 0 var(--red)}
+.sitenav a:hover{color:var(--red)}
+.sitenav + .theme-toggle{margin-left:8px}
+@media (max-width:560px){.sitenav a{padding:8px 6px;font-size:14px}}
 /* Practice quiz */
 .pq{background:var(--panel);padding:24px;margin:8px 0 36px;max-width:76ch}
 .pq-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:15px;color:var(--grey);margin-bottom:10px}
@@ -164,7 +170,7 @@ pre code{font-size:inherit}
 </head>
 <body>
 
-<div class="topbar"><div class="wrap"><span>University of Antwerp<small>Master of Epidemiology · Research Data Management</small></span><button class="theme-toggle" type="button" id="themeToggle" aria-label="Switch between light and dark mode">Dark mode</button></div></div>
+<div class="topbar"><div class="wrap"><span>University of Antwerp<small>Master of Epidemiology · Research Data Management</small></span><nav class="sitenav" aria-label="Site"><a href="./" aria-current="page">Pre-course reading</a><a href="coursework/">Course work</a></nav><button class="theme-toggle" type="button" id="themeToggle" aria-label="Switch between light and dark mode">Dark mode</button></div></div>
 
 <header class="hero">
   <div class="wrap">
