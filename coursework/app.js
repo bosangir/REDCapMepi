@@ -205,7 +205,7 @@
       "<div class='rbar'><button type='button' class='btn run'>Run</button><button type='button' class='btn ghost reset'>Reset code</button><span class='rtime'></span></div>" +
       "<pre class='rout' hidden></pre><div class='rplot'></div>";
     box.appendChild(d);
-    var ta = d.querySelector("textarea"); ta.value = ex.code; ta.rows = Math.min(22, ex.code.split("\n").length + 1);
+    var ta = d.querySelector("textarea"); ta.value = ex.code; ta.rows = Math.min(40, ex.code.split("\n").length + 1);
     ta.addEventListener("keydown", function (e) {
       if (e.key === "Tab") { e.preventDefault(); var s = ta.selectionStart; ta.value = ta.value.slice(0, s) + "  " + ta.value.slice(ta.selectionEnd); ta.selectionStart = ta.selectionEnd = s + 2; }
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); d.querySelector(".run").click(); }
