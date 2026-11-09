@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REDCap: Homework 2026-27</title>
+<meta name="description" content="REDCap homework 2026-27 for the Research Data Management course, Master of Epidemiology, University of Antwerp: Part 2 slides, the TUMAINI multi-centre study, CRFs, Data Access Groups, instructions and deadline.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Colours and type follow uantwerpen.be: navy text, red accent, light-grey panels.
+   UAntwerp uses ITC Officina Sans (licensed); Fira Sans is the closest free match. */
+:root{
+  --navy:#1B365F; --red:#D32737; --grey:#6D6A6A; --panel:#F7F7F7; --line:#E6E6E6; --white:#ffffff; --link:#1B365F;
+  /* aliases used by the inline diagrams */
+  --bg:var(--white); --surface:var(--white); --surface-2:var(--panel); --text:var(--navy); --muted:var(--grey);
+  --accent:var(--navy); --accent-soft:var(--panel); --accent-2:var(--red); --accent-2-soft:var(--panel); --gold:var(--navy); --gold-soft:var(--panel);
+  --footer-bg:#1B365F; --footer-text:#ffffff; --ok:#1E7B4F; --ok-soft:#E5F3EC; --bad-soft:#FBE9EB;
+}
+/* Dark mode: same navy/red identity, light text on deep navy */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#E6ECF4; --red:#FF6B74; --grey:#A9B4C2; --panel:#17263C; --line:#2A3C57; --white:#0E1A2B; --link:#E6ECF4;
+    --footer-bg:#08111D; --footer-text:#E6ECF4; --ok:#5FD39A; --ok-soft:#173A2C; --bad-soft:#3E1D24;
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#E6ECF4; --red:#FF6B74; --grey:#A9B4C2; --panel:#17263C; --line:#2A3C57; --white:#0E1A2B; --link:#E6ECF4;
+  --footer-bg:#08111D; --footer-text:#E6ECF4; --ok:#5FD39A; --ok-soft:#173A2C; --bad-soft:#3E1D24;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--navy);font:18px/28px "Fira Sans",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:underline;text-underline-offset:3px}
+a:hover{color:var(--red)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.topbar{border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;height:64px;font-weight:700;font-size:16px;line-height:1.15}
+.topbar .mark{width:30px;height:30px;background:var(--red);border-radius:4px;flex:none}
+.topbar small{display:block;font-weight:400;color:var(--grey);font-size:13px}
+.theme-toggle{margin-left:auto;font:500 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--panel);color:var(--navy);border:0;padding:8px 14px;cursor:pointer}
+.theme-toggle:hover{color:var(--red)}
+.sitenav{display:flex;gap:4px;margin-left:auto}
+.sitenav a{font-size:15px;font-weight:500;text-decoration:none;color:var(--navy);padding:8px 12px}
+.sitenav a[aria-current="page"]{color:var(--red);box-shadow:inset 0 -3px 0 var(--red)}
+.sitenav a:hover{color:var(--red)}
+.sitenav + .theme-toggle{margin-left:8px}
+@media (max-width:560px){.sitenav a{padding:8px 6px;font-size:14px}}
+/* Practice quiz */
+.pq{background:var(--panel);padding:24px;margin:8px 0 36px;max-width:76ch}
+.pq-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:15px;color:var(--grey);margin-bottom:10px}
+.pq-top b{color:var(--navy)}
+.pq-bar{height:6px;background:var(--line);margin-bottom:20px}
+.pq-bar span{display:block;height:100%;width:0;background:var(--red);transition:width .4s ease}
+.pq-card{transition:opacity .35s ease, transform .35s ease}
+.pq-card.out{opacity:0;transform:translateY(-12px)}
+.pq-card.in{opacity:0;transform:translateY(12px)}
+.pq-q{font-size:21px;line-height:30px;font-weight:700;margin:0 0 16px}
+.pq-opts{display:grid;gap:10px}
+.pq-opt{text-align:left;font:inherit;font-size:17px;line-height:25px;color:var(--navy);background:var(--white);border:2px solid transparent;padding:12px 16px;cursor:pointer}
+.pq-opt:hover:not(:disabled){border-color:var(--navy)}
+.pq-opt:disabled{cursor:default}
+.pq-opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.pq-opt.wrong{border-color:var(--red);background:var(--bad-soft)}
+.pq-fb{margin-top:16px;padding:14px 16px;background:var(--white);font-size:17px;line-height:26px}
+.pq-fb[hidden]{display:none}
+.pq-fb .yay{display:inline-block;font-size:26px;font-weight:700;color:var(--ok);animation:pop .5s ease}
+.pq-fb .nope{font-weight:700;color:var(--red)}
+.pq-btn{font:700 16px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--red);color:#fff;border:0;padding:11px 20px;cursor:pointer;margin-top:14px}
+.pq-btn:hover{filter:brightness(1.08)}
+.pq-end{text-align:center;padding:12px 0}
+.pq-end .big{font-size:40px;line-height:48px;font-weight:700;margin:6px 0}
+.pq-end .score{font-size:20px;margin:0 0 6px}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.15);opacity:1}100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.pq-card,.pq-bar span{transition:none}.pq-fb .yay{animation:none}}
+header.hero{background:var(--panel)}
+.hero .wrap{padding-top:48px;padding-bottom:44px}
+.eyebrow{font-weight:700;font-size:15px;color:var(--red);margin:0 0 12px}
+h1{font-size:clamp(32px,4.6vw,46px);line-height:1.12;font-weight:700;margin:0 0 16px;max-width:24ch}
+.lede{font-size:20px;line-height:30px;max-width:62ch;margin:0 0 24px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:16px;line-height:24px}
+.meta b{font-weight:700}
+.authors{font-size:18px;margin:0 0 14px}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:56px;padding-top:44px;padding-bottom:80px}
+nav.toc{position:sticky;top:20px;align-self:start;font-size:16px;line-height:22px;max-height:calc(100vh - 40px);overflow:auto}
+nav.toc p{font-weight:700;margin:0 0 10px}
+nav.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
+nav.toc li{counter-increment:t;margin:0}
+nav.toc a{display:flex;gap:10px;padding:6px 0;color:var(--navy);text-decoration:none}
+nav.toc a::before{content:counter(t,decimal-leading-zero);color:var(--grey);font-variant-numeric:tabular-nums}
+nav.toc a:hover,nav.toc a.active{color:var(--red)}
+nav.toc a.active{font-weight:700}
+nav.toc a.active::before{color:var(--red)}
+main{min-width:0}
+section{margin-bottom:60px;scroll-margin-top:16px}
+h2{font-size:32px;line-height:40px;font-weight:700;margin:0 0 6px}
+h2 .num{color:var(--red);margin-right:12px;font-variant-numeric:tabular-nums}
+.sub{color:var(--grey);font-size:19px;margin:0 0 22px}
+h3{font-size:22px;line-height:30px;font-weight:700;margin:32px 0 8px}
+p{margin:0 0 16px;max-width:72ch}
+ul,ol{max-width:70ch;padding-left:22px}
+li{margin-bottom:6px}
+strong,b{font-weight:700}
+code{font-family:Consolas,"Courier New",monospace;font-size:.9em}
+sup{line-height:0;vertical-align:super}
+sup.cite a{font-weight:700;font-size:12px;text-decoration:none;padding:0 2px;color:var(--red)}
+.callout{background:var(--panel);padding:20px 24px;margin:22px 0;max-width:76ch}
+.callout-title{font-weight:700;font-size:18px;margin:0 0 6px}
+.callout p:last-child,.callout ul:last-child{margin-bottom:0}
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:var(--panel);padding:18px 20px}
+.card h4{margin:0 0 6px;font-size:19px;font-weight:700}
+.card p{font-size:16px;line-height:24px;margin:0}
+figure{margin:28px 0;background:var(--panel);padding:24px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:15px;line-height:22px;color:var(--grey);margin-top:12px}
+.tablewrap{overflow-x:auto;margin:20px 0}
+table{border-collapse:collapse;width:100%;font-size:16px;line-height:24px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font-weight:700;white-space:nowrap;border-bottom:2px solid var(--navy)}
+td:first-child{font-weight:700;white-space:nowrap}
+.tag{display:inline-block;font-size:13px;font-weight:400;color:var(--grey)}
+.sections{display:grid;gap:16px;margin:20px 0}
+.sec{display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;background:var(--panel);padding:20px}
+.sec .n{font-weight:700;font-size:30px;line-height:1;color:var(--red)}
+.sec h4{font-size:20px;font-weight:700;margin:0 0 6px}
+.sec p{font-size:17px;line-height:26px;margin:0 0 8px}
+.sec .ex{font-size:16px;line-height:24px;background:var(--white);padding:12px 14px;margin-top:8px}
+.sec .ex b{font-size:14px;color:var(--red)}
+.checklist{list-style:none;padding:0;max-width:72ch}
+.checklist li{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--panel);margin-bottom:8px}
+.checklist input{margin-top:6px;width:18px;height:18px;accent-color:var(--red);flex:none}
+.checklist label{cursor:pointer}
+.checklist input:checked + label{color:var(--grey);text-decoration:line-through}
+details{background:var(--panel);margin-bottom:8px;max-width:76ch}
+summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;display:flex;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";color:var(--red);font-weight:700;width:12px;flex:none}
+details[open] summary::before{content:"\2013"}
+details .ans{padding:0 18px 16px 40px;font-size:17px;line-height:26px}
+details .ans p{margin-bottom:8px}
+dl.gloss{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:10px 22px;max-width:80ch}
+dl.gloss dt{font-weight:700}
+dl.gloss dd{margin:0;font-size:17px;line-height:26px}
+ol.refs{font-size:16px;line-height:24px;max-width:none;padding-left:28px}
+ol.refs li{margin-bottom:10px;scroll-margin-top:16px;overflow-wrap:anywhere}
+ol.refs li:target{background:var(--panel)}
+footer{background:var(--footer-bg);color:var(--footer-text);font-size:16px;line-height:24px;padding:32px 0 44px}
+footer a{color:var(--footer-text)}
+pre{background:var(--panel);padding:14px 16px;overflow-x:auto;font-size:15px;line-height:22px;margin:0 0 18px;max-width:76ch}
+pre code{font-size:inherit}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:20px}
+  nav.toc{position:static;max-height:none;background:var(--panel);padding:16px}
+  .g3,.g2{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  body{font-size:17px;line-height:26px}
+  .lede{font-size:18px;line-height:27px}
+  h2{font-size:27px;line-height:34px}
+  .sec{grid-template-columns:minmax(0,1fr);gap:6px}
+  dl.gloss{grid-template-columns:minmax(0,1fr);gap:2px}
+  dl.gloss dd{margin-bottom:10px}
+}
+@media print{nav.toc,.topbar{display:none}.layout{display:block}}
+
+/* ---- course-work page additions ---- */
+.sitenav{display:flex;gap:4px;margin-left:auto}
+.sitenav a{font-size:15px;font-weight:500;text-decoration:none;color:var(--navy);padding:8px 12px}
+.sitenav a[aria-current="page"]{color:var(--red);box-shadow:inset 0 -3px 0 var(--red)}
+.sitenav + .theme-toggle{margin-left:8px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:8px 0 20px}
+.step{display:flex;gap:14px;background:var(--panel);padding:16px 18px}
+.step .n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;font-weight:700;display:grid;place-items:center}
+.step h4{margin:2px 0 4px;font-size:18px}.step p{margin:0;font-size:15px;line-height:22px}
+.callout.warn{background:var(--bad-soft)}
+.btn{display:inline-block;font:700 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--red);color:#fff;border:0;padding:10px 16px;text-decoration:none;cursor:pointer;margin:0 6px 6px 0}
+.btn:hover{color:#fff;filter:brightness(1.08)}
+.btn.ghost{background:var(--panel);color:var(--navy)}
+.btn.ghost:hover{color:var(--red)}
+.btn:disabled{opacity:.6;cursor:wait}
+.dl{margin-top:14px}
+/* slide viewer */
+.viewer{background:var(--panel);padding:14px;outline:none}
+.viewer:focus-visible{box-shadow:0 0 0 3px var(--red)}
+.viewer:fullscreen{background:#111;display:flex;flex-direction:column;justify-content:center;padding:20px}
+.viewer:fullscreen .vtitle,.viewer:fullscreen .vcount{color:#eee}
+.vbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:10px}
+.vbar select{font:inherit;font-size:15px;padding:6px 8px;background:var(--white);color:var(--navy);border:1px solid var(--line);max-width:100%}
+.vcount{font-size:15px;color:var(--grey);margin-left:auto;font-variant-numeric:tabular-nums}
+.vbtn{font:500 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--white);color:var(--navy);border:1px solid var(--line);padding:6px 12px;cursor:pointer}
+.vstage{position:relative}
+.vstage img{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.viewer:fullscreen .vstage img{max-height:80vh;width:auto;margin:0 auto}
+.vnav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:64px;border:0;background:rgba(27,54,95,.75);color:#fff;font-size:34px;line-height:1;cursor:pointer}
+.vnav:hover{background:var(--red)}
+.vnav.prev{left:0}.vnav.next{right:0}
+.vtitle{font-weight:700;margin:10px 0 8px;font-size:17px}
+.thumbs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.thumb{flex:none;width:120px;border:2px solid transparent;padding:0;background:none;cursor:pointer;position:relative}
+.thumb img{display:block;width:100%;height:auto}
+.thumb span{position:absolute;left:3px;bottom:3px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:0 4px}
+.thumb.on{border-color:var(--red)}
+/* roadmap */
+ol.road{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;counter-reset:r;max-width:none}
+ol.road li{counter-increment:r;background:var(--panel);padding:16px 16px 14px;position:relative;border-top:4px solid var(--navy)}
+ol.road li::before{content:counter(r);display:block;font-size:28px;font-weight:700;color:var(--navy);margin-bottom:4px}
+ol.road li.hot{border-top-color:var(--red)}ol.road li.hot::before{color:var(--red)}
+ol.road li.ok{border-top-color:var(--ok)}ol.road li.ok::before{color:var(--ok)}
+ol.road b{display:block;font-size:17px}ol.road span{font-size:14px;color:var(--grey)}
+/* tables */
+.tablewrap.tall{max-height:520px;overflow:auto;border:1px solid var(--line)}
+.tablewrap.tall thead th{position:sticky;top:0;background:var(--white);z-index:1}
+table.dd{font-size:13.5px;line-height:19px}
+table.dd td,table.dd th{padding:7px 9px}
+table.dd td:first-child{white-space:nowrap}
+td.mono,table.dd code{font-family:Consolas,"Courier New",monospace;font-size:12.5px}
+.ft{display:inline-block;background:var(--panel);padding:0 6px;font-size:12px}
+tr.t-calc .ft{background:var(--accent-2-soft);color:var(--red);font-weight:700}
+.idf{color:var(--red);font-weight:700}.req{color:var(--red);font-weight:700}
+.filters{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:4px 0 10px;font-size:15px}
+.filters select,.filters input{font:inherit;font-size:15px;padding:6px 8px;border:1px solid var(--line);background:var(--white);color:var(--navy)}
+.filters .count{color:var(--grey)}
+table.matrix{font-size:14px;width:auto}
+table.matrix th,table.matrix td{padding:6px 9px;text-align:center;white-space:nowrap}
+table.matrix td:first-child{text-align:left}
+table.matrix th.arm{border-bottom:1px solid var(--line)}
+table.matrix .sep{border-left:2px solid var(--navy)}
+.c{color:var(--ok);font-weight:700}.s{color:#1E88C8;font-weight:700}.r{color:var(--red);font-weight:700}
+.note{font-size:14px;color:var(--grey)}
+.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:0 0 16px}
+.stats div{background:var(--panel);padding:12px}
+.stats b{display:block;font-size:24px;color:var(--red)}.stats span{font-size:13px;color:var(--grey)}
+/* tabs + pdf */
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{font:700 15px "Fira Sans",Helvetica,Arial,sans-serif;background:var(--panel);color:var(--navy);border:0;padding:10px 16px;cursor:pointer}
+.tab.active{background:var(--navy);color:var(--white)}
+.pdfwrap{background:var(--panel);padding:8px}
+.pdfwrap iframe{width:100%;height:720px;border:0;background:#fff;display:block}
+.forms{margin-top:18px}
+.crfhow{margin-bottom:14px}.crfhow .card p{font-size:15px;line-height:22px}
+.xmlcard{border-top:4px solid var(--red)}.xmlcard ol{padding-left:20px;margin:6px 0}.xmlcard li{margin-bottom:6px;font-size:15px}
+ul.ticks{list-style:none;padding:0;margin:6px 0}ul.ticks li{padding-left:22px;position:relative;font-size:15px;line-height:22px;margin-bottom:4px}
+ul.ticks li::before{content:"¹3";position:absolute;left:0;color:var(--ok);font-weight:700}
+/* linkage */
+.link-diagram{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center}
+.lbox{padding:16px;color:#fff;min-height:110px}.lbox b{display:block;font-size:17px;margin-bottom:4px}.lbox span{font-size:14px;line-height:20px}
+.lbox.blue{background:#1E88C8}.lbox.dark{background:#41464C}.lbox.amber{background:#FDF3E1;color:#5a3a00}
+.larrow{font-size:28px;color:var(--grey)}
+/* build list */
+ol.buildlist{max-width:76ch}ol.buildlist li{margin-bottom:10px}
+/* R */
+.status{font-weight:700;margin:6px 0 0}.status.busy{color:#B26A00}.status.ok{color:var(--ok)}.status.err{color:var(--red)}
+.rex{background:var(--panel);padding:18px 20px;margin:0 0 22px}
+.rex h3{margin:0 0 6px}
+.rex textarea{width:100%;font:13.5px/1.5 Consolas,"Courier New",monospace;background:#1E2433;color:#E6EAF2;border:0;padding:12px 14px;resize:vertical;tab-size:2}
+.rbar{display:flex;align-items:center;gap:6px;margin-top:8px}
+.rtime{font-size:13px;color:var(--grey)}
+.rout{background:var(--white);margin:10px 0 0;max-width:none;white-space:pre;font-size:13px;line-height:18px;max-height:420px;overflow:auto}
+.rplot canvas{max-width:100%;height:auto;background:#fff;margin-top:10px}
+details.eq{background:var(--white);margin:6px 0 10px;max-width:none}
+details.eq summary{font-size:15px;padding:8px 12px}
+details.eq pre{margin:0 12px 12px;max-width:none}
+/* packages */
+.pkgs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.pkg{background:var(--panel);padding:18px 20px}
+.pkg h4{margin:0 0 6px;font-size:20px}.pkg p{font-size:15px;line-height:23px}
+.pkg pre{background:var(--white);font-size:13px;line-height:19px;max-width:none}
+.pkg .links{font-size:14px;margin:0}
+.warnline{color:var(--red);font-weight:700}
+@media (max-width:900px){.steps,.pkgs{grid-template-columns:minmax(0,1fr)}ol.road{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}.link-diagram{grid-template-columns:1fr}.larrow{transform:rotate(90deg);text-align:center}
+  .sitenav a{padding:8px 6px;font-size:14px}.topbar .wrap{height:auto;min-height:64px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}}
+@media (max-width:560px){.pdfwrap iframe{height:480px}.thumb{width:90px}.vnav{width:34px;height:48px;font-size:26px}}
+
+/* ---- homework page ---- */
+.deadline{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;align-items:center;background:var(--white);border-left:6px solid var(--red);padding:16px 20px;margin-top:18px;max-width:640px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.deadline .dl-date{grid-column:1/-1;font-size:20px;font-weight:700;color:var(--red)}
+.deadline .cd{display:flex;gap:14px}
+.deadline .cd div{text-align:center}.deadline .cd b{display:block;font-size:30px;color:var(--navy);font-variant-numeric:tabular-nums;line-height:1.1}
+.deadline .cd span{font-size:12px;color:var(--grey);text-transform:uppercase;letter-spacing:.05em}
+.deadline .dl-note{font-size:14px;color:var(--grey)}
+.parts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.part{background:var(--panel);padding:16px 18px;border-top:4px solid var(--navy)}
+.part.new{border-top-color:var(--red)}
+.part h4{margin:0 0 6px;font-size:18px;display:flex;justify-content:space-between;gap:10px}
+.part h4 small{font-size:13px;color:var(--red);white-space:nowrap}
+.part ol,.part ul{margin:6px 0 0;padding-left:20px}.part li{font-size:15px;line-height:22px;margin-bottom:4px}
+.badge-new{display:inline-block;background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:1px 6px;margin-left:6px;vertical-align:2px}
+.crfview{background:var(--panel);padding:12px}
+.crfview .tabs{margin-bottom:10px}
+.crfview img{display:block;width:100%;max-width:820px;margin:0 auto;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.crfnav{display:flex;justify-content:center;gap:10px;align-items:center;margin-top:10px;font-size:14px;color:var(--grey)}
+.sites{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0}
+.sites div{padding:14px;color:#fff}.sites b{display:block;font-size:17px}.sites span{font-size:14px}
+.s1{background:#1E88C8}.s2{background:#2E7D32}.s3{background:#B26A00}
+ul.check{list-style:none;padding:0;max-width:none}
+ul.check li{margin:0 0 8px}
+ul.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:16px;line-height:23px}
+ul.check input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--ok)}
+ul.check input:checked + span{color:var(--grey);text-decoration:line-through}
+.progress{height:8px;background:var(--panel);margin:6px 0 14px}.progress i{display:block;height:100%;background:var(--ok);width:0;transition:width .2s}
+table.sched td,table.sched th{text-align:center;padding:6px 8px;font-size:14px;white-space:nowrap}
+table.sched td:first-child,table.sched th:first-child{text-align:left}
+details.faq{background:var(--panel);margin:0 0 8px;max-width:none}
+details.faq summary{padding:10px 14px;font-weight:700;cursor:pointer}
+details.faq p{padding:0 14px 12px;margin:0}
+@media (max-width:900px){.parts,.sites{grid-template-columns:minmax(0,1fr)}.deadline .cd b{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap"><span>University of Antwerp<small>Master of Epidemiology · Research Data Management</small></span>
+  <nav class="sitenav" aria-label="Site"><a href="../">Pre-course reading</a><a href="../coursework/">Course work</a><a href="./" aria-current="page">Homework</a></nav>
+  <button class="theme-toggle" type="button" id="themeToggle" aria-label="Switch between light and dark mode">Dark mode</button></div></div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">REDCap Part 2 · lecture slides, homework and instructions 2026-27</p>
+    <h1>REDCap homework: build the TUMAINI multi-centre study</h1>
+    <p class="lede">In groups of three, you build a longitudinal REDCap project with three arms, three sites (Data Access Groups), a survey, repeating forms and the advanced features from the second lecture. Each group member is the data manager of one site.</p>
+    <p class="authors"><b>Authors:</b> Bernard Isekah Osangir, Tafadzwa Maseko and Prof. Dr. Steven Abrams</p>
+    <div class="deadline" role="note" aria-label="Deadline">
+      <span class="dl-date">Deadline: Sunday 13 December 2026, 11:00 (Brussels time)</span>
+      <div class="cd" id="countdown"><div><b id="cd-d">–</b><span>days</span></div><div><b id="cd-h">–</b><span>hours</span></div><div><b id="cd-m">–</b><span>minutes</span></div></div>
+      <span class="dl-note">One submission per group<br>on Blackboard.</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#start">Start here</a></li>
+      <li><a href="#slides">Part 2 slides</a></li>
+      <li><a href="#demo">Class demo: TBCARE</a></li>
+      <li><a href="#study">The TUMAINI study</a></li>
+      <li><a href="#crfs">TUMAINI CRFs</a></li>
+      <li><a href="#tasks">The tasks, part by part</a></li>
+      <li><a href="#dags">Data Access Groups</a></li>
+      <li><a href="#handin">Hand in</a></li>
+      <li><a href="#downloads">Downloads</a></li>
+      <li><a href="#faq">Questions</a></li>
+    </ol>
+  </nav>
+  <main>
+
+  <section id="start">
+    <h2><span class="num">01</span>Start here</h2>
+    <p class="sub">Four documents and one project file. Read them in this order.</p>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div><h4>Part 2 slides</h4><p>Longitudinal projects, surveys, Data Access Groups, embedding, piping, action tags.</p></div></div>
+      <div class="step"><span class="n">2</span><div><h4>Class demo project</h4><p>Create TBCARE from the XML file <b>before</b> the class, and explore it.</p></div></div>
+      <div class="step"><span class="n">3</span><div><h4>Homework instructions</h4><p>Seven parts, 100 points, the files to hand in.</p></div></div>
+      <div class="step"><span class="n">4</span><div><h4>TUMAINI protocol and CRFs</h4><p>The study you build: synopsis, schedule and five paper forms.</p></div></div>
+      <div class="step"><span class="n">5</span><div><h4>Quick reference</h4><p>Field embedding, piping, action tags, smart variables, functions.</p></div></div>
+      <div class="step"><span class="n">6</span><div><h4>Build, test, submit</h4><p>Use the checklist in section 08 before you hand in.</p></div></div>
+    </div>
+    <p class="dl"><a class="btn" href="docs/20261109_MEPI_REDCap_Homework_2026-27_Instructions.pdf">Homework instructions (PDF)</a> <a class="btn ghost" href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.pdf">TUMAINI protocol and CRFs (PDF)</a></p>
+  </section>
+
+  <section id="slides">
+    <h2><span class="num">02</span>Part 2 slides: advanced REDCap</h2>
+    <p class="sub">28 slides. Use the arrow keys, swipe, or pick a topic.</p>
+    <div class="viewer" id="viewer" tabindex="0" aria-label="Slide viewer">
+      <div class="vbar">
+        <select id="vjump" aria-label="Jump to topic"></select>
+        <span class="vcount" id="vcount">1 / 28</span>
+        <button type="button" id="vfull" class="vbtn" aria-label="Full screen">Full screen</button>
+      </div>
+      <div class="vstage">
+        <button type="button" class="vnav prev" id="vprev" aria-label="Previous slide">‹</button>
+        <img id="vimg" src="slides/s01.jpg" alt="Slide 1">
+        <button type="button" class="vnav next" id="vnext" aria-label="Next slide">›</button>
+      </div>
+      <p class="vtitle" id="vtitle"></p>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+    <p class="dl"><a class="btn" href="docs/20261109_MEPI_REDCap_Part2_Advanced_2026-27.pdf">Slides (PDF)</a> <a class="btn ghost" href="docs/20261109_MEPI_REDCap_Part2_Advanced_2026-27.pptx">PowerPoint</a></p>
+  </section>
+
+  <section id="demo">
+    <h2><span class="num">03</span>Class demo: create the TBCARE project before the class</h2>
+    <p class="sub">We use this project in the second lecture to show every feature live. It takes five minutes.</p>
+    <div class="grid g2">
+      <div class="card xmlcard">
+        <h4>Create it from the XML file</h4>
+        <ol>
+          <li>Log in at <a href="https://redcap.uantwerpen.be">redcap.uantwerpen.be</a> and click <b>New Project</b>.</li>
+          <li>Title: <code>TBCARE demo - your student number</code>. Purpose: <b>Practice / Just for fun</b>.</li>
+          <li>Project creation option: <b>Upload a REDCap project XML file</b>; choose <code>TBCARE_2026_REDCap_project.xml</code>.</li>
+          <li>Click <b>Create Project</b>.</li>
+        </ol>
+        <p class="dl"><a class="btn" href="docs/TBCARE_2026_REDCap_project.xml" download>TBCARE_2026_REDCap_project.xml</a></p>
+      </div>
+      <div class="card">
+        <h4>Then look for these features</h4>
+        <ul class="ticks">
+          <li>Two arms and 15 events (Project Setup &gt; Define My Events)</li>
+          <li>A repeating event (<i>Unscheduled</i>) and repeating forms (<i>Logs</i>)</li>
+          <li>Two Data Access Groups: Antwerp and Mbarara</li>
+          <li>Two surveys: e-Consent and Quality of life</li>
+          <li>Field embedding: vital signs table, consent table</li>
+          <li>Piping: <code>Is [ae_term] related to TB treatment?</code></li>
+          <li>Action tags and smart variables: <code>@TODAY</code>, <code>[first-event-name]</code></li>
+        </ul>
+        <p class="note">Every TBCARE form, with its build details, is on the <a href="../coursework/#crfs">course-work page</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="study">
+    <h2><span class="num">04</span>The TUMAINI study</h2>
+    <p class="sub">Fictional. TUMAINI (Swahili for “hope”) replaces the PISTIC study used in 2025, now as a multi-centre study.</p>
+    <p>TUMAINI follows 480 girls aged 16 to 20 who report having had sex, for 12 months, to measure the prevalence and incidence of reproductive tract infections and the use of contraception. It runs at three sites. Each site enters and sees only its own participants.</p>
+    <div class="sites"><div class="s1"><b>Site 1 · Dar es Salaam</b><span>Temeke · 160 participants</span></div><div class="s2"><b>Site 2 · Mwanza</b><span>160 participants</span></div><div class="s3"><b>Site 3 · Mbeya</b><span>160 participants</span></div></div>
+    <p>Participants follow one of three schedules (arms). The questionnaire on sexual behaviour (FSX) is self-completed on a tablet as a survey. Missed visits are recorded on a repeating form; unscheduled visits are a repeating event.</p>
+    <h3>Arm 1 · Standard</h3><div class="tablewrap"><table class="sched"><thead><tr><th>Form</th><th>Day 0</th><th>M3</th><th>M6</th><th>M9</th><th>M12</th><th>Uns.</th><th>Missed</th></tr></thead><tbody><tr><td>SELIG</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>SEGE</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>FSX</td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td></td></tr><tr><td>FGE</td><td></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td></td></tr><tr><td>MV</td><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="r">R</span></td></tr><tr><td>LOC</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div><h3>Arm 2 · Intensive</h3><div class="tablewrap"><table class="sched"><thead><tr><th>Form</th><th>Day 0</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M9</th><th>M12</th><th>Uns.</th><th>Missed</th></tr></thead><tbody><tr><td>SELIG</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>SEGE</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>FSX</td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td></td></tr><tr><td>FGE</td><td></td><td></td><td></td><td><span class="c">✓</span></td><td></td><td></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td></td></tr><tr><td>MV</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="r">R</span></td></tr><tr><td>LOC</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div><h3>Arm 3 · Reduced</h3><div class="tablewrap"><table class="sched"><thead><tr><th>Form</th><th>Day 0</th><th>M6</th><th>M12</th><th>Uns.</th><th>Missed</th></tr></thead><tbody><tr><td>SELIG</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td></tr><tr><td>SEGE</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td></tr><tr><td>FSX</td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td></td></tr><tr><td>FGE</td><td></td><td><span class="c">✓</span></td><td></td><td><span class="c">✓</span></td><td></td></tr><tr><td>MV</td><td></td><td></td><td></td><td></td><td><span class="r">R</span></td></tr><tr><td>LOC</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
+    <p class="note">✓ completed by staff · <span class="s">S</span> survey (participant) · <span class="r">R</span> repeating form · Uns. = Unscheduled (repeating event) · Missed = Missed visits event.</p>
+  </section>
+
+  <section id="crfs">
+    <h2><span class="num">05</span>TUMAINI case report forms</h2>
+    <p class="sub">The paper forms you turn into REDCap instruments. Item numbers, skip instructions (→) and “Only if” notes become branching logic.</p>
+    <div class="crfview">
+      <div class="tabs" role="tablist" id="crftabs"></div>
+      <img id="crfimg" src="crf/p01.jpg" alt="TUMAINI protocol summary, page 1">
+      <div class="crfnav"><button type="button" class="vbtn" id="crfprev">‹ Previous page</button><span id="crfcount">Page 1 of 8</span><button type="button" class="vbtn" id="crfnext">Next page ›</button></div>
+    </div>
+    <p class="dl"><a class="btn" href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.pdf">Protocol and CRFs (PDF, to print)</a> <a class="btn ghost" href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.docx">Word</a></p>
+  </section>
+
+  <section id="tasks">
+    <h2><span class="num">06</span>The tasks, part by part</h2>
+    <p class="sub">A summary. The PDF instructions have every detail and the arm tables.</p>
+    <div class="parts">
+      <div class="part"><h4>A · Project, users and roles <small>5 points</small></h4><ul><li>Title <code>TUMAINI 2026 - group XX</code>, Practice purpose</li><li>Enable longitudinal and surveys</li><li>Add group members, <code>tafadzwa</code> and <code>redcap</code></li><li>Roles: Data Manager and Site Staff</li></ul></div>
+      <div class="part"><h4>B · Instruments <small>25 points</small></h4><ul><li>SELIG, SEGE, FSX, FGE, MV from the CRFs</li><li>LOC: your own locator and knowledge form</li><li>Validation, identifiers, consistent codes</li><li>Every CRF arrow becomes branching logic</li></ul></div>
+      <div class="part"><h4>C · Arms and events <small>15 points</small></h4><ul><li>Standard, Intensive, Reduced</li><li>Day offsets and windows as given</li><li>Designate instruments per event</li><li><code>[arm-number]</code> hides FGE items in arm 3</li></ul></div>
+      <div class="part"><h4>D · Repeating <small>10 points</small></h4><ul><li><i>Unscheduled</i>: repeating event</li><li><i>mv</i>: repeating instrument in <i>Missed visits</i></li><li>Custom label that pipes the visit</li></ul></div>
+      <div class="part new"><h4>E · Data Access Groups <span class="badge-new">NEW</span> <small>15 points</small></h4><ul><li>Three DAGs, one per site and group member</li><li>Auto-numbering with the DAG prefix</li><li>18 fake participants, plus 3 imported per site</li><li>Prove that sites cannot see each other</li></ul></div>
+      <div class="part"><h4>F · Advanced features <small>20 points</small></h4><ul><li>Field embedding (signs and lab tables)</li><li>Piping (<code>Of these [sex_n] times…</code>)</li><li>Calculations, a validation warning, action tags</li><li>FSX as a survey, answered as a participant</li></ul></div>
+      <div class="part"><h4>G · Test, Production, mobile app <small>10 points</small></h4><ul><li>Test every branch and calculation</li><li>Request Production</li><li>Mobile app: one offline record, synchronised</li></ul></div>
+      <div class="part"><h4>Group work</h4><ul><li>Each member: one full instrument and one advanced feature</li><li>The report says who did what</li><li>Fake data only</li></ul></div>
+    </div>
+  </section>
+
+  <section id="dags">
+    <h2><span class="num">07</span>Data Access Groups: the multi-centre part</h2>
+    <p class="sub">New this year. One project, three sites; site staff see only their own site; data managers see everything.</p>
+    <ol class="buildlist">
+      <li><b>Create the groups.</b> Applications &gt; Data Access Groups: <i>Dar es Salaam</i>, <i>Mwanza</i>, <i>Mbeya</i>. Note the unique names REDCap makes (<code>dar_es_salaam</code>, …).</li>
+      <li><b>Assign users.</b> Each group member: one DAG and the <i>Site Staff</i> role. Keep <code>tafadzwa</code> and <code>redcap</code> in no DAG.</li>
+      <li><b>Auto-numbering.</b> Turn on record auto-numbering. New records get the DAG prefix, e.g. <code>2-1</code> for the first Mwanza participant.</li>
+      <li><b>Enter data as a site user.</b> Six fake participants per site, two per arm, with visits, one unscheduled visit and one missed visit.</li>
+      <li><b>Import.</b> Download the import template, add three participants with the column <code>redcap_data_access_group</code>, and import them.</li>
+      <li><b>Prove the isolation.</b> Screenshots of the Record Status Dashboard as a site user and as a data manager.</li>
+      <li><b>Report and export by site.</b> A report filtered by DAG; an export with the DAG column.</li>
+    </ol>
+    <div class="callout"><p class="callout-title">Answer in your report</p><p>Why does REDCap put the DAG number in front of the record ID? When would you choose separate projects per site instead of Data Access Groups?</p></div>
+  </section>
+
+  <section id="handin">
+    <h2><span class="num">08</span>Hand in</h2>
+    <p class="sub">One submission per group on Blackboard, before Sunday 13 December 2026, 11:00.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>File</th><th>How to get it</th></tr></thead>
+      <tbody>
+        <tr><td><code>TUMAINI_group_XX_project.xml</code></td><td>Project Setup &gt; Other functionality &gt; <b>Download metadata only (XML)</b></td></tr>
+        <tr><td><code>TUMAINI_group_XX_DataDictionary.csv</code></td><td>Designer &gt; Data Dictionary &gt; download the current dictionary</td></tr>
+        <tr><td><code>TUMAINI_group_XX_codebook.pdf</code></td><td>Designer &gt; Codebook &gt; print to PDF</td></tr>
+        <tr><td><code>TUMAINI_group_XX_report.pdf</code></td><td>At most 6 pages: who did what, screenshots for Parts E and G, short answers for Parts D and E</td></tr>
+      </tbody></table></div>
+    <h3>Checklist before you submit</h3>
+    <p class="note">Your ticks are saved in this browser only.</p>
+    <div class="progress" aria-hidden="true"><i id="ckbar"></i></div>
+    <ul class="check" id="checklist">
+      <li><label><input type="checkbox"><span>Six instruments, item numbers in the labels, every date and number validated</span></label></li>
+      <li><label><input type="checkbox"><span>Three arms with the events, offsets and windows of the instructions; instruments designated</span></label></li>
+      <li><label><input type="checkbox"><span><i>Unscheduled</i> is a repeating event; <i>mv</i> is a repeating instrument with a custom label</span></label></li>
+      <li><label><input type="checkbox"><span>Three DAGs; each member in one DAG with the Site Staff role; at least nine fake participants per site</span></label></li>
+      <li><label><input type="checkbox"><span>Field embedding, piping, calculations, the condom-use warning and the required action tags work</span></label></li>
+      <li><label><input type="checkbox"><span>FSX is a survey and at least one response was entered as a participant</span></label></li>
+      <li><label><input type="checkbox"><span>Project in Production; <code>tafadzwa</code> and <code>redcap</code> are Data Managers in no DAG</span></label></li>
+      <li><label><input type="checkbox"><span>Mobile app: one record entered offline and synchronised</span></label></li>
+      <li><label><input type="checkbox"><span>No real names, phone numbers or locations anywhere</span></label></li>
+      <li><label><input type="checkbox"><span>Four files uploaded on Blackboard before 13 December 2026, 11:00</span></label></li>
+    </ul>
+  </section>
+
+  <section id="downloads">
+    <h2><span class="num">09</span>Downloads</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>File</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td><a href="docs/20261109_MEPI_REDCap_Homework_2026-27_Instructions.pdf">Homework instructions (PDF)</a> · <a href="docs/20261109_MEPI_REDCap_Homework_2026-27_Instructions.docx">Word</a></td><td>Parts A to G, points, what to hand in, checklist</td></tr>
+        <tr><td><a href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.pdf">TUMAINI protocol and CRFs (PDF)</a> · <a href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.docx">Word</a></td><td>Synopsis, schedule of assessments, SELIG, SEGE, FSX, FGE and MV forms</td></tr>
+        <tr><td><a href="docs/20261109_MEPI_REDCap_Part2_Advanced_2026-27.pdf">Part 2 slides (PDF)</a> · <a href="docs/20261109_MEPI_REDCap_Part2_Advanced_2026-27.pptx">PowerPoint</a></td><td>Advanced REDCap, 28 slides</td></tr>
+        <tr><td><a href="docs/20261109_MEPI_REDCap_Advanced_Features_Quick_Reference.pdf">Quick reference (PDF)</a></td><td>Field embedding, piping, action tags, smart variables, special functions</td></tr>
+        <tr><td><a href="docs/TBCARE_2026_REDCap_project.xml" download>TBCARE_2026_REDCap_project.xml</a></td><td>Class demo project: upload as a new REDCap project</td></tr>
+        <tr><td><a href="../coursework/">Course-work page</a></td><td>TBCARE forms, data dictionary, simulated data, record linkage, R</td></tr>
+      </tbody></table></div>
+  </section>
+
+  <section id="faq">
+    <h2><span class="num">10</span>Questions</h2>
+    <details class="faq"><summary>Can we build the instruments by uploading a data dictionary?</summary><p>Yes. Many groups build one form in the Online Designer, download the dictionary, and write the rest in Excel. Upload, then check every form on screen.</p></details>
+    <details class="faq"><summary>The phone validation refuses Tanzanian numbers.</summary><p>REDCap's phone validation is for North American numbers. Use a text field with <code>@CHARLIMIT</code> and a field note with the format, as asked in Part B.</p></details>
+    <details class="faq"><summary>Moving to Production needs an administrator. What if it is not approved before the deadline?</summary><p>Request it early, a few working days before the deadline, and add a screenshot of your request to the report.</p></details>
+    <details class="faq"><summary>Can we use the TBCARE XML as a starting point?</summary><p>You may look at it to see how features are built. Your TUMAINI project must be your own work, built from the TUMAINI CRFs.</p></details>
+    <details class="faq"><summary>Where do we ask questions?</summary><p>In class or on the Blackboard discussion board, so that everybody gets the same answer.</p></details>
+  </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    REDCap homework for the Research Data Management course, Master of Epidemiology (MEPI), University of Antwerp, 2026–27. Authors: Bernard Isekah Osangir, Tafadzwa Maseko and Prof. Dr. Steven Abrams. TUMAINI and TBCARE are fictional studies; use fake data only. <a href="../">Pre-course reading</a> · <a href="../coursework/">Course work</a>.
+  </div>
+</footer>
+<script>window.SLIDE_TITLES = ["REDCap Part 2 Advanced features", "You are the data manager", "Longitudinal projects", "Longitudinal projects: when and why", "How REDCap organises a longitudinal project", "Setting up a longitudinal project, step by step", "Arms, events and repeating", "Arms and events", "Designate instruments for my events", "Repeating events and repeating instruments", "Data entry, scheduling and the calendar", "Branching logic in a longitudinal project", "Surveys", "Surveys: the participant fills in the form", "Setting up a survey", "Multi-site: Data Access Groups", "Data Access Groups: one project, many sites", "Setting up Data Access Groups", "Data Access Groups or separate projects?", "Smarter forms: embedding, piping, action tags", "Field embedding: put fields where you want them", "Piping: reuse an answer in the text", "Action tags: behaviour in one word", "Smart variables and special functions", "Class demo and homework", "Before the class: create the TBCARE demo project", "Homework: build the TUMAINI multi-centre study", "Resources"];</script>
+<script src="app.js"></script>
+</body>
+</html>

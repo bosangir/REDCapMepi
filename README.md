@@ -28,12 +28,24 @@ Companion page: [Data Management Plans](https://bosangir.github.io/DMP/)
 **Online:** https://bosangir.github.io/REDCapMepi/coursework/
 
 - Slide viewer for the REDCap training deck (64 slides), with PDF and PowerPoint downloads
-- TBCARE paper and annotated case report forms
+- TBCARE case report forms in an interactive browser (by visit, with plain-language skip rules, piping and field embedding marked, and an annotated "build details" view), plus the paper and annotated PDFs
+- TBCARE REDCap project XML (`coursework/files/TBCARE_2026_REDCap_project.xml`): the whole project in one upload, with 2 arms, 15 events, repeating settings, 2 Data Access Groups and 2 surveys
 - TBCARE data dictionary, arms, events and form-event mapping (CSV, ready to upload)
 - Simulated data for the Data Import Tool (clean, and with seven planted errors) and a national TB register extract for record linkage
 - R in the browser (webR) on the simulated data, plus R scripts for REDCapR, REDCapDM, REDCapSync and RosyREDCap
 
 Files live in `coursework/` (`index.html`, `app.js`, `slides/`, `docs/`, `files/`). TBCARE is fictional; all data are simulated.
+
+## Homework page
+
+**Online:** https://bosangir.github.io/REDCapMepi/homework/
+
+- REDCap Part 2 slides (advanced features, 28 slides) in a slide viewer, with PDF and PowerPoint
+- Class demo: create TBCARE from the XML file before the class
+- Homework 2026-27: build TUMAINI, a fictional multi-centre study (it replaces PISTIC), with three arms, three Data Access Groups and a survey. Deadline: Sunday 13 December 2026, 11:00 (Brussels time)
+- TUMAINI protocol summary and CRFs, the instructions, a submission checklist, and a quick reference on field embedding, piping, action tags, smart variables and special functions
+
+Files live in `homework/`. The CRF browser used on the course-work page is in `shared/` (`crf.js`, `crf.css`).
 
 ## Editing
 

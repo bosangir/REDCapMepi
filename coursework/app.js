@@ -81,14 +81,23 @@
   });
   document.getElementById("evmatrix").innerHTML = m + "</tbody>";
 
-  // ---------------------------------------------------------------- CRF tabs
-  var frame = document.getElementById("pdfframe"), openl = document.getElementById("pdfopen");
-  document.querySelectorAll(".tab").forEach(function (t) {
-    t.addEventListener("click", function () {
-      document.querySelectorAll(".tab").forEach(function (x) { x.classList.remove("active"); x.setAttribute("aria-selected", "false"); });
-      t.classList.add("active"); t.setAttribute("aria-selected", "true");
-      frame.src = t.dataset.pdf + "#view=FitH"; openl.href = t.dataset.pdf;
-    });
+  // ---------------------------------------------------------------- CRF browser (shared/crf.js)
+  if (window.CRFBrowser) CRFBrowser(document.getElementById("crfbrowser"), {
+    dict: "files/TBCARE_DataDictionary.csv", events: "files/TBCARE_events.csv", mapping: "files/TBCARE_instrument_event_mapping.csv",
+    armNames: { "1": "Arm 1 · drug-susceptible TB", "2": "Arm 2 · drug-resistant TB" },
+    surveys: ["econsent", "quality_of_life"], repeatForms: ["adverse_events", "concomitant_medications"], repeatEvents: ["unscheduled_arm_1", "unscheduled_arm_2"],
+    formLabels: { screening: "Screening", econsent: "e-Consent", enrolment: "Enrolment and demographics", clinical_assessment: "Clinical assessment",
+      laboratory: "Laboratory", ecg_monitoring: "ECG monitoring (arm 2 only)", quality_of_life: "Quality of life", adverse_events: "Adverse events",
+      concomitant_medications: "Concomitant medications", treatment_outcome: "Treatment outcome", study_completion: "Study completion" },
+    formNotes: {
+      screening: "One per person screened. Only people who are eligible go on to e-Consent.",
+      econsent: "A survey the participant fills in on a tablet. The four statements sit in one table (field embedding).",
+      clinical_assessment: "Also used at <b>Unscheduled</b> visits, which can repeat. The header pipes the visit and arm.",
+      quality_of_life: "A survey. The four items share one answer scale, so they form a matrix group.",
+      adverse_events: "Repeating form in the <b>Logs</b> event: one instance per adverse event.",
+      concomitant_medications: "Repeating form in the <b>Logs</b> event: one instance per medicine.",
+      ecg_monitoring: "Mapped to arm 2 events only: bedaquiline and other DR-TB drugs can prolong the QT interval."
+    }
   });
 
   // ---------------------------------------------------------------- CSV helpers
