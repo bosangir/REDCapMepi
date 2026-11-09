@@ -1,4 +1,4 @@
-/* Homework page: theme, contents highlight, slide viewer, countdown, CRF page viewer, checklist. */
+/* Homework page: theme, contents highlight, slide viewer, countdown. */
 (function () {
   "use strict";
   var root = document.documentElement, tbtn = document.getElementById("themeToggle");
@@ -33,8 +33,9 @@
 
   // ---------------------------------------------------------------- slide viewer
   var TITLES = window.SLIDE_TITLES || [], N = TITLES.length, cur = 0;
-  var SECTIONS = [[1, "Introduction"], [3, "Topic 1 · Longitudinal projects"], [7, "Topic 2 · Arms, events and repeating"], [13, "Topic 3 · Surveys"],
-    [16, "Topic 4 · Data Access Groups"], [20, "Topic 5 · Embedding, piping, action tags"], [25, "Topic 6 · Class demo and homework"]];
+  var SECTIONS = [[1, "Introduction"], [4, "Longitudinal projects"], [8, "Arms, events and Data Access Groups"], [11, "Events and data entry"],
+    [15, "Calendar"], [17, "Branching logic, embedding, piping, action tags"], [22, "Surveys"], [27, "Reports, practicals and extras"],
+    [32, "Homework"], [34, "Class demonstration project"]];
   var img = document.getElementById("vimg"), vtitle = document.getElementById("vtitle"), vcount = document.getElementById("vcount");
   var thumbs = document.getElementById("thumbs"), jump = document.getElementById("vjump"), viewer = document.getElementById("viewer");
   function pad(i) { return (i < 10 ? "0" : "") + i; }
@@ -69,32 +70,4 @@
   });
   var h = location.hash.match(/^#slide-(\d+)$/); show(h ? +h[1] - 1 : 0);
 
-  // ---------------------------------------------------------------- CRF pages
-  var PAGES = 8, cp = 1, PTABS = [["Protocol summary", 1], ["Schedule", 2], ["SELIG", 3], ["SEGE", 4], ["FSX", 5], ["FGE", 6], ["MV", 8]];
-  var cimg = document.getElementById("crfimg"), ccount = document.getElementById("crfcount"), ctabs = document.getElementById("crftabs");
-  PTABS.forEach(function (t) {
-    var b = document.createElement("button"); b.type = "button"; b.className = "tab"; b.setAttribute("role", "tab"); b.textContent = t[0]; b.dataset.p = t[1];
-    b.addEventListener("click", function () { page(t[1]); }); ctabs.appendChild(b);
-  });
-  function page(n) {
-    cp = Math.max(1, Math.min(PAGES, n));
-    cimg.src = "crf/p" + pad(cp) + ".jpg"; cimg.alt = "TUMAINI protocol and CRFs, page " + cp; ccount.textContent = "Page " + cp + " of " + PAGES;
-    var act = PTABS.filter(function (t) { return t[1] <= cp; }).pop();
-    ctabs.querySelectorAll(".tab").forEach(function (b) { var on = act && +b.dataset.p === act[1]; b.classList.toggle("active", on); b.setAttribute("aria-selected", on ? "true" : "false"); });
-  }
-  document.getElementById("crfprev").addEventListener("click", function () { page(cp - 1); });
-  document.getElementById("crfnext").addEventListener("click", function () { page(cp + 1); });
-  page(1);
-
-  // ---------------------------------------------------------------- checklist (saved in this browser)
-  var boxes = document.querySelectorAll("#checklist input"), bar = document.getElementById("ckbar"), state = [];
-  try { state = JSON.parse(localStorage.getItem("redcap-hw-2026") || "[]"); } catch (e) {}
-  function upd() {
-    var n = 0, s = [];
-    boxes.forEach(function (b, k) { s[k] = b.checked; if (b.checked) n++; });
-    bar.style.width = (100 * n / boxes.length) + "%";
-    try { localStorage.setItem("redcap-hw-2026", JSON.stringify(s)); } catch (e) {}
-  }
-  boxes.forEach(function (b, k) { b.checked = !!state[k]; b.addEventListener("change", upd); });
-  upd();
 })();

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>REDCap: Homework 2026-27</title>
-<meta name="description" content="REDCap homework 2026-27 for the Research Data Management course, Master of Epidemiology, University of Antwerp: Part 2 slides, the TUMAINI multi-centre study, CRFs, Data Access Groups, instructions and deadline.">
+<meta name="description" content="REDCap homework 2026-27 (PISTIC) for the Research Data Management course, Master of Epidemiology, University of Antwerp: instructions, protocol and CRFs, Part 2 slides, class demonstration project and extra materials.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -277,38 +277,15 @@ details.eq pre{margin:0 12px 12px;max-width:none}
 @media (max-width:560px){.pdfwrap iframe{height:480px}.thumb{width:90px}.vnav{width:34px;height:48px;font-size:26px}}
 
 /* ---- homework page ---- */
-.deadline{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;align-items:center;background:var(--white);border-left:6px solid var(--red);padding:16px 20px;margin-top:18px;max-width:640px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.deadline{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;align-items:center;background:var(--white);border-left:6px solid var(--red);padding:16px 20px;margin-top:18px;max-width:520px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .deadline .dl-date{grid-column:1/-1;font-size:20px;font-weight:700;color:var(--red)}
 .deadline .cd{display:flex;gap:14px}
 .deadline .cd div{text-align:center}.deadline .cd b{display:block;font-size:30px;color:var(--navy);font-variant-numeric:tabular-nums;line-height:1.1}
 .deadline .cd span{font-size:12px;color:var(--grey);text-transform:uppercase;letter-spacing:.05em}
-.deadline .dl-note{font-size:14px;color:var(--grey)}
-.parts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.part{background:var(--panel);padding:16px 18px;border-top:4px solid var(--navy)}
-.part.new{border-top-color:var(--red)}
-.part h4{margin:0 0 6px;font-size:18px;display:flex;justify-content:space-between;gap:10px}
-.part h4 small{font-size:13px;color:var(--red);white-space:nowrap}
-.part ol,.part ul{margin:6px 0 0;padding-left:20px}.part li{font-size:15px;line-height:22px;margin-bottom:4px}
-.badge-new{display:inline-block;background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:1px 6px;margin-left:6px;vertical-align:2px}
-.crfview{background:var(--panel);padding:12px}
-.crfview .tabs{margin-bottom:10px}
-.crfview img{display:block;width:100%;max-width:820px;margin:0 auto;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
-.crfnav{display:flex;justify-content:center;gap:10px;align-items:center;margin-top:10px;font-size:14px;color:var(--grey)}
-.sites{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0}
-.sites div{padding:14px;color:#fff}.sites b{display:block;font-size:17px}.sites span{font-size:14px}
-.s1{background:#1E88C8}.s2{background:#2E7D32}.s3{background:#B26A00}
-ul.check{list-style:none;padding:0;max-width:none}
-ul.check li{margin:0 0 8px}
-ul.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:16px;line-height:23px}
-ul.check input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--ok)}
-ul.check input:checked + span{color:var(--grey);text-decoration:line-through}
-.progress{height:8px;background:var(--panel);margin:6px 0 14px}.progress i{display:block;height:100%;background:var(--ok);width:0;transition:width .2s}
-table.sched td,table.sched th{text-align:center;padding:6px 8px;font-size:14px;white-space:nowrap}
-table.sched td:first-child,table.sched th:first-child{text-align:left}
-details.faq{background:var(--panel);margin:0 0 8px;max-width:none}
-details.faq summary{padding:10px 14px;font-weight:700;cursor:pointer}
-details.faq p{padding:0 14px 12px;margin:0}
-@media (max-width:900px){.parts,.sites{grid-template-columns:minmax(0,1fr)}.deadline .cd b{font-size:24px}}
+.docrow{background:var(--panel);padding:14px 18px;margin:0 0 10px}
+.docrow h4{margin:0 0 2px;font-size:18px}.docrow p{margin:0;font-size:15px;color:var(--grey)}
+.docrow .dlb{margin-top:10px}.docrow .dlb .btn{margin:2px 6px 2px 0}
+@media (max-width:900px){.deadline .cd b{font-size:24px}.docrow .dlb .btn{margin:2px 6px 2px 0}}
 </style>
 </head>
 <body>
@@ -318,14 +295,13 @@ details.faq p{padding:0 14px 12px;margin:0}
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">REDCap Part 2 · lecture slides, homework and instructions 2026-27</p>
-    <h1>REDCap homework: build the TUMAINI multi-centre study</h1>
-    <p class="lede">In groups of three, you build a longitudinal REDCap project with three arms, three sites (Data Access Groups), a survey, repeating forms and the advanced features from the second lecture. Each group member is the data manager of one site.</p>
+    <p class="eyebrow">REDCap Part 2 · lecture slides, extra materials and homework 2026-27</p>
+    <h1>REDCap homework 2026: the PISTIC study</h1>
+    <p class="lede">Build the PISTIC study as a multi-arm, multi-centre longitudinal REDCap project. The instructions are in the PDF below; the protocol and the case report forms are in the assignment document.</p>
     <p class="authors"><b>Authors:</b> Bernard Isekah Osangir, Tafadzwa Maseko and Prof. Dr. Steven Abrams</p>
     <div class="deadline" role="note" aria-label="Deadline">
-      <span class="dl-date">Deadline: Sunday 13 December 2026, 11:00 (Brussels time)</span>
+      <span class="dl-date">Deadline: 13 December 2026, 11:00</span>
       <div class="cd" id="countdown"><div><b id="cd-d">–</b><span>days</span></div><div><b id="cd-h">–</b><span>hours</span></div><div><b id="cd-m">–</b><span>minutes</span></div></div>
-      <span class="dl-note">One submission per group<br>on Blackboard.</span>
     </div>
   </div>
 </header>
@@ -334,41 +310,32 @@ details.faq p{padding:0 14px 12px;margin:0}
   <nav class="toc" aria-label="Contents">
     <p>Contents</p>
     <ol>
-      <li><a href="#start">Start here</a></li>
+      <li><a href="#documents">Homework documents</a></li>
       <li><a href="#slides">Part 2 slides</a></li>
-      <li><a href="#demo">Class demo: TBCARE</a></li>
-      <li><a href="#study">The TUMAINI study</a></li>
-      <li><a href="#crfs">TUMAINI CRFs</a></li>
-      <li><a href="#tasks">The tasks, part by part</a></li>
-      <li><a href="#dags">Data Access Groups</a></li>
-      <li><a href="#handin">Hand in</a></li>
-      <li><a href="#downloads">Downloads</a></li>
-      <li><a href="#faq">Questions</a></li>
+      <li><a href="#demo">Class demonstration project</a></li>
+      <li><a href="#extra">Extra materials</a></li>
     </ol>
   </nav>
   <main>
 
-  <section id="start">
-    <h2><span class="num">01</span>Start here</h2>
-    <p class="sub">Four documents and one project file. Read them in this order.</p>
-    <div class="steps">
-      <div class="step"><span class="n">1</span><div><h4>Part 2 slides</h4><p>Longitudinal projects, surveys, Data Access Groups, embedding, piping, action tags.</p></div></div>
-      <div class="step"><span class="n">2</span><div><h4>Class demo project</h4><p>Create TBCARE from the XML file <b>before</b> the class, and explore it.</p></div></div>
-      <div class="step"><span class="n">3</span><div><h4>Homework instructions</h4><p>Seven parts, 100 points, the files to hand in.</p></div></div>
-      <div class="step"><span class="n">4</span><div><h4>TUMAINI protocol and CRFs</h4><p>The study you build: synopsis, schedule and five paper forms.</p></div></div>
-      <div class="step"><span class="n">5</span><div><h4>Quick reference</h4><p>Field embedding, piping, action tags, smart variables, functions.</p></div></div>
-      <div class="step"><span class="n">6</span><div><h4>Build, test, submit</h4><p>Use the checklist in section 08 before you hand in.</p></div></div>
-    </div>
-    <p class="dl"><a class="btn" href="docs/20261109_MEPI_REDCap_Homework_2026-27_Instructions.pdf">Homework instructions (PDF)</a> <a class="btn ghost" href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.pdf">TUMAINI protocol and CRFs (PDF)</a></p>
+  <section id="documents">
+    <h2><span class="num">01</span>Homework documents</h2>
+    <p class="sub">Open each document in a new tab, or download it.</p>
+    <div class="docrow"><div><h4>REDCap HW Instructions 2026</h4><p>The homework instructions: what to build and the deadline</p></div><div class="dlb"><a class="btn" href="docs/REDCap_HW_Instructions_2026.pdf" target="_blank" rel="noopener">Open in new tab</a> <a class="btn ghost" href="docs/REDCap_HW_Instructions_2026.pdf" download>Download PDF</a> <a class="btn ghost" href="docs/REDCap_HW_Instructions_2026.docx" download>Download Word</a></div></div>
+<div class="docrow"><div><h4>REDCap Protocol and CRFs - Assignment</h4><p>The PISTIC protocol summary and case report forms: SELIG, SEGE, FSX, FGE, MV</p></div><div class="dlb"><a class="btn" href="docs/REDCap_Protocol_and_CRFs_Assignment.pdf" target="_blank" rel="noopener">Open in new tab</a> <a class="btn ghost" href="docs/REDCap_Protocol_and_CRFs_Assignment.pdf" download>Download PDF</a></div></div>
+<div class="docrow"><div><h4>Part 2 lecture slides (REDCap 2026)</h4><p>Longitudinal projects, Data Access Groups, surveys and advanced features</p></div><div class="dlb"><a class="btn" href="docs/Part2_REDCap_2026.pdf" target="_blank" rel="noopener">Open in new tab</a> <a class="btn ghost" href="docs/Part2_REDCap_2026.pdf" download>Download PDF</a> <a class="btn ghost" href="docs/Part2_REDCap_2026.pptx" download>Download PowerPoint</a></div></div>
+<div class="docrow"><div><h4>REDCap advanced features: quick reference</h4><p>Field embedding, piping, action tags, smart variables, special functions</p></div><div class="dlb"><a class="btn" href="docs/REDCap_Advanced_Features_Quick_Reference_2026.pdf" target="_blank" rel="noopener">Open in new tab</a> <a class="btn ghost" href="docs/REDCap_Advanced_Features_Quick_Reference_2026.pdf" download>Download PDF</a></div></div>
+<div class="docrow"><div><h4>Class demonstration project (XML)</h4><p>Upload as a new REDCap project before the class (section 03)</p></div><div class="dlb"><a class="btn" href="docs/TBCARE_2026_REDCap_project.xml" download>Download XML</a></div></div>
+
   </section>
 
   <section id="slides">
-    <h2><span class="num">02</span>Part 2 slides: advanced REDCap</h2>
-    <p class="sub">28 slides. Use the arrow keys, swipe, or pick a topic.</p>
+    <h2><span class="num">02</span>Part 2 slides</h2>
+    <p class="sub">34 slides. Use the arrow keys, swipe, or pick a topic.</p>
     <div class="viewer" id="viewer" tabindex="0" aria-label="Slide viewer">
       <div class="vbar">
         <select id="vjump" aria-label="Jump to topic"></select>
-        <span class="vcount" id="vcount">1 / 28</span>
+        <span class="vcount" id="vcount">1 / 34</span>
         <button type="button" id="vfull" class="vbtn" aria-label="Full screen">Full screen</button>
       </div>
       <div class="vstage">
@@ -379,139 +346,33 @@ details.faq p{padding:0 14px 12px;margin:0}
       <p class="vtitle" id="vtitle"></p>
       <div class="thumbs" id="thumbs"></div>
     </div>
-    <p class="dl"><a class="btn" href="docs/20261109_MEPI_REDCap_Part2_Advanced_2026-27.pdf">Slides (PDF)</a> <a class="btn ghost" href="docs/20261109_MEPI_REDCap_Part2_Advanced_2026-27.pptx">PowerPoint</a></p>
+    <p class="dl"><a class="btn" href="docs/Part2_REDCap_2026.pdf" target="_blank" rel="noopener">Open slides in new tab</a> <a class="btn ghost" href="docs/Part2_REDCap_2026.pptx" download>Download PowerPoint</a></p>
   </section>
 
   <section id="demo">
-    <h2><span class="num">03</span>Class demo: create the TBCARE project before the class</h2>
-    <p class="sub">We use this project in the second lecture to show every feature live. It takes five minutes.</p>
-    <div class="grid g2">
-      <div class="card xmlcard">
-        <h4>Create it from the XML file</h4>
-        <ol>
-          <li>Log in at <a href="https://redcap.uantwerpen.be">redcap.uantwerpen.be</a> and click <b>New Project</b>.</li>
-          <li>Title: <code>TBCARE demo - your student number</code>. Purpose: <b>Practice / Just for fun</b>.</li>
-          <li>Project creation option: <b>Upload a REDCap project XML file</b>; choose <code>TBCARE_2026_REDCap_project.xml</code>.</li>
-          <li>Click <b>Create Project</b>.</li>
-        </ol>
-        <p class="dl"><a class="btn" href="docs/TBCARE_2026_REDCap_project.xml" download>TBCARE_2026_REDCap_project.xml</a></p>
-      </div>
-      <div class="card">
-        <h4>Then look for these features</h4>
-        <ul class="ticks">
-          <li>Two arms and 15 events (Project Setup &gt; Define My Events)</li>
-          <li>A repeating event (<i>Unscheduled</i>) and repeating forms (<i>Logs</i>)</li>
-          <li>Two Data Access Groups: Antwerp and Mbarara</li>
-          <li>Two surveys: e-Consent and Quality of life</li>
-          <li>Field embedding: vital signs table, consent table</li>
-          <li>Piping: <code>Is [ae_term] related to TB treatment?</code></li>
-          <li>Action tags and smart variables: <code>@TODAY</code>, <code>[first-event-name]</code></li>
-        </ul>
-        <p class="note">Every TBCARE form, with its build details, is on the <a href="../coursework/#crfs">course-work page</a>.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="study">
-    <h2><span class="num">04</span>The TUMAINI study</h2>
-    <p class="sub">Fictional. TUMAINI (Swahili for “hope”) replaces the PISTIC study used in 2025, now as a multi-centre study.</p>
-    <p>TUMAINI follows 480 girls aged 16 to 20 who report having had sex, for 12 months, to measure the prevalence and incidence of reproductive tract infections and the use of contraception. It runs at three sites. Each site enters and sees only its own participants.</p>
-    <div class="sites"><div class="s1"><b>Site 1 · Dar es Salaam</b><span>Temeke · 160 participants</span></div><div class="s2"><b>Site 2 · Mwanza</b><span>160 participants</span></div><div class="s3"><b>Site 3 · Mbeya</b><span>160 participants</span></div></div>
-    <p>Participants follow one of three schedules (arms). The questionnaire on sexual behaviour (FSX) is self-completed on a tablet as a survey. Missed visits are recorded on a repeating form; unscheduled visits are a repeating event.</p>
-    <h3>Arm 1 · Standard</h3><div class="tablewrap"><table class="sched"><thead><tr><th>Form</th><th>Day 0</th><th>M3</th><th>M6</th><th>M9</th><th>M12</th><th>Uns.</th><th>Missed</th></tr></thead><tbody><tr><td>SELIG</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>SEGE</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>FSX</td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td></td></tr><tr><td>FGE</td><td></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td></td></tr><tr><td>MV</td><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="r">R</span></td></tr><tr><td>LOC</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div><h3>Arm 2 · Intensive</h3><div class="tablewrap"><table class="sched"><thead><tr><th>Form</th><th>Day 0</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M9</th><th>M12</th><th>Uns.</th><th>Missed</th></tr></thead><tbody><tr><td>SELIG</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>SEGE</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>FSX</td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td></td></tr><tr><td>FGE</td><td></td><td></td><td></td><td><span class="c">✓</span></td><td></td><td></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td><span class="c">✓</span></td><td></td></tr><tr><td>MV</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="r">R</span></td></tr><tr><td>LOC</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div><h3>Arm 3 · Reduced</h3><div class="tablewrap"><table class="sched"><thead><tr><th>Form</th><th>Day 0</th><th>M6</th><th>M12</th><th>Uns.</th><th>Missed</th></tr></thead><tbody><tr><td>SELIG</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td></tr><tr><td>SEGE</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td></tr><tr><td>FSX</td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td><span class="s">S</span></td><td></td></tr><tr><td>FGE</td><td></td><td><span class="c">✓</span></td><td></td><td><span class="c">✓</span></td><td></td></tr><tr><td>MV</td><td></td><td></td><td></td><td></td><td><span class="r">R</span></td></tr><tr><td>LOC</td><td><span class="c">✓</span></td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
-    <p class="note">✓ completed by staff · <span class="s">S</span> survey (participant) · <span class="r">R</span> repeating form · Uns. = Unscheduled (repeating event) · Missed = Missed visits event.</p>
-  </section>
-
-  <section id="crfs">
-    <h2><span class="num">05</span>TUMAINI case report forms</h2>
-    <p class="sub">The paper forms you turn into REDCap instruments. Item numbers, skip instructions (→) and “Only if” notes become branching logic.</p>
-    <div class="crfview">
-      <div class="tabs" role="tablist" id="crftabs"></div>
-      <img id="crfimg" src="crf/p01.jpg" alt="TUMAINI protocol summary, page 1">
-      <div class="crfnav"><button type="button" class="vbtn" id="crfprev">‹ Previous page</button><span id="crfcount">Page 1 of 8</span><button type="button" class="vbtn" id="crfnext">Next page ›</button></div>
-    </div>
-    <p class="dl"><a class="btn" href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.pdf">Protocol and CRFs (PDF, to print)</a> <a class="btn ghost" href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.docx">Word</a></p>
-  </section>
-
-  <section id="tasks">
-    <h2><span class="num">06</span>The tasks, part by part</h2>
-    <p class="sub">A summary. The PDF instructions have every detail and the arm tables.</p>
-    <div class="parts">
-      <div class="part"><h4>A · Project, users and roles <small>5 points</small></h4><ul><li>Title <code>TUMAINI 2026 - group XX</code>, Practice purpose</li><li>Enable longitudinal and surveys</li><li>Add group members, <code>tafadzwa</code> and <code>redcap</code></li><li>Roles: Data Manager and Site Staff</li></ul></div>
-      <div class="part"><h4>B · Instruments <small>25 points</small></h4><ul><li>SELIG, SEGE, FSX, FGE, MV from the CRFs</li><li>LOC: your own locator and knowledge form</li><li>Validation, identifiers, consistent codes</li><li>Every CRF arrow becomes branching logic</li></ul></div>
-      <div class="part"><h4>C · Arms and events <small>15 points</small></h4><ul><li>Standard, Intensive, Reduced</li><li>Day offsets and windows as given</li><li>Designate instruments per event</li><li><code>[arm-number]</code> hides FGE items in arm 3</li></ul></div>
-      <div class="part"><h4>D · Repeating <small>10 points</small></h4><ul><li><i>Unscheduled</i>: repeating event</li><li><i>mv</i>: repeating instrument in <i>Missed visits</i></li><li>Custom label that pipes the visit</li></ul></div>
-      <div class="part new"><h4>E · Data Access Groups <span class="badge-new">NEW</span> <small>15 points</small></h4><ul><li>Three DAGs, one per site and group member</li><li>Auto-numbering with the DAG prefix</li><li>18 fake participants, plus 3 imported per site</li><li>Prove that sites cannot see each other</li></ul></div>
-      <div class="part"><h4>F · Advanced features <small>20 points</small></h4><ul><li>Field embedding (signs and lab tables)</li><li>Piping (<code>Of these [sex_n] times…</code>)</li><li>Calculations, a validation warning, action tags</li><li>FSX as a survey, answered as a participant</li></ul></div>
-      <div class="part"><h4>G · Test, Production, mobile app <small>10 points</small></h4><ul><li>Test every branch and calculation</li><li>Request Production</li><li>Mobile app: one offline record, synchronised</li></ul></div>
-      <div class="part"><h4>Group work</h4><ul><li>Each member: one full instrument and one advanced feature</li><li>The report says who did what</li><li>Fake data only</li></ul></div>
-    </div>
-  </section>
-
-  <section id="dags">
-    <h2><span class="num">07</span>Data Access Groups: the multi-centre part</h2>
-    <p class="sub">New this year. One project, three sites; site staff see only their own site; data managers see everything.</p>
+    <h2><span class="num">03</span>Setting up the class demonstration project (20 November 2026)</h2>
+    <p class="sub">Create this project before the class. We use it to show how a longitudinal study is set up and to explore other advanced features.</p>
     <ol class="buildlist">
-      <li><b>Create the groups.</b> Applications &gt; Data Access Groups: <i>Dar es Salaam</i>, <i>Mwanza</i>, <i>Mbeya</i>. Note the unique names REDCap makes (<code>dar_es_salaam</code>, …).</li>
-      <li><b>Assign users.</b> Each group member: one DAG and the <i>Site Staff</i> role. Keep <code>tafadzwa</code> and <code>redcap</code> in no DAG.</li>
-      <li><b>Auto-numbering.</b> Turn on record auto-numbering. New records get the DAG prefix, e.g. <code>2-1</code> for the first Mwanza participant.</li>
-      <li><b>Enter data as a site user.</b> Six fake participants per site, two per arm, with visits, one unscheduled visit and one missed visit.</li>
-      <li><b>Import.</b> Download the import template, add three participants with the column <code>redcap_data_access_group</code>, and import them.</li>
-      <li><b>Prove the isolation.</b> Screenshots of the Record Status Dashboard as a site user and as a data manager.</li>
-      <li><b>Report and export by site.</b> A report filtered by DAG; an export with the DAG column.</li>
+      <li>Log in to your REDCap account at <a href="https://redcap.uantwerpen.be" target="_blank" rel="noopener">redcap.uantwerpen.be</a>.</li>
+      <li>Go to <b>New Project</b> and complete <b>Create a new REDCap Project</b>:
+        <ul><li>Project title: <code>longitudinal studies demo – s2######</code>, where s2###### is your student number</li>
+        <li>Project’s purpose: <b>Practice / Just for fun</b></li>
+        <li>Project creation option: <b>Upload a REDCap project XML file</b></li>
+        <li>Choose <code>TBCARE_2026_REDCap_project.xml</code></li></ul></li>
+      <li>Request the project.</li>
     </ol>
-    <div class="callout"><p class="callout-title">Answer in your report</p><p>Why does REDCap put the DAG number in front of the record ID? When would you choose separate projects per site instead of Data Access Groups?</p></div>
+    <p class="dl"><a class="btn" href="docs/TBCARE_2026_REDCap_project.xml" download>Download the XML file</a> <a class="btn ghost" href="../coursework/#crfs">See its forms on the course-work page</a></p>
   </section>
 
-  <section id="handin">
-    <h2><span class="num">08</span>Hand in</h2>
-    <p class="sub">One submission per group on Blackboard, before Sunday 13 December 2026, 11:00.</p>
+  <section id="extra">
+    <h2><span class="num">04</span>Extra materials</h2>
+    <p class="sub">REDCap help pages and training videos.</p>
     <div class="tablewrap"><table>
-      <thead><tr><th>File</th><th>How to get it</th></tr></thead>
+      <thead><tr><th>Document</th><th></th></tr></thead>
       <tbody>
-        <tr><td><code>TUMAINI_group_XX_project.xml</code></td><td>Project Setup &gt; Other functionality &gt; <b>Download metadata only (XML)</b></td></tr>
-        <tr><td><code>TUMAINI_group_XX_DataDictionary.csv</code></td><td>Designer &gt; Data Dictionary &gt; download the current dictionary</td></tr>
-        <tr><td><code>TUMAINI_group_XX_codebook.pdf</code></td><td>Designer &gt; Codebook &gt; print to PDF</td></tr>
-        <tr><td><code>TUMAINI_group_XX_report.pdf</code></td><td>At most 6 pages: who did what, screenshots for Parts E and G, short answers for Parts D and E</td></tr>
+        <tr><td>Field Embedding</td><td><a href="docs/Field_Embedding.pdf" target="_blank" rel="noopener">Open in new tab</a> · <a href="docs/Field_Embedding.pdf" download>Download</a></td></tr><tr><td>Piping</td><td><a href="docs/Piping.pdf" target="_blank" rel="noopener">Open in new tab</a> · <a href="docs/Piping.pdf" download>Download</a></td></tr><tr><td>REDCap Action Tags</td><td><a href="docs/REDCap_Action_Tags.pdf" target="_blank" rel="noopener">Open in new tab</a> · <a href="docs/REDCap_Action_Tags.pdf" download>Download</a></td></tr><tr><td>REDCap special functions</td><td><a href="docs/REDCap_special_functions.pdf" target="_blank" rel="noopener">Open in new tab</a> · <a href="docs/REDCap_special_functions.pdf" download>Download</a></td></tr><tr><td>Smart Variables</td><td><a href="docs/Smart_Variables.pdf" target="_blank" rel="noopener">Open in new tab</a> · <a href="docs/Smart_Variables.pdf" download>Download</a></td></tr>
+        <tr><td>REDCap training videos</td><td><a href="https://projectredcap.org/resources/videos/" target="_blank" rel="noopener">projectredcap.org/resources/videos</a></td></tr>
       </tbody></table></div>
-    <h3>Checklist before you submit</h3>
-    <p class="note">Your ticks are saved in this browser only.</p>
-    <div class="progress" aria-hidden="true"><i id="ckbar"></i></div>
-    <ul class="check" id="checklist">
-      <li><label><input type="checkbox"><span>Six instruments, item numbers in the labels, every date and number validated</span></label></li>
-      <li><label><input type="checkbox"><span>Three arms with the events, offsets and windows of the instructions; instruments designated</span></label></li>
-      <li><label><input type="checkbox"><span><i>Unscheduled</i> is a repeating event; <i>mv</i> is a repeating instrument with a custom label</span></label></li>
-      <li><label><input type="checkbox"><span>Three DAGs; each member in one DAG with the Site Staff role; at least nine fake participants per site</span></label></li>
-      <li><label><input type="checkbox"><span>Field embedding, piping, calculations, the condom-use warning and the required action tags work</span></label></li>
-      <li><label><input type="checkbox"><span>FSX is a survey and at least one response was entered as a participant</span></label></li>
-      <li><label><input type="checkbox"><span>Project in Production; <code>tafadzwa</code> and <code>redcap</code> are Data Managers in no DAG</span></label></li>
-      <li><label><input type="checkbox"><span>Mobile app: one record entered offline and synchronised</span></label></li>
-      <li><label><input type="checkbox"><span>No real names, phone numbers or locations anywhere</span></label></li>
-      <li><label><input type="checkbox"><span>Four files uploaded on Blackboard before 13 December 2026, 11:00</span></label></li>
-    </ul>
-  </section>
-
-  <section id="downloads">
-    <h2><span class="num">09</span>Downloads</h2>
-    <div class="tablewrap"><table>
-      <thead><tr><th>File</th><th>What it is</th></tr></thead>
-      <tbody>
-        <tr><td><a href="docs/20261109_MEPI_REDCap_Homework_2026-27_Instructions.pdf">Homework instructions (PDF)</a> · <a href="docs/20261109_MEPI_REDCap_Homework_2026-27_Instructions.docx">Word</a></td><td>Parts A to G, points, what to hand in, checklist</td></tr>
-        <tr><td><a href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.pdf">TUMAINI protocol and CRFs (PDF)</a> · <a href="docs/20261109_MEPI_REDCap_Homework_TUMAINI_Protocol_and_CRFs.docx">Word</a></td><td>Synopsis, schedule of assessments, SELIG, SEGE, FSX, FGE and MV forms</td></tr>
-        <tr><td><a href="docs/20261109_MEPI_REDCap_Part2_Advanced_2026-27.pdf">Part 2 slides (PDF)</a> · <a href="docs/20261109_MEPI_REDCap_Part2_Advanced_2026-27.pptx">PowerPoint</a></td><td>Advanced REDCap, 28 slides</td></tr>
-        <tr><td><a href="docs/20261109_MEPI_REDCap_Advanced_Features_Quick_Reference.pdf">Quick reference (PDF)</a></td><td>Field embedding, piping, action tags, smart variables, special functions</td></tr>
-        <tr><td><a href="docs/TBCARE_2026_REDCap_project.xml" download>TBCARE_2026_REDCap_project.xml</a></td><td>Class demo project: upload as a new REDCap project</td></tr>
-        <tr><td><a href="../coursework/">Course-work page</a></td><td>TBCARE forms, data dictionary, simulated data, record linkage, R</td></tr>
-      </tbody></table></div>
-  </section>
-
-  <section id="faq">
-    <h2><span class="num">10</span>Questions</h2>
-    <details class="faq"><summary>Can we build the instruments by uploading a data dictionary?</summary><p>Yes. Many groups build one form in the Online Designer, download the dictionary, and write the rest in Excel. Upload, then check every form on screen.</p></details>
-    <details class="faq"><summary>The phone validation refuses Tanzanian numbers.</summary><p>REDCap's phone validation is for North American numbers. Use a text field with <code>@CHARLIMIT</code> and a field note with the format, as asked in Part B.</p></details>
-    <details class="faq"><summary>Moving to Production needs an administrator. What if it is not approved before the deadline?</summary><p>Request it early, a few working days before the deadline, and add a screenshot of your request to the report.</p></details>
-    <details class="faq"><summary>Can we use the TBCARE XML as a starting point?</summary><p>You may look at it to see how features are built. Your TUMAINI project must be your own work, built from the TUMAINI CRFs.</p></details>
-    <details class="faq"><summary>Where do we ask questions?</summary><p>In class or on the Blackboard discussion board, so that everybody gets the same answer.</p></details>
   </section>
 
   </main>
@@ -519,10 +380,10 @@ details.faq p{padding:0 14px 12px;margin:0}
 
 <footer>
   <div class="wrap">
-    REDCap homework for the Research Data Management course, Master of Epidemiology (MEPI), University of Antwerp, 2026–27. Authors: Bernard Isekah Osangir, Tafadzwa Maseko and Prof. Dr. Steven Abrams. TUMAINI and TBCARE are fictional studies; use fake data only. <a href="../">Pre-course reading</a> · <a href="../coursework/">Course work</a>.
+    REDCap homework for the Research Data Management course, Master of Epidemiology (MEPI), University of Antwerp, 2026–27. Authors: Bernard Isekah Osangir, Tafadzwa Maseko and Prof. Dr. Steven Abrams. Use fake data only. <a href="../">Pre-course reading</a> · <a href="../coursework/">Course work</a>.
   </div>
 </footer>
-<script>window.SLIDE_TITLES = ["REDCap Part 2 Advanced features", "You are the data manager", "Longitudinal projects", "Longitudinal projects: when and why", "How REDCap organises a longitudinal project", "Setting up a longitudinal project, step by step", "Arms, events and repeating", "Arms and events", "Designate instruments for my events", "Repeating events and repeating instruments", "Data entry, scheduling and the calendar", "Branching logic in a longitudinal project", "Surveys", "Surveys: the participant fills in the form", "Setting up a survey", "Multi-site: Data Access Groups", "Data Access Groups: one project, many sites", "Setting up Data Access Groups", "Data Access Groups or separate projects?", "Smarter forms: embedding, piping, action tags", "Field embedding: put fields where you want them", "Piping: reuse an answer in the text", "Action tags: behaviour in one word", "Smart variables and special functions", "Class demo and homework", "Before the class: create the TBCARE demo project", "Homework: build the TUMAINI multi-centre study", "Resources"];</script>
+<script>window.SLIDE_TITLES = ["REDCap", "Advanced REDCap", "Advanced REDCap – Ask students", "Longitudinal projects", "REDCap structure", "Steps for longitudinal utility", "Enable longitudinal", "Arms and events", "Data Access Groups (DAGs)", "Setting up DAGs", "Defining events", "Designate instruments to events", "Data entry in presence of arms", "Data entry - example", "Calendar", "Calendar – event status", "Branching logic", "Field embedding", "Piping", "Action tags", "Smart variables and special functions", "Surveys", "Public links vs Personal Invitation", "Manage survey participants", "Setting up the surveys", "Disabling surveys", "Statistics, charts and reports", "Practicals", "Extra materials", "Package ‘REDCapR’", "Mobile App", "Homework: PISTIC 2026", "End", "Setting up class demonstration project (20Nov2026)"];</script>
 <script src="app.js"></script>
 </body>
 </html>

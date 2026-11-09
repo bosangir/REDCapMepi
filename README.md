@@ -40,10 +40,9 @@ Files live in `coursework/` (`index.html`, `app.js`, `slides/`, `docs/`, `files/
 
 **Online:** https://bosangir.github.io/REDCapMepi/homework/
 
-- REDCap Part 2 slides (advanced features, 28 slides) in a slide viewer, with PDF and PowerPoint
-- Class demo: create TBCARE from the XML file before the class
-- Homework 2026-27: build TUMAINI, a fictional multi-centre study (it replaces PISTIC), with three arms, three Data Access Groups and a survey. Deadline: Sunday 13 December 2026, 11:00 (Brussels time)
-- TUMAINI protocol summary and CRFs, the instructions, a submission checklist, and a quick reference on field embedding, piping, action tags, smart variables and special functions
+- REDCap homework 2026-27: the PISTIC study, now multi-centre with Data Access Groups. Deadline: 13 December 2026, 11:00
+- Instructions, protocol and CRFs, Part 2 slides and a quick reference, to open in a new tab or download
+- Part 2 slides in a slide viewer; the class demonstration project (TBCARE XML); the REDCap help pages
 
 Files live in `homework/`. The CRF browser used on the course-work page is in `shared/` (`crf.js`, `crf.css`).
 
